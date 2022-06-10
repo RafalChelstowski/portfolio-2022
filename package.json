@@ -17,20 +17,60 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
     "extends": [
       "react-app",
       "react-app/jest",
+      "airbnb",
+      "airbnb/hooks",
+      "plugin:@typescript-eslint/recommended",
       "prettier"
     ],
-    "plugins": ["prettier"],
+    "plugins": [
+      "@typescript-eslint",
+      "prettier"
+    ],
+    "settings": {
+      "import/resolver": {
+        "typescript": {},
+        "node": {
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+          ]
+        }
+      }
+    },
     "rules": {
-      "prettier/prettier": "error"
+      "prettier/prettier": "error",
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+          ]
+        }
+      ],
+      "import/extensions": [
+          "error",
+          "ignorePackages",
+          {
+            "ts": "never",
+            "tsx": "never"
+          }
+        ]
     }
   },
   "browserslist": {
@@ -46,8 +86,17 @@
     ]
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "2.6.2"
   }
 }
