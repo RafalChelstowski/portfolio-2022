@@ -2,8 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'VCR_OSD';
+  src: url(./assets/VCR_OSD.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Fenice';
+  src: url(./assets/FeniceStd-Oblique.otf) format('opentype');
+}
+
+@layer base {
+  html {
+    font-family: 'Fenice', sans-serif;
+    @apply text-black;
+  }
+
+  h1,
+  h2,
+  h3,
+  button {
+    font-family: 'VCR_OSD';
+    @apply text-white;
+  }
 }
