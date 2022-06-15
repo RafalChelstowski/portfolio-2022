@@ -54,11 +54,7 @@ export function Items() {
 
   useEffect(() => {
     for (let index = 0; index < items.length; index += 1) {
-      at(index).position.set(
-        Math.random() * 2,
-        15 + index + Math.random() * 3,
-        Math.random() * 2
-      );
+      at(index).position.set(0, 12 + index, 0);
       at(index).scaleOverride(getSize(items[index].size));
     }
   }, [at]);
@@ -91,7 +87,7 @@ export function Items() {
             currentPositionVector.set(...currentPosition)
           )
           .normalize()
-          .multiplyScalar(14);
+          .multiplyScalar(10);
 
         const [x, y, z] = directionVector.toArray();
 
@@ -109,7 +105,7 @@ export function Items() {
             currentPositionVector.set(...currentPosition)
           )
           .normalize()
-          .multiplyScalar(14);
+          .multiplyScalar(10);
 
         const [x, y, z] = direction.toArray();
 
@@ -148,7 +144,7 @@ export function Items() {
           args={[colors, 3]}
         />
       </boxBufferGeometry>
-      <meshStandardMaterial vertexColors roughness={0.4} />
+      <meshStandardMaterial vertexColors roughness={0.8} metalness={0.4} />
     </instancedMesh>
   );
 }

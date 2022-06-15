@@ -16,9 +16,9 @@ export function Lights() {
   return (
     <>
       <ambientLight intensity={0.6} />
-      {/* <directionalLight intensity={1} target={targetObject} castShadow /> */}
-      <pointLight castShadow position={[0, 4, 0]} intensity={4} />
-      <Environment files="touk.hdr" background={false} resolution={128} />
+      <directionalLight intensity={0.2} target={targetObject} castShadow />
+      <pointLight castShadow position={[2, 4, 2]} intensity={4} />
+      <Environment files="hdr.hdr" background={false} resolution={128} />
     </>
   );
 }

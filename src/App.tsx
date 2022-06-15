@@ -1,4 +1,5 @@
 import { Physics } from '@react-three/cannon';
+import { AdaptiveDpr } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
 
@@ -26,6 +27,7 @@ export function App() {
           </Physics>
         </Suspense>
         <Info />
+        <AdaptiveDpr pixelated />
       </Canvas>
       <UI />
     </main>
