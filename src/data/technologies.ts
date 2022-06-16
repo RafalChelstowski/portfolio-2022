@@ -7,18 +7,28 @@ const data = [
     set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
   },
   {
-    name: 'macos',
-    size: 'md',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
-  },
-  {
     name: 'angular.js',
     size: 'sm',
     set: [Sets.FRONTEND_DEV],
   },
   {
+    name: 'carbon design system',
+    size: 'sm',
+    set: [Sets.FRONTEND_DEV],
+  },
+  {
+    name: 'storybook',
+    size: 'sm',
+    set: [Sets.FRONTEND_DEV],
+  },
+  {
+    name: 'draft-js',
+    size: 'sm',
+    set: [Sets.FRONTEND_DEV],
+  },
+  {
     name: 'typescript',
-    size: 'lg',
+    size: 'xl',
     set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
   },
   {
@@ -67,17 +77,47 @@ const data = [
     set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
   },
   {
-    name: 'Git',
+    name: 'tailwindcss',
+    size: 'md',
+    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+  },
+  {
+    name: 'react-transition-group',
+    size: 'md',
+    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+  },
+  {
+    name: 'es-lint/config-airbnb/prettier',
+    size: 'md',
+    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+  },
+  {
+    name: 'scss',
     size: 'md',
     set: [Sets.FRONTEND_DEV],
   },
   {
-    name: 'Blender',
+    name: 'git',
+    size: 'md',
+    set: [Sets.FRONTEND_DEV],
+  },
+  {
+    name: 'agile',
+    size: 'lg',
+    set: [Sets.FRONTEND_DEV],
+  },
+  {
+    name: 'macos',
+    size: 'md',
+    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+  },
+  {
+    name: 'blender',
     size: 'lg',
     set: [Sets.CREATIVE_DEV],
   },
   {
-    name: 'Substance Painter',
+    name: 'substance painter',
     size: 'md',
     set: [Sets.CREATIVE_DEV],
   },

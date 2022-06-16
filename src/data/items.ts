@@ -1,13 +1,15 @@
 import without from 'lodash/without';
 import { Item3d, Sets } from '../types';
+import { courses } from './courses';
 import { experience } from './experience';
 import { projects } from './projects';
 import { technologies } from './technologies';
 
 export const items: Item3d[] = [
+  ...courses,
+  ...technologies,
   ...experience,
   ...projects,
-  ...technologies,
 ].map((el, idx) => ({
   ...el,
   id: `${el.type}-${idx}`,

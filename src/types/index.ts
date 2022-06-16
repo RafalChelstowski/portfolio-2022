@@ -10,6 +10,7 @@ export enum ExperienceType {
   Experience = 'Experience / Education',
   Project = 'Additional Projects',
   Technology = 'Skill / Technology',
+  Learning = 'Education / Course',
 }
 
 export enum Sets {
@@ -17,6 +18,7 @@ export enum Sets {
   FRONTEND_DEV = 'frontend dev',
   MARKETING = 'marketing lead',
   FREELANCE = 'freelancer',
+  LEARNING = 'learning',
 }
 
 interface Item3dProps {
@@ -50,7 +52,18 @@ export interface ProjectItem extends Item3dProps {
   link?: string;
 }
 
-type AllDataItems = ExperienceItem | TechnologyItem | ProjectItem;
+export interface LearningItem extends Item3dProps {
+  type: ExperienceType.Learning;
+  name: string;
+  description?: string;
+  link?: string;
+}
+
+type AllDataItems =
+  | ExperienceItem
+  | TechnologyItem
+  | ProjectItem
+  | LearningItem;
 
 interface ControlProps {
   id: string;

@@ -16,7 +16,7 @@ const data = [
     name: 'Itransition Group, Front-end Developer',
     fromTo: 'Jan 2020 - Apr 2020',
     where: 'Warsaw',
-    size: 'lg',
+    size: 'md',
     set: [Sets.FRONTEND_DEV],
   },
   {
@@ -45,21 +45,21 @@ const data = [
     fromTo: '2004 - 2011',
     where: 'Wroclaw',
     size: 'md',
-    set: [Sets.FREELANCE],
+    set: [Sets.FREELANCE, Sets.LEARNING],
   },
   {
     name: 'University of Wroclaw, Political Science',
     fromTo: '2007 - 2012',
     where: 'Wroclaw',
     size: 'md',
-    set: [Sets.FREELANCE],
+    set: [Sets.FREELANCE, Sets.LEARNING],
   },
   {
     name: 'Université libre de Bruxelles, Political Science',
     fromTo: '2011',
     where: 'Brussels',
     size: 'md',
-    set: [Sets.FREELANCE],
+    set: [Sets.FREELANCE, Sets.LEARNING],
   },
 ];
 

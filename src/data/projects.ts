@@ -11,13 +11,13 @@ const data = [
     size: 'xl',
     set: [Sets.CREATIVE_DEV],
   },
-  // {
-  //   name: 'Tactics',
-  //   description: '"Final Fantasy Tactics-like" 3D game engine concept /  wip',
-  //   link: 'https://project-tactics.web.app/',
-  //   size: 'xl',
-  //   set: [Sets.CREATIVE_DEV],
-  // },
+  {
+    name: 'Tactics',
+    description: '"Final Fantasy Tactics-like" 3D game engine concept /  wip',
+    link: 'https://project-tactics.web.app/',
+    size: 'lg',
+    set: [Sets.CREATIVE_DEV],
+  },
 ];
 
 export const projects: ProjectItem[] = data.map((el) => ({

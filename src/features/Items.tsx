@@ -62,7 +62,7 @@ export function Items() {
   useFrame(() => {
     for (let index = 0; index < items.length; index += 1) {
       if (ref.current) {
-        (index === hovered
+        (index === hovered || index === useStore.getState().isPresenting
           ? color.setRGB(1, 1, 1)
           : color.set(items[index].customColor)
         ).toArray(colors, index * 3);
@@ -87,7 +87,7 @@ export function Items() {
             currentPositionVector.set(...currentPosition)
           )
           .normalize()
-          .multiplyScalar(10);
+          .multiplyScalar(20);
 
         const [x, y, z] = directionVector.toArray();
 
@@ -105,14 +105,14 @@ export function Items() {
             currentPositionVector.set(...currentPosition)
           )
           .normalize()
-          .multiplyScalar(10);
+          .multiplyScalar(20);
 
         const [x, y, z] = direction.toArray();
 
         if (itemSet.includes(index)) {
           at(index).velocity.set(x, y, z);
         } else {
-          at(index).velocity.set(-x, y, -z);
+          at(index).velocity.set(-x, -1, -z);
         }
       }
     }
@@ -135,6 +135,8 @@ export function Items() {
       onClick={(e) => {
         e.stopPropagation();
 
+        // setSelected(e.instanceId);
+
         useStore.setState({ isPresenting: e.instanceId });
       }}
     >
@@ -144,7 +146,12 @@ export function Items() {
           args={[colors, 3]}
         />
       </boxBufferGeometry>
-      <meshStandardMaterial vertexColors roughness={0.8} metalness={0.4} />
+      <meshPhysicalMaterial
+        vertexColors
+        roughness={0.1}
+        metalness={0}
+        transmission={0.6}
+      />
     </instancedMesh>
   );
 }

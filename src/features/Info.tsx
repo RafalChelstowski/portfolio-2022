@@ -67,6 +67,28 @@ export function Info(): JSX.Element | null {
         );
         break;
 
+      case ExperienceType.Learning:
+        template = (
+          <div className="w-80 bg-white/95 p-6 rounded-lg border-vMediumBlue">
+            <p className="mb-2 text-vMediumBlue">{`${item.type}:`}</p>
+            <p className="text-3xl  mb-2">{item.name.toUpperCase()}</p>
+            <p className="mb-2">{item.description}</p>
+            {item.link && (
+              <p className="mb-2">
+                <a
+                  className="text-vMediumBlue mb-2"
+                  href={item.link}
+                  target="blank"
+                >
+                  Link
+                </a>
+              </p>
+            )}
+            <div className="flex place-content-end ">{btn}</div>
+          </div>
+        );
+        break;
+
       default:
         template = <div>no template for this type</div>;
         break;
