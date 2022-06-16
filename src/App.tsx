@@ -1,5 +1,5 @@
 import { Physics } from '@react-three/cannon';
-import { AdaptiveDpr } from '@react-three/drei';
+import { AdaptiveDpr, Loader, Preload } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
 
@@ -19,16 +19,18 @@ export function App() {
         <Camera />
         <Lights />
         <Controls />
-        <Suspense fallback={null}>
-          <Physics>
+        <Physics>
+          <Suspense fallback={null}>
             <Pool />
-            <Items />
-            <Bounds />
-          </Physics>
-        </Suspense>
+          </Suspense>
+          <Items />
+          <Bounds />
+        </Physics>
         <Info />
         <AdaptiveDpr pixelated />
+        <Preload all />
       </Canvas>
+      <Loader />
       <UI />
     </main>
   );
