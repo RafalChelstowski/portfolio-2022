@@ -5,17 +5,17 @@ import { GLTFResult } from '../types';
 export default function Model() {
   const { nodes } = useGLTF('/pool.gltf') as unknown as GLTFResult;
 
-  const texture = useTexture('/pool_textured_BaseColor.png');
+  const texture = useTexture('/pool_textured_BaseColor.jpg');
   texture.flipY = false;
   texture.encoding = THREE.sRGBEncoding;
 
-  const normalMap = useTexture('/pool_textured_Normal.png');
+  const normalMap = useTexture('/pool_textured_Normal.jpg');
   normalMap.flipY = false;
 
-  const metalnessMap = useTexture('/pool_textured_Metallic.png');
+  const metalnessMap = useTexture('/pool_textured_Metallic.jpg');
   metalnessMap.flipY = false;
 
-  const roughnessMap = useTexture('/pool_textured_Roughness.png');
+  const roughnessMap = useTexture('/pool_textured_Roughness.jpg');
   roughnessMap.flipY = false;
 
   const material = (
@@ -29,7 +29,7 @@ export default function Model() {
 
   return (
     <group dispose={null}>
-      <mesh castShadow geometry={nodes.flamingo.geometry}>
+      <mesh receiveShadow castShadow geometry={nodes.flamingo.geometry}>
         {material}
       </mesh>
       <mesh receiveShadow geometry={nodes.rim.geometry}>

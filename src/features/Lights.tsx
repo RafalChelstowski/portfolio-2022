@@ -9,15 +9,15 @@ export function Lights() {
   const targetObject = useMemo(() => new THREE.Object3D(), []);
 
   useEffect(() => {
-    targetObject.position.set(1, 0, 2);
+    targetObject.position.set(0.5, 0, 0);
     scene.add(targetObject);
   }, [scene, targetObject]);
 
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <directionalLight intensity={0.2} target={targetObject} castShadow />
-      <pointLight castShadow position={[2, 4, 2]} intensity={4} />
+      <ambientLight intensity={0.5} />
+      <directionalLight intensity={1} target={targetObject} />
+      <pointLight castShadow position={[-2, 4, 5]} intensity={5} />
       <Environment files="hdr.hdr" background={false} resolution={128} />
     </>
   );
