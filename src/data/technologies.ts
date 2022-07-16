@@ -12,7 +12,7 @@ const data = [
     set: [Sets.FRONTEND_DEV],
   },
   {
-    name: 'carbon design system',
+    name: 'IBM carbon design system',
     size: 'sm',
     set: [Sets.FRONTEND_DEV],
   },
@@ -117,27 +117,22 @@ const data = [
     set: [Sets.CREATIVE_DEV],
   },
   {
-    name: 'substance painter',
+    name: 'adobe substance painter',
     size: 'md',
     set: [Sets.CREATIVE_DEV],
   },
   {
-    name: 'photoshop',
+    name: 'adobe photoshop, illustrator, inDesign',
     size: 'md',
     set: [Sets.MARKETING, Sets.FREELANCE],
   },
   {
-    name: 'illustrator',
+    name: 'affinity photo, designer, publisher',
     size: 'md',
     set: [Sets.MARKETING, Sets.FREELANCE],
   },
   {
-    name: 'inDesign',
-    size: 'md',
-    set: [Sets.MARKETING, Sets.FREELANCE],
-  },
-  {
-    name: 'team leader',
+    name: 'marketing team lead',
     size: 'md',
     set: [Sets.MARKETING],
   },
@@ -147,7 +142,7 @@ const data = [
     set: [Sets.MARKETING, Sets.FREELANCE],
   },
   {
-    name: 'wordpress administration',
+    name: 'wordpress',
     size: 'sm',
     set: [Sets.MARKETING, Sets.FREELANCE],
   },

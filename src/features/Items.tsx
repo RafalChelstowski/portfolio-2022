@@ -15,6 +15,7 @@ const targetPositionVector = new THREE.Vector3(0, 0, 0);
 const color = new THREE.Color();
 
 export function Items() {
+  const counterRef = useRef(0);
   const colors = useMemo(() => {
     const arr = new Float32Array(items.length * 3);
     for (let index = 0; index < items.length; index += 1) {
@@ -32,7 +33,11 @@ export function Items() {
     rotation: [Math.random(), Math.random(), Math.random()],
     allowSleep: false,
     onCollide: (e) => {
-      if (e.body?.name === 'floor' && !useStore.getState().displayUi) {
+      if (
+        counterRef.current > 4 &&
+        e.body?.name === 'floor' &&
+        !useStore.getState().displayUi
+      ) {
         useStore.setState({ displayUi: true });
       }
     },
@@ -59,7 +64,9 @@ export function Items() {
     }
   }, [at]);
 
-  useFrame(() => {
+  useFrame(({ clock }) => {
+    counterRef.current = clock.getElapsedTime();
+
     for (let index = 0; index < items.length; index += 1) {
       if (ref.current) {
         (index === hovered || index === useStore.getState().isPresenting
@@ -134,8 +141,6 @@ export function Items() {
       }}
       onClick={(e) => {
         e.stopPropagation();
-
-        // setSelected(e.instanceId);
 
         useStore.setState({ isPresenting: e.instanceId });
       }}

@@ -9,20 +9,20 @@ const data = [
     description: 'pikuma.com',
     link: 'https://pikuma.com/courses/learn-3d-computer-graphics-programming',
     size: 'md',
-    set: [Sets.LEARNING, Sets.CREATIVE_DEV],
+    set: [Sets.LEARNING],
   },
   {
     name: 'GLSL Shaders from scratch',
     link: 'https://simondev.teachable.com/p/glsl-shaders-from-scratch',
     size: 'md',
-    set: [Sets.LEARNING, Sets.CREATIVE_DEV],
+    set: [Sets.LEARNING],
   },
   {
     name: 'three.js journey',
     description: 'Bruno Simon',
     link: 'https://threejs-journey.com/',
     size: 'md',
-    set: [Sets.LEARNING, Sets.CREATIVE_DEV],
+    set: [Sets.LEARNING],
   },
   {
     name: 'Blender and Substance Painter: Architectural Visualization',
@@ -79,20 +79,20 @@ const data = [
     description: 'Kent C. Dodds',
     link: 'https://epicreact.dev/',
     size: 'md',
-    set: [Sets.LEARNING, Sets.FRONTEND_DEV],
+    set: [Sets.LEARNING],
   },
   {
     name: 'Testing Javascript',
     description: 'Kent C. Dodds',
     link: 'https://testingjavascript.com/',
     size: 'md',
-    set: [Sets.LEARNING, Sets.FRONTEND_DEV],
+    set: [Sets.LEARNING],
   },
   {
     name: 'React Query Essentials',
     link: 'https://learn.tanstack.com/p/react-query-essentials',
     size: 'md',
-    set: [Sets.LEARNING, Sets.FRONTEND_DEV],
+    set: [Sets.LEARNING],
   },
 ];
 
