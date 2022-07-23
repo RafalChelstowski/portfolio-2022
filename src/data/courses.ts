@@ -94,6 +94,11 @@ const data = [
     size: 'md',
     set: [Sets.LEARNING],
   },
+  {
+    name: 'math - weekly private lessons',
+    size: 'md',
+    set: [Sets.LEARNING],
+  },
 ];
 
 export const courses: LearningItem[] = data.map((el) => ({

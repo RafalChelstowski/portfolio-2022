@@ -28,7 +28,7 @@ const data = [
   },
   {
     name: 'typescript',
-    size: 'xl',
+    size: 'lg',
     set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
   },
   {
@@ -84,7 +84,12 @@ const data = [
   {
     name: 'react-transition-group',
     size: 'md',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    set: [Sets.CREATIVE_DEV],
+  },
+  {
+    name: 'react-spring',
+    size: 'md',
+    set: [Sets.CREATIVE_DEV],
   },
   {
     name: 'es-lint/config-airbnb/prettier',
@@ -102,12 +107,17 @@ const data = [
     set: [Sets.FRONTEND_DEV],
   },
   {
-    name: 'agile',
+    name: 'agile - team member',
     size: 'lg',
     set: [Sets.FRONTEND_DEV],
   },
   {
     name: 'macos',
+    size: 'sm',
+    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+  },
+  {
+    name: 'vscode',
     size: 'md',
     set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
   },
@@ -119,6 +129,11 @@ const data = [
   {
     name: 'adobe substance painter',
     size: 'md',
+    set: [Sets.CREATIVE_DEV],
+  },
+  {
+    name: 'trello',
+    size: 'sm',
     set: [Sets.CREATIVE_DEV],
   },
   {
@@ -137,12 +152,27 @@ const data = [
     set: [Sets.MARKETING],
   },
   {
+    name: 'ui design',
+    size: 'md',
+    set: [Sets.FRONTEND_DEV],
+  },
+  {
+    name: 'branding / corporate branding',
+    size: 'md',
+    set: [Sets.MARKETING, Sets.FREELANCE, Sets.FRONTEND_DEV],
+  },
+  {
+    name: 'desktop publishing',
+    size: 'md',
+    set: [Sets.MARKETING],
+  },
+  {
     name: 'creative copywriting',
     size: 'lg',
     set: [Sets.MARKETING, Sets.FREELANCE],
   },
   {
-    name: 'wordpress',
+    name: 'wordpress administration',
     size: 'sm',
     set: [Sets.MARKETING, Sets.FREELANCE],
   },
