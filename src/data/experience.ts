@@ -5,10 +5,17 @@ const col = '#426271';
 
 const data = [
   {
-    name: 'TouK, Front-end Developer',
-    fromTo: 'Jul 2020 -> current',
-    where: 'Warsaw',
+    name: 'Align Technology, Front-end Developer',
+    fromTo: 'Nov 2022 -> current',
+    where: 'Frankfurt am Main',
     current: true,
+    size: 'xl',
+    set: [Sets.FRONTEND_DEV],
+  },
+  {
+    name: 'TouK, Front-end Developer',
+    fromTo: 'Jul 2020 -> Nov 2022',
+    where: 'Warsaw',
     size: 'xl',
     set: [Sets.FRONTEND_DEV],
   },

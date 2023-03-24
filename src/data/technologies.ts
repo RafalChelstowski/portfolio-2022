@@ -48,7 +48,7 @@ const data = [
   },
   {
     name: 'redux',
-    size: 'md',
+    size: 'lg',
     set: [Sets.FRONTEND_DEV],
   },
   {
