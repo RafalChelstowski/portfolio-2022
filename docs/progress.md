@@ -4,7 +4,7 @@
 from pathlib import Path
 print(Path('ralph-digit-loop.txt').read_text() == '1\n')
 PY` prints `True`
-- [ ] Append `2` as a new second line in `ralph-digit-loop.txt` | AC: `python3 - <<'PY'
+- [x] Append `2` as a new second line in `ralph-digit-loop.txt` | AC: `python3 - <<'PY'
 from pathlib import Path
 print(Path('ralph-digit-loop.txt').read_text() == '1\n2\n')
 PY` prints `True`
