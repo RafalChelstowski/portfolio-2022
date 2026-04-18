@@ -1,6 +1,6 @@
 # Feature Delivery Progress
 
-- [ ] Create `ralph-digit-loop.txt` in the repo root with exactly one line containing `1` and a trailing newline | AC: `python3 - <<'PY'
+- [x] Create `ralph-digit-loop.txt` in the repo root with exactly one line containing `1` and a trailing newline | AC: `python3 - <<'PY'
 from pathlib import Path
 print(Path('ralph-digit-loop.txt').read_text() == '1\n')
 PY` prints `True`
