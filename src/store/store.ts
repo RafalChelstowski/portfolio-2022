@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { Sets } from '../types';
+import type { Sets } from '../types';
 
 export type Store = {
   displayUi: boolean;
@@ -7,7 +7,7 @@ export type Store = {
   sortOption: Sets | 'sort' | null;
 };
 
-const useStore = create<Store>(() => ({
+const useStore = create<Store>()(() => ({
   displayUi: false,
   isPresenting: null,
   sortOption: null,
