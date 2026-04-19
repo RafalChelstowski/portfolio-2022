@@ -28,10 +28,11 @@
     "zustand": "4.0.0-rc.1"
   },
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
+    "dev": "vite",
+    "start": "npm run dev",
     "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
-    "build": "react-scripts build",
+    "build": "vite build",
     "test": "CI=true react-scripts test --watchAll=false --passWithNoTests",
     "eject": "react-scripts eject"
   },
@@ -121,6 +122,7 @@
     "eslint-plugin-react-hooks": "4.3.0",
     "postcss": "8.4.14",
     "prettier": "2.6.2",
-    "tailwindcss": "3.1.2"
+    "tailwindcss": "3.1.2",
+    "vite": "3.1.3"
   }
 }
