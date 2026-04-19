@@ -15,7 +15,16 @@ import { UI } from './features/UI';
 export function App() {
   return (
     <main className="w-screen h-screen">
-      <Canvas gl={{ physicallyCorrectLights: true }} shadows>
+      <Canvas
+        onCreated={({ gl }) => {
+          if ('useLegacyLights' in gl) {
+            Reflect.set(gl, 'useLegacyLights', false);
+          } else if ('physicallyCorrectLights' in gl) {
+            Reflect.set(gl, 'physicallyCorrectLights', true);
+          }
+        }}
+        shadows
+      >
         <Camera />
         <Lights />
         <Controls />

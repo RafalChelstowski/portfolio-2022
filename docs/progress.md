@@ -8,7 +8,7 @@
 - [x] Replace legacy ESLint config with ESLint flat config | AC: `eslint.config.js` exists, old inline config removed, and `npm run lint` passes
 - [x] Keep Prettier as separate formatter | AC: Prettier config still applies cleanly and does not conflict with ESLint
 - [x] Update Zustand usage to modern API | AC: store uses supported import/create pattern and behavior is unchanged
-- [ ] Fix direct Three API deprecations in scene code | AC: remove deprecated color-management, lighting, and geometry APIs currently used in `src`
+- [x] Fix direct Three API deprecations in scene code | AC: remove deprecated color-management, lighting, and geometry APIs currently used in `src`
 - [ ] Upgrade React, Three, Fiber, Drei, and Cannon together | AC: app builds on React 19 + Fiber 9 + Drei 10 + Three 0.184 + Cannon 6.6 with scene behavior preserved
 - [ ] Refresh Tailwind/PostCSS on Vite stack | AC: Tailwind/PostCSS versions support the Vite build and current utility classes still render
 - [ ] Refresh repo docs for new workflow | AC: `README.md` documents Node version and dev/build/test/lint commands
@@ -26,3 +26,4 @@
 - ESLint `8.2.0` in this repo does not natively execute `eslint.config.js`; the flat-config task therefore uses a small Node runner that resolves the flat config through ESLint internals and preserves `npm run lint` until ESLint itself is upgraded later.
 - Prettier `2.6.2` errors on unknown dotfiles like `.prettierignore` when invoked on `.`; use `--ignore-unknown` in standalone format scripts so Prettier can stay separate from ESLint without brittle file globs.
 - `zustand@4.0.0-rc.1` in this repo still types `create` as the default export, so this pass modernizes the store to the v4 curried `create<T>()(initializer)` pattern without widening scope into a package upgrade.
+- Three scene code can bridge old and new renderer/texture APIs safely with runtime feature detection, which lets us remove deprecated JSX usage now without forcing the React/Fiber/Three upgrade task early.

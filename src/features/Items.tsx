@@ -146,12 +146,12 @@ export function Items() {
         useStore.setState({ isPresenting: e.instanceId });
       }}
     >
-      <boxBufferGeometry args={[1, 1, 1]}>
+      <boxGeometry args={[1, 1, 1]}>
         <instancedBufferAttribute
           attach="attributes-color"
           args={[colors, 3]}
         />
-      </boxBufferGeometry>
+      </boxGeometry>
       <meshPhysicalMaterial
         vertexColors
         roughness={0.1}

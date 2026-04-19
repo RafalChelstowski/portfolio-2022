@@ -2,12 +2,27 @@ import { useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import type { GLTFResult } from '../types';
 
+function configureSrgbTexture(texture: THREE.Texture) {
+  const configuredTexture = texture;
+  configuredTexture.flipY = false;
+
+  if ('colorSpace' in configuredTexture) {
+    Reflect.set(
+      configuredTexture,
+      'colorSpace',
+      (THREE as typeof THREE & { SRGBColorSpace?: string }).SRGBColorSpace ??
+        'srgb'
+    );
+  } else {
+    Reflect.set(configuredTexture, 'encoding', 3001);
+  }
+}
+
 export default function Model() {
   const { nodes } = useGLTF('/pool.gltf') as unknown as GLTFResult;
 
   const texture = useTexture('/pool_textured_BaseColor.jpg');
-  texture.flipY = false;
-  texture.encoding = THREE.sRGBEncoding;
+  configureSrgbTexture(texture);
 
   const normalMap = useTexture('/pool_textured_Normal.jpg');
   normalMap.flipY = false;
