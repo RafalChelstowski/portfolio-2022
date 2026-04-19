@@ -1,5 +1,6 @@
 import without from 'lodash/without';
-import { Item3d, Sets } from '../types';
+import { Sets } from '../types';
+import type { Item3d } from '../types';
 import { courses } from './courses';
 import { experience } from './experience';
 import { projects } from './projects';
@@ -17,7 +18,7 @@ export const items: Item3d[] = [
 
 function createSets(): Record<string, number[]> {
   let s = {};
-  Object.entries(Sets).forEach(([key, value]) => {
+  Object.entries(Sets).forEach(([, value]) => {
     const values = without(
       items.map((item, idx) => (item.set?.includes(value) ? idx : undefined)),
       undefined

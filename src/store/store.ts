@@ -7,7 +7,7 @@ export type Store = {
   sortOption: Sets | 'sort' | null;
 };
 
-const useStore = create<Store>((set) => ({
+const useStore = create<Store>(() => ({
   displayUi: false,
   isPresenting: null,
   sortOption: null,

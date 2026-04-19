@@ -1,11 +1,12 @@
-import { Triplet, useBox } from '@react-three/cannon';
+import { useBox } from '@react-three/cannon';
+import type { Triplet } from '@react-three/cannon';
 import { useFrame } from '@react-three/fiber';
 import { useRef, useEffect, useState, useMemo } from 'react';
 import { InstancedMesh } from 'three';
 import * as THREE from 'three';
+import { items, sets } from '../data/items';
 import { useStore } from '../store/store';
 import { getSize } from '../utils/getSize';
-import { items, sets } from '../data/items';
 
 const directionVector = new THREE.Vector3();
 const centerVector = new THREE.Vector3(0, -2, 0);

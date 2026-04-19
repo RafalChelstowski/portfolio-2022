@@ -4,7 +4,7 @@
 - [x] Ignore Ralph state and scaffold loop files | AC: `.ralph/` ignored, `AGENTS.md` present, and this file tracks atomic refresh tasks
 - [x] Add Vite app shell and make it default | AC: Vite config, root `index.html`, `src/main.tsx`, and `npm run dev` / `npm run build` use Vite successfully
 - [x] Remove CRA-only leftovers | AC: remove `react-scripts` usage, CRA env types, `reportWebVitals`, and obsolete HTML/bootstrap files without changing app behavior
-- [ ] Upgrade TypeScript compiler and base config | AC: TypeScript 6 config supports Vite, strict mode stays on, and `npm run typecheck` passes
+- [x] Upgrade TypeScript compiler and base config | AC: TypeScript 6 config supports Vite, strict mode stays on, and `npm run typecheck` passes
 - [ ] Replace legacy ESLint config with ESLint flat config | AC: `eslint.config.js` exists, old inline config removed, and `npm run lint` passes
 - [ ] Keep Prettier as separate formatter | AC: Prettier config still applies cleanly and does not conflict with ESLint
 - [ ] Replace CRA test runner with Vitest setup | AC: Vitest + jsdom + Testing Library configured and `npm run test` exits 0
@@ -25,3 +25,4 @@
 - `node --test` exits 0 when no tests are present, which keeps the required automation command stable after removing `react-scripts` and before the later Vitest migration task.
 - Vite respects the TypeScript `target` for esbuild transpilation; leaving CRA's `es5` target in place breaks `vite build` on modern TS entrypoints.
 - `package.json` can claim Vite is installed while `package-lock.json` and `node_modules` disagree; verify `node_modules/vite` is not a cross-repo symlink and that the lockfile contains `node_modules/vite` before treating the app-shell task as done.
+- TypeScript 6 with `verbatimModuleSyntax` turns several former value imports into hard errors; files that only consume interfaces or type aliases need `import type` cleanup before `npm run typecheck` will pass.

@@ -2,7 +2,8 @@ import { Html } from '@react-three/drei';
 import isNumber from 'lodash/isNumber';
 import { useStore } from '../store/store';
 import { items } from '../data/items';
-import { Item3d, ExperienceType } from '../types';
+import { ExperienceType } from '../types';
+import type { Item3d } from '../types';
 
 export function Info(): JSX.Element | null {
   const isPresenting = useStore((state) => state.isPresenting);

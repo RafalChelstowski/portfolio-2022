@@ -1,6 +1,6 @@
 import { useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
-import { GLTFResult } from '../types';
+import type { GLTFResult } from '../types';
 
 export default function Model() {
   const { nodes } = useGLTF('/pool.gltf') as unknown as GLTFResult;
