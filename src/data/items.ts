@@ -1,4 +1,4 @@
-import without from 'lodash/without';
+import without from 'lodash/without.js';
 import { Sets } from '../types';
 import type { Item3d } from '../types';
 import { courses } from './courses';

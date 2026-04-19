@@ -1,5 +1,5 @@
 import { Html } from '@react-three/drei';
-import isNumber from 'lodash/isNumber';
+import isNumber from 'lodash/isNumber.js';
 import { useStore } from '../store/store';
 import { items } from '../data/items';
 import { ExperienceType } from '../types';

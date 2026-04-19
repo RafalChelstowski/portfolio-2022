@@ -1,4 +1,4 @@
-import isNumber from 'lodash/isNumber';
+import isNumber from 'lodash/isNumber.js';
 import { useStore } from '../store/store';
 import { Sets } from '../types';
 
