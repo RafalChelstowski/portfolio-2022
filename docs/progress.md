@@ -24,3 +24,4 @@
 - Vite 8 requires Node `^20.19.0 || >=22.12.0`; `.nvmrc` therefore targets Node 24 for a stable LTS baseline.
 - `node --test` exits 0 when no tests are present, which keeps the required automation command stable after removing `react-scripts` and before the later Vitest migration task.
 - Vite respects the TypeScript `target` for esbuild transpilation; leaving CRA's `es5` target in place breaks `vite build` on modern TS entrypoints.
+- `package.json` can claim Vite is installed while `package-lock.json` and `node_modules` disagree; verify `node_modules/vite` is not a cross-repo symlink and that the lockfile contains `node_modules/vite` before treating the app-shell task as done.
