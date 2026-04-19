@@ -7,7 +7,7 @@
 - [x] Upgrade TypeScript compiler and base config | AC: TypeScript 6 config supports Vite, strict mode stays on, and `npm run typecheck` passes
 - [x] Replace legacy ESLint config with ESLint flat config | AC: `eslint.config.js` exists, old inline config removed, and `npm run lint` passes
 - [x] Keep Prettier as separate formatter | AC: Prettier config still applies cleanly and does not conflict with ESLint
-- [ ] Replace CRA test runner with Vitest setup | AC: Vitest + jsdom + Testing Library configured and `npm run test` exits 0
+- [x] Replace CRA test runner with Vitest setup | AC: Vitest + jsdom + Testing Library configured and `npm run test` exits 0
 - [ ] Add first smoke test for app shell | AC: one app render test passes under Vitest
 - [ ] Add one focused unit test for store behavior | AC: one small Zustand test passes under Vitest
 - [ ] Update Zustand usage to modern API | AC: store uses supported import/create pattern and behavior is unchanged
@@ -28,3 +28,4 @@
 - TypeScript 6 with `verbatimModuleSyntax` turns several former value imports into hard errors; files that only consume interfaces or type aliases need `import type` cleanup before `npm run typecheck` will pass.
 - ESLint `8.2.0` in this repo does not natively execute `eslint.config.js`; the flat-config task therefore uses a small Node runner that resolves the flat config through ESLint internals and preserves `npm run lint` until ESLint itself is upgraded later.
 - Prettier `2.6.2` errors on unknown dotfiles like `.prettierignore` when invoked on `.`; use `--ignore-unknown` in standalone format scripts so Prettier can stay separate from ESLint without brittle file globs.
+- The test harness now scans `src/**/*.{test,spec}.{ts,tsx}`, bootstraps `jsdom` through `src/setupTests.ts`, and exposes Vitest-style globals, so the next test tasks can add files under `src/` without extra setup.

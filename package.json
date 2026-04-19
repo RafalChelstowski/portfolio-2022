@@ -30,7 +30,7 @@
     "lint": "node scripts/lint.mjs",
     "typecheck": "tsc --noEmit",
     "build": "vite build",
-    "test": "node --test"
+    "test": "node scripts/vitest.mjs run --passWithNoTests"
   },
   "browserslist": {
     "production": [
