@@ -11,7 +11,12 @@ import flatConfig from '../eslint.config.js';
 const require = createRequire(import.meta.url);
 const eslintPackagePath = require.resolve('eslint/package.json');
 const { FlatConfigArray } = await import(
-  pathToFileURL(path.join(path.dirname(eslintPackagePath), 'lib/config/flat-config-array.js'))
+  pathToFileURL(
+    path.join(
+      path.dirname(eslintPackagePath),
+      'lib/config/flat-config-array.js'
+    )
+  )
 );
 
 const projectRoot = process.cwd();
@@ -70,7 +75,9 @@ function formatMessages(filename, messages) {
     const severity = severityLabels[message.severity] ?? 'error';
     const ruleId = message.ruleId ?? 'fatal';
 
-    return `${path.relative(projectRoot, filename)}:${message.line}:${message.column}  ${severity}  ${message.message}  ${ruleId}`;
+    return `${path.relative(projectRoot, filename)}:${message.line}:${
+      message.column
+    }  ${severity}  ${message.message}  ${ruleId}`;
   });
 }
 
@@ -94,7 +101,9 @@ for (const filename of files) {
   definePluginRules(linter, resolvedConfig.plugins);
 
   const source = await fs.readFile(filename, 'utf8');
-  const messages = linter.verify(source, toLegacyConfig(resolvedConfig), { filename });
+  const messages = linter.verify(source, toLegacyConfig(resolvedConfig), {
+    filename,
+  });
 
   if (messages.length > 0) {
     output.push(...formatMessages(filename, messages));

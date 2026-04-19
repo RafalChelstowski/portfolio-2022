@@ -59,7 +59,6 @@ module.exports = dedupePlugins([
       es2022: true,
       node: true,
     },
-    plugins: ['prettier'],
     settings: {
       react: {
         version: 'detect',
@@ -73,7 +72,6 @@ module.exports = dedupePlugins([
     },
     rules: {
       'react/react-in-jsx-scope': 'off',
-      'prettier/prettier': 'error',
       'react/jsx-filename-extension': [
         1,
         {
