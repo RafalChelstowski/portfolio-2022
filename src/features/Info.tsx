@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { Html } from '@react-three/drei';
 import isNumber from 'lodash/isNumber.js';
 import { useStore } from '../store/store';
