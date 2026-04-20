@@ -1,4 +1,5 @@
-import { Sets, LearningItem, ExperienceType } from '../types';
+import { Sets, ExperienceType } from '../types';
+import type { LearningItem } from '../types';
 
 const vel = [3, -2, -3];
 const col = '#17829b';

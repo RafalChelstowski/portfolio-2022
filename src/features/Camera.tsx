@@ -1,11 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type JSX } from 'react';
 import { PerspectiveCamera } from '@react-three/drei';
-import isNumber from 'lodash/isNumber';
+import isNumber from 'lodash/isNumber.js';
+import type { PerspectiveCamera as PerspectiveCameraImpl } from 'three';
 import { useStore } from '../store/store';
 
 export function Camera(): JSX.Element {
   const isPresenting = useStore((state) => isNumber(state.isPresenting));
-  const ref = useRef<THREE.PerspectiveCamera>(null);
+  const ref = useRef<PerspectiveCameraImpl>(null);
 
   useEffect(() => {
     if (!ref.current) {

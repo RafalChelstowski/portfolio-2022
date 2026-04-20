@@ -1,4 +1,5 @@
-import { Sets, TechnologyItem, ExperienceType } from '../types';
+import { Sets, ExperienceType } from '../types';
+import type { TechnologyItem } from '../types';
 
 const data = [
   {

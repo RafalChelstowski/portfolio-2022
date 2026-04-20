@@ -1,4 +1,5 @@
-import { Sets, ProjectItem, ExperienceType } from '../types';
+import { Sets, ExperienceType } from '../types';
+import type { ProjectItem } from '../types';
 
 const vel = [-4, -2, -4];
 const col = '#956062';

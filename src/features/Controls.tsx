@@ -1,5 +1,5 @@
 import { OrbitControls } from '@react-three/drei';
-import isNumber from 'lodash/isNumber';
+import isNumber from 'lodash/isNumber.js';
 import { useStore } from '../store/store';
 
 export function Controls() {
