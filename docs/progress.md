@@ -10,7 +10,7 @@
 - [x] Update Zustand usage to modern API | AC: store uses supported import/create pattern and behavior is unchanged
 - [x] Fix direct Three API deprecations in scene code | AC: remove deprecated color-management, lighting, and geometry APIs currently used in `src`
 - [x] Upgrade React 19 baseline packages | AC: `react`, `react-dom`, `@types/react`, and `@types/react-dom` are aligned to React 19-compatible versions and `npm run typecheck`, `npm run lint`, and `npm run build` still pass
-- [ ] Upgrade Three, Fiber, and Drei as one renderer cohort | AC: `three`, `@types/three`, `@react-three/fiber`, and `@react-three/drei` are aligned to mutually compatible modern versions and the scene still builds without reintroducing deprecated API usage
+- [x] Upgrade Three, Fiber, and Drei as one renderer cohort | AC: `three`, `@types/three`, `@react-three/fiber`, and `@react-three/drei` are aligned to mutually compatible modern versions and the scene still builds without reintroducing deprecated API usage
 - [ ] Upgrade `@react-three/cannon` on the new renderer stack | AC: physics integration works on the upgraded React/Fiber/Three stack and `npm run test`, `npm run typecheck`, `npm run lint`, and `npm run build` all pass
 - [ ] Refresh PostCSS and Autoprefixer on the Vite stack | AC: `postcss` and `autoprefixer` are updated to supported versions that preserve the current CSS build output
 - [ ] Refresh Tailwind CSS on the updated CSS toolchain | AC: `tailwindcss` is updated without rewriting the current theme/config shape and the existing utility classes still render
@@ -34,3 +34,4 @@
 - The CSS toolchain refresh is safer as PostCSS/Autoprefixer first and Tailwind second, so one failed package bump does not block the whole styling stack.
 - This sandbox currently cannot resolve `registry.npmjs.org` from `npm` (`npm install react@19 --verbose` fails with `ENOTFOUND`), so real dependency upgrades require cached tarballs or a network-enabled loop.
 - When sandbox policy blocks writes to `~/.npm`, cached runtime upgrades can still proceed by extracting tarballs directly from `~/.npm/_cacache/content-v2`; React 19 and `scheduler@0.27.0` were recoverable this way.
+- Cached tarball extraction in this sandbox can preserve non-executable directory permissions; after unpacking packages into `node_modules`, run `chmod -R u+rwX,go+rX` on the extracted directories so Vite can resolve their `dist/` entrypoints.
