@@ -10,8 +10,9 @@
 - [x] Update Zustand usage to modern API | AC: store uses supported import/create pattern and behavior is unchanged
 - [x] Fix direct Three API deprecations in scene code | AC: remove deprecated color-management, lighting, and geometry APIs currently used in `src`
 - [x] Upgrade React 19 baseline packages | AC: `react`, `react-dom`, `@types/react`, and `@types/react-dom` are aligned to React 19-compatible versions and `npm run typecheck`, `npm run lint`, and `npm run build` still pass
-- [x] Upgrade Three, Fiber, and Drei as one renderer cohort | AC: `three`, `@types/three`, `@react-three/fiber`, and `@react-three/drei` are aligned to mutually compatible modern versions and the scene still builds without reintroducing deprecated API usage
-- [x] Upgrade `@react-three/cannon` on the new renderer stack | AC: physics integration works on the upgraded React/Fiber/Three stack and `npm run test`, `npm run typecheck`, `npm run lint`, and `npm run build` all pass
+- [/] Reopen Three, Fiber, and Drei renderer cohort for React 19 runtime compatibility | AC: `@react-three/fiber` is on a React-19-compatible stable version, `@react-three/drei` is on a mutually compatible stable version, opening the local app no longer throws `ReactCurrentBatchConfig`, and `npm run test`, `npm run typecheck`, `npm run lint`, and `npm run build` all pass
+- [ ] Upgrade `@react-three/cannon` and remaining renderer peers to newest compatible stable versions | AC: `@react-three/cannon`, `three`, and required physics/runtime peers are on the newest compatible stable versions practical for this repo, the scene still initializes, and `npm run test`, `npm run typecheck`, `npm run lint`, and `npm run build` all pass
+- [ ] Clean the direct dependency graph to newest compatible stable releases | AC: direct app/build dependencies are on the newest compatible stable versions practical here, `npm ls react react-dom @react-three/fiber @react-three/drei @react-three/cannon three scheduler` exits without invalid or extraneous shipped-app dependency errors, and any intentional hold-backs are recorded in `## Findings`
 - [x] Refresh PostCSS and Autoprefixer on the Vite stack | AC: `postcss` and `autoprefixer` are updated to supported versions that preserve the current CSS build output
 - [x] Refresh Tailwind CSS on the updated CSS toolchain | AC: `tailwindcss` is updated without rewriting the current theme/config shape and the existing utility classes still render
 - [x] Rewrite README for the current local workflow | AC: `README.md` documents Node version, install, dev, build, lint, and test commands for this repo
@@ -19,6 +20,11 @@
 ---
 
 ## Findings
+
+- `@react-three/fiber@8.12.0` with `react@19.2.5` can pass `npm run test`, `npm run typecheck`, `npm run lint`, and `npm run build` yet still crash at runtime with `Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')`; renderer tasks need a real app smoke check before closing.
+- React 19.2 compatibility landed in `@react-three/fiber v9.5.0`; treating any `v8.x` renderer build as a valid React 19 end state is unsafe.
+- `npm ls react react-dom @react-three/fiber @react-three/drei @react-three/cannon three scheduler` is a useful gate in this repo because it surfaces invalid peer/reconciler relationships and stale extraneous packages even when the bundle builds.
+- As of Monday, 20 April 2026, npm lists `@react-three/cannon 6.6.0` as latest stable and `@react-three/drei 10.7.x` as latest stable; the follow-up loop should target newest compatible stable versions rather than stopping at the first passing build.
 
 - `@react-three/cannon@6.6.0` declares `react >=18` and `@react-three/fiber >=8`, so it does not hard-block the React 19 / Fiber 9 target.
 - Vite 8 requires Node `^20.19.0 || >=22.12.0`; `.nvmrc` therefore targets Node 24 for a stable LTS baseline.
