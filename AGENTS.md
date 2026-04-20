@@ -1,17 +1,17 @@
 Implement ONE feature task from docs/progress.md.
 
-IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <promise>COMPLETE</promise> and stop. Do not do anything else.
+IMPORTANT: If all items in docs/progress.md are marked [x], or the only remaining open items start with `MANUAL:`, you MUST output <promise>COMPLETE</promise> and stop. Do not do anything else.
 
 ## THIS ITERATION
 
 1. Read `docs/progress.md`
-2. If no `- [ ]` or `- [/]` items remain -> output `<promise>COMPLETE</promise>` and stop immediately
-3. Pick first `- [ ]` or `- [/]` item
+2. If no `- [ ]` or `- [/]` items remain besides `MANUAL:` items -> output `<promise>COMPLETE</promise>` and stop immediately
+3. Pick first `- [ ]` or `- [/]` item that does not start with `MANUAL:`
 4. Read `## Findings` in `docs/progress.md` and reuse relevant discoveries
 5. Parse item:
    - Task description: everything before `|`
    - Acceptance criteria: everything after `AC:`
-6. Implement only that item. If you uncover adjacent work, add a new `[ ]` item instead of widening scope.
+6. Implement only that item. If you uncover adjacent work, add a new `[ ]` item instead of widening scope. If the follow-up requires a human/browser/external-system check that this environment cannot complete directly, add it as `[ ] MANUAL: ...` instead of blocking the loop on it.
 7. Run `npm run test && npm run typecheck && npm run lint && npm run build`
 8. If the task changes runtime package versions, renderer internals, or deployment output behavior, also smoke-test the app and confirm there is no root runtime crash before closing the item
 9. If a command or smoke check fails, fix the item until all required checks pass
