@@ -4,10 +4,10 @@ Personal portfolio app built with React, Vite, Three.js, React Three Fiber, and 
 
 ## Requirements
 
-- Node `24`
+- Node `24` via `.nvmrc`
 - npm `11` or newer
 
-You can match the project runtime with:
+Match the expected runtime with:
 
 ```bash
 nvm use
@@ -15,21 +15,25 @@ nvm use
 
 ## Install
 
+Install dependencies from the project root:
+
 ```bash
 npm install
 ```
 
-## Local development
+## Local Development
 
-Start the Vite dev server:
+Start the Vite development server:
 
 ```bash
 npm run dev
 ```
 
+`npm start` is kept as an alias for `npm run dev`.
+
 ## Verification
 
-Run the full local checks with:
+Run the required local checks before shipping changes:
 
 ```bash
 npm run test
@@ -38,10 +42,13 @@ npm run lint
 npm run build
 ```
 
-## Available scripts
+## Script Reference
 
 - `npm run dev` starts the local Vite dev server
-- `npm run build` creates a production build in `dist/`
-- `npm run lint` runs the ESLint check for the repo
-- `npm run typecheck` runs TypeScript without emitting files
+- `npm start` aliases the dev server command
 - `npm run test` runs the current Node test command
+- `npm run typecheck` runs TypeScript without emitting files
+- `npm run lint` runs the repo ESLint check
+- `npm run build` creates a production build in `dist/`
+- `npm run format` applies Prettier to supported files
+- `npm run format:check` verifies formatting without changing files

@@ -5,7 +5,7 @@
 - [x] Add Vite app shell and make it default | AC: Vite config, root `index.html`, `src/main.tsx`, and `npm run dev` / `npm run build` use Vite successfully
 - [x] Remove CRA-only leftovers | AC: remove `react-scripts` usage, CRA env types, `reportWebVitals`, and obsolete HTML/bootstrap files without changing app behavior
 - [x] Upgrade TypeScript compiler and base config | AC: TypeScript 6 config supports Vite, strict mode stays on, and `npm run typecheck` passes
-- [x] Replace legacy ESLint config with ESLint flat config | AC: `eslint.config.js` exists, old inline config removed, and `npm run lint` passes
+- [/] Replace legacy ESLint config with ESLint flat config | AC: `eslint.config.js` exists, old inline config removed, `npm run lint` passes, and the lint command covers repo-level config files used by the build/toolchain
 - [x] Keep Prettier as separate formatter | AC: Prettier config still applies cleanly and does not conflict with ESLint
 - [x] Update Zustand usage to modern API | AC: store uses supported import/create pattern and behavior is unchanged
 - [x] Fix direct Three API deprecations in scene code | AC: remove deprecated color-management, lighting, and geometry APIs currently used in `src`
@@ -14,7 +14,7 @@
 - [x] Upgrade `@react-three/cannon` on the new renderer stack | AC: physics integration works on the upgraded React/Fiber/Three stack and `npm run test`, `npm run typecheck`, `npm run lint`, and `npm run build` all pass
 - [x] Refresh PostCSS and Autoprefixer on the Vite stack | AC: `postcss` and `autoprefixer` are updated to supported versions that preserve the current CSS build output
 - [x] Refresh Tailwind CSS on the updated CSS toolchain | AC: `tailwindcss` is updated without rewriting the current theme/config shape and the existing utility classes still render
-- [/] Rewrite README for the current local workflow | AC: `README.md` documents Node version, install, dev, build, lint, and test commands for this repo
+- [x] Rewrite README for the current local workflow | AC: `README.md` documents Node version, install, dev, build, lint, and test commands for this repo
 
 ---
 
@@ -37,5 +37,6 @@
 - Cached tarball extraction in this sandbox can preserve non-executable directory permissions; after unpacking packages into `node_modules`, run `chmod -R u+rwX,go+rX` on the extracted directories so Vite can resolve their `dist/` entrypoints.
 - `@react-three/cannon@6.5.2` can be upgraded offline from the npm cache here, but it now expects a top-level `cannon-es@0.20.0` install because the lockfile no longer nests that dependency under the package entry.
 - The cached CSS toolchain tops out at `postcss@8.4.16` here, so this refresh keeps PostCSS pinned there and bumps `autoprefixer` to the newest cached compatible release instead of widening scope into the Tailwind task.
+- `npm run lint` currently only walks `src/**/*.ts?(x)` via `scripts/lint.mjs`, so repo-level files such as `vite.config.ts` and `eslint.config.js` can change without being linted; reopen the flat-config task until the lint surface matches the repo changes.
 - The local npm cache includes `tailwindcss` tarballs through `3.1.8`; that release preserves the current `tailwind.config.js` and PostCSS plugin shape here, so the Tailwind refresh can stay atomic without forcing a Tailwind 4 migration.
 - This sandbox can edit tracked files in the workspace but cannot write `.git/index.lock`, so `git add`/`git commit` fail with `Operation not permitted`; leave the active task as `[/]` unless a later loop runs with Git write access.
