@@ -18,8 +18,11 @@ nvm use
 Install dependencies from the project root:
 
 ```bash
-npm install
+npm ci
 ```
+
+When intentionally changing dependencies, use `npm install` and commit the
+resulting lockfile update.
 
 ## Local Development
 
