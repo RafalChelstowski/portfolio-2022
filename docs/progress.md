@@ -13,7 +13,7 @@
 - [x] Upgrade Three, Fiber, and Drei as one renderer cohort | AC: `three`, `@types/three`, `@react-three/fiber`, and `@react-three/drei` are aligned to mutually compatible modern versions and the scene still builds without reintroducing deprecated API usage
 - [x] Upgrade `@react-three/cannon` on the new renderer stack | AC: physics integration works on the upgraded React/Fiber/Three stack and `npm run test`, `npm run typecheck`, `npm run lint`, and `npm run build` all pass
 - [x] Refresh PostCSS and Autoprefixer on the Vite stack | AC: `postcss` and `autoprefixer` are updated to supported versions that preserve the current CSS build output
-- [ ] Refresh Tailwind CSS on the updated CSS toolchain | AC: `tailwindcss` is updated without rewriting the current theme/config shape and the existing utility classes still render
+- [x] Refresh Tailwind CSS on the updated CSS toolchain | AC: `tailwindcss` is updated without rewriting the current theme/config shape and the existing utility classes still render
 - [ ] Rewrite README for the current local workflow | AC: `README.md` documents Node version, install, dev, build, lint, and test commands for this repo
 
 ---
@@ -37,3 +37,4 @@
 - Cached tarball extraction in this sandbox can preserve non-executable directory permissions; after unpacking packages into `node_modules`, run `chmod -R u+rwX,go+rX` on the extracted directories so Vite can resolve their `dist/` entrypoints.
 - `@react-three/cannon@6.5.2` can be upgraded offline from the npm cache here, but it now expects a top-level `cannon-es@0.20.0` install because the lockfile no longer nests that dependency under the package entry.
 - The cached CSS toolchain tops out at `postcss@8.4.16` here, so this refresh keeps PostCSS pinned there and bumps `autoprefixer` to the newest cached compatible release instead of widening scope into the Tailwind task.
+- The local npm cache includes `tailwindcss` tarballs through `3.1.8`; that release preserves the current `tailwind.config.js` and PostCSS plugin shape here, so the Tailwind refresh can stay atomic without forcing a Tailwind 4 migration.
