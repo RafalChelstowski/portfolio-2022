@@ -28,7 +28,8 @@ function dedupePlugins(configs) {
     }
 
     if (Object.keys(plugins).length === 0) {
-      const { plugins: ignoredPlugins, ...rest } = config;
+      const rest = { ...config };
+      delete rest.plugins;
 
       return rest;
     }
@@ -91,4 +92,31 @@ module.exports = dedupePlugins([
       '@typescript-eslint/no-shadow': ['error'],
     },
   }),
+  {
+    files: [
+      'eslint.config.js',
+      'postcss.config.js',
+      'tailwind.config.js',
+      'vite.config.ts',
+      'scripts/**/*.mjs',
+    ],
+    rules: {
+      'import/no-extraneous-dependencies': 'off',
+    },
+  },
+  {
+    files: ['eslint.config.js', 'postcss.config.js', 'tailwind.config.js'],
+    rules: {
+      '@typescript-eslint/no-var-requires': 'off',
+    },
+  },
+  {
+    files: ['scripts/**/*.mjs'],
+    rules: {
+      'no-await-in-loop': 'off',
+      'no-console': 'off',
+      'no-continue': 'off',
+      'no-restricted-syntax': 'off',
+    },
+  },
 ]);

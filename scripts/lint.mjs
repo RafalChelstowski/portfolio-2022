@@ -20,8 +20,8 @@ const { FlatConfigArray } = await import(
 );
 
 const projectRoot = process.cwd();
-const srcRoot = path.join(projectRoot, 'src');
-const targetExtensions = new Set(['.ts', '.tsx']);
+const ignoredDirectories = new Set(['.git', 'build', 'dist', 'node_modules']);
+const targetExtensions = new Set(['.cjs', '.js', '.mjs', '.ts', '.tsx']);
 const severityLabels = ['off', 'warn', 'error'];
 
 async function listFiles(directory) {
@@ -31,6 +31,10 @@ async function listFiles(directory) {
       const entryPath = path.join(directory, entry.name);
 
       if (entry.isDirectory()) {
+        if (ignoredDirectories.has(entry.name)) {
+          return [];
+        }
+
         return listFiles(entryPath);
       }
 
@@ -85,7 +89,7 @@ const configArray = new FlatConfigArray(flatConfig, { basePath: projectRoot });
 
 configArray.normalizeSync();
 
-const files = await listFiles(srcRoot);
+const files = await listFiles(projectRoot);
 const output = [];
 let hasErrors = false;
 

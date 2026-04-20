@@ -5,7 +5,7 @@
 - [x] Add Vite app shell and make it default | AC: Vite config, root `index.html`, `src/main.tsx`, and `npm run dev` / `npm run build` use Vite successfully
 - [x] Remove CRA-only leftovers | AC: remove `react-scripts` usage, CRA env types, `reportWebVitals`, and obsolete HTML/bootstrap files without changing app behavior
 - [x] Upgrade TypeScript compiler and base config | AC: TypeScript 6 config supports Vite, strict mode stays on, and `npm run typecheck` passes
-- [/] Replace legacy ESLint config with ESLint flat config | AC: `eslint.config.js` exists, old inline config removed, `npm run lint` passes, and the lint command covers repo-level config files used by the build/toolchain
+- [x] Replace legacy ESLint config with ESLint flat config | AC: `eslint.config.js` exists, old inline config removed, `npm run lint` passes, and the lint command covers repo-level config files used by the build/toolchain
 - [x] Keep Prettier as separate formatter | AC: Prettier config still applies cleanly and does not conflict with ESLint
 - [x] Update Zustand usage to modern API | AC: store uses supported import/create pattern and behavior is unchanged
 - [x] Fix direct Three API deprecations in scene code | AC: remove deprecated color-management, lighting, and geometry APIs currently used in `src`
@@ -39,4 +39,5 @@
 - The cached CSS toolchain tops out at `postcss@8.4.16` here, so this refresh keeps PostCSS pinned there and bumps `autoprefixer` to the newest cached compatible release instead of widening scope into the Tailwind task.
 - `npm run lint` currently only walks `src/**/*.ts?(x)` via `scripts/lint.mjs`, so repo-level files such as `vite.config.ts` and `eslint.config.js` can change without being linted; reopen the flat-config task until the lint surface matches the repo changes.
 - The local npm cache includes `tailwindcss` tarballs through `3.1.8`; that release preserves the current `tailwind.config.js` and PostCSS plugin shape here, so the Tailwind refresh can stay atomic without forcing a Tailwind 4 migration.
+- The repo still carries legacy `build/` output alongside Vite `dist/`; the flat-config lint runner should ignore both generated directories or it will end up parsing bundled artifacts instead of just source and toolchain files.
 - This sandbox can edit tracked files in the workspace but cannot write `.git/index.lock`, so `git add`/`git commit` fail with `Operation not permitted`; leave the active task as `[/]` unless a later loop runs with Git write access.
