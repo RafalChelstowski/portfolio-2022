@@ -19,7 +19,7 @@
 - [ ] Cut `src/App.tsx` over from Cannon `Physics` to Rapier `Physics` and mount the Rapier bounds/items components | AC: `src/App.tsx` imports Rapier physics, the live scene uses the Rapier bounds and items implementations, and `npm run typecheck && npm run lint && npm run build` pass
 - [ ] Remove remaining Cannon imports and the `@react-three/cannon` dependency | AC: no source file imports `@react-three/cannon`, `package.json` and `package-lock.json` no longer include the package, and `npm run typecheck && npm run lint && npm run build` pass
 - [ ] Tune Rapier rigid-body settings for falling and settling parity | AC: gravity, damping, sleep, restitution, and related rigid-body settings are tuned as needed so the scene behavior remains plausibly close to the current Cannon setup, and the repo still passes `npm run typecheck && npm run lint && npm run build`
-- [ ] Verify browser runtime parity and record Rapier migration findings | AC: a real browser smoke check confirms cubes fall from the sky into the pool-like container, remain bounded during idle, `sort`, and set-filter interactions, UI reveal still occurs, `npm run typecheck && npm run lint && npm run build` pass, and any remaining caveats are written under `## Findings`
+- [ ] Record static migration handoff findings for manual runtime verification | AC: `npm run typecheck && npm run lint && npm run build` pass for the final migration state, remaining runtime caveats are written under `## Findings`, and the branch is ready for Rafal to do manual browser verification
 
 ## Findings
 
@@ -31,6 +31,4 @@
 - Shared pool floor and wall transforms now live in `src/features/physics/constants.ts`, which is the intended source for both the existing Cannon bounds and upcoming Rapier collider components.
 - The shared bounds module now also normalizes repeated wall offsets and sizes into named constants, so the Cannon path and upcoming Rapier bounds work can reuse one source of truth without reintroducing duplicate numbers.
 - This checkout's `node_modules` can arrive with the wrong platform-specific `esbuild` package even when `package-lock.json` includes `esbuild-darwin-64`; restoring the cached macOS package into `node_modules/esbuild-darwin-64` unblocks `npm run build` on this host.
-- This Codex sandbox cannot create `.git/index.lock` in this checkout, so `git add` and `git commit` are blocked here even after the implementation and required verification pass.
-- Physics migration tasks are not complete on static checks alone. Runtime physics changes require a real browser smoke check before the closing item can be marked done.
-- For this runtime-package task, `npm run typecheck && npm run lint && npm run build` pass after adding `@react-three/rapier`, but real browser smoke testing remains blocked in this environment: Playwright Chromium fails on missing `libglib-2.0.so.0`, and Playwright Firefox reports multiple missing shared libraries (`libgtk-3.so.0`, `libgdk-3.so.0`, `libX11.so.6`, and others). Installing OS packages is also blocked because `apt-get update` fails on read-only `/var/lib/apt/lists`.
+- Browser/runtime verification for this migration is manual and owned by Rafal outside the loop. Use static verification (`npm run typecheck && npm run lint && npm run build`) plus precise handoff notes in `## Findings`.

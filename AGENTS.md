@@ -11,15 +11,17 @@ IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <pro
 5. Parse the item:
    - Task description: everything before `|`
    - Acceptance criteria: everything after `AC:`
-6. Implement only that item. If you uncover adjacent work, add a new `[ ]` item instead of widening scope
-7. This repo is a no-tests repo for this loop. Do not add tests, do not add test infrastructure, and do not run `npm run test`
-8. Run `npm run typecheck && npm run lint && npm run build`
-9. If the task changes runtime packages, physics behavior, renderer internals, or deployment output behavior, also perform a real app smoke check and confirm there is no root runtime crash and the changed behavior works as required
-10. If browser smoke testing is blocked by the environment, do not pretend it passed. Leave the task open or reopen it with `[/]`, record the blocker in `## Findings`, and move only when the checklist supports that state
-11. If a required command or smoke check fails, fix the task until the acceptance criteria and required checks pass, or record the blocker precisely
+6. Determine mode:
+   - `[ ]` -> CREATE: implement from scratch
+   - `[/]` -> IMPROVE: read existing code, read Findings for this item, fix or enhance
+7. Implement only that item. If you uncover adjacent work, add a new `[ ]` item instead of widening scope. When removing or refactoring code, preserve existing safety checks unless the AC explicitly asks to remove them.
+8. This repo is a no-tests repo for this loop. Do not add tests, do not add test infrastructure, and do not run `npm run test`
+9. Run `npm run typecheck && npm run lint && npm run build`
+10. If required commands fail, fix the task and rerun step 9 until the acceptance criteria and required checks pass
+11. Generated caches, build noise, and tool artifacts do not count as task progress. Do not mark `[x]` or commit if only unrelated/generated files changed.
 12. Mark the item `[x]` only when its acceptance criteria are satisfied
 13. Add brief notes to `## Findings` only when they reduce future loop risk
-14. Commit all changes for the item together:
+14. Commit all changed files for the item together:
     `git add -A && git commit -m "chore: <item-name>"`
 15. End the iteration. Output `<promise>COMPLETE</promise>` only when step 2 triggered
 
@@ -28,7 +30,6 @@ IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <pro
 - `npm run typecheck`
 - `npm run lint`
 - `npm run build`
-- for runtime package, renderer, or physics tasks, a real app smoke check with no root runtime crash and the expected behavior present
 
 ## Project Context
 
@@ -39,6 +40,7 @@ IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <pro
 - Cubes must still fall from the sky into a pool-like container bounded on all sides
 - Sorting and filtering behavior must remain intact after the physics migration
 - Keep tasks granular. If the migration reveals extra work, add checklist items instead of widening the current one
+- Browser/runtime verification is handled manually by Rafal outside this loop. Do not block checklist progress on browser automation in this sandbox.
 
 ### Preserved prior AGENTS context
 
