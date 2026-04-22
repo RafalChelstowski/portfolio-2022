@@ -1,6 +1,6 @@
 # Rapier Physics Migration Progress
 
-- [/] Add `@react-three/rapier` as a project dependency without changing the live physics path yet | AC: `package.json` and `package-lock.json` include `@react-three/rapier`, current source still compiles, and `npm run typecheck && npm run lint && npm run build` pass
+- [x] Add `@react-three/rapier` as a project dependency without changing the live physics path yet | AC: `package.json` and `package-lock.json` include `@react-three/rapier`, current source still compiles, and `npm run typecheck && npm run lint && npm run build` pass
 - [ ] Extract current pool floor and wall measurements into a shared typed physics constants module | AC: one typed module defines the current floor position/size and all four wall positions/sizes, and duplicate bound numbers are removed from the physics migration path
 - [ ] Extract shared item physics constants for spawn height, center target, and steering strength | AC: spawn, center-target, and steering scalar values live in the shared physics constants module and `Items` migration work can import them without reintroducing magic numbers
 - [ ] Add a Rapier floor collider component that mirrors the current pool bottom | AC: a Rapier fixed collider exists for the pool floor, its transform comes from the shared constants module, and the repo still passes `npm run typecheck && npm run lint && npm run build`
