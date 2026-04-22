@@ -13,25 +13,34 @@ export interface PoolPhysicsBounds {
   backWall: BoxPhysicsBounds;
 }
 
+const FLOOR_POSITION: PhysicsVector3 = [0, -2.5, 0];
+const FLOOR_SIZE: PhysicsVector3 = [22, 1, 32];
+
+const WALL_Y = -1;
+const SIDE_WALL_X = 15.5;
+const FRONT_BACK_WALL_Z = 15.5;
+const SIDE_WALL_SIZE: PhysicsVector3 = [9, 20, 26];
+const FRONT_BACK_WALL_SIZE: PhysicsVector3 = [26, 20, 5];
+
 export const poolPhysicsBounds: PoolPhysicsBounds = {
   floor: {
-    position: [0, -2.5, 0],
-    size: [22, 1, 32],
+    position: FLOOR_POSITION,
+    size: FLOOR_SIZE,
   },
   leftWall: {
-    position: [-15.5, -1, 0],
-    size: [9, 20, 26],
+    position: [-SIDE_WALL_X, WALL_Y, 0],
+    size: SIDE_WALL_SIZE,
   },
   rightWall: {
-    position: [15.5, -1, 0],
-    size: [9, 20, 26],
+    position: [SIDE_WALL_X, WALL_Y, 0],
+    size: SIDE_WALL_SIZE,
   },
   frontWall: {
-    position: [0, -1, 15.5],
-    size: [26, 20, 5],
+    position: [0, WALL_Y, FRONT_BACK_WALL_Z],
+    size: FRONT_BACK_WALL_SIZE,
   },
   backWall: {
-    position: [0, -1, -15.5],
-    size: [26, 20, 5],
+    position: [0, WALL_Y, -FRONT_BACK_WALL_Z],
+    size: FRONT_BACK_WALL_SIZE,
   },
 };
