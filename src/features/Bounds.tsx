@@ -1,6 +1,7 @@
 import { Suspense, type JSX } from 'react';
 import { usePlane, useBox } from '@react-three/cannon';
 import type { Mesh } from 'three';
+import { poolPhysicsBounds } from './physics/constants';
 
 export function Bounds(): JSX.Element {
   const [abyss] = usePlane<Mesh>(() => ({
@@ -9,32 +10,32 @@ export function Bounds(): JSX.Element {
   }));
 
   const [bottom] = useBox<Mesh>(() => ({
-    position: [0, -2.5, 0],
-    args: [22, 1, 32],
+    position: poolPhysicsBounds.floor.position,
+    args: poolPhysicsBounds.floor.size,
     type: 'Static',
   }));
 
   const [leftBank] = useBox<Mesh>(() => ({
-    position: [-15.5, -1, 0],
-    args: [9, 20, 26],
+    position: poolPhysicsBounds.leftWall.position,
+    args: poolPhysicsBounds.leftWall.size,
     type: 'Static',
   }));
 
   const [rightBank] = useBox<Mesh>(() => ({
-    position: [15.5, -1, 0],
-    args: [9, 20, 26],
+    position: poolPhysicsBounds.rightWall.position,
+    args: poolPhysicsBounds.rightWall.size,
     type: 'Static',
   }));
 
   const [upBank] = useBox<Mesh>(() => ({
-    position: [0, -1, 15.5],
-    args: [26, 20, 5],
+    position: poolPhysicsBounds.frontWall.position,
+    args: poolPhysicsBounds.frontWall.size,
     type: 'Static',
   }));
 
   const [downBank] = useBox<Mesh>(() => ({
-    position: [0, -1, -15.5],
-    args: [26, 20, 5],
+    position: poolPhysicsBounds.backWall.position,
+    args: poolPhysicsBounds.backWall.size,
     type: 'Static',
   }));
 
