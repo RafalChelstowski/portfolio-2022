@@ -1,16 +1,16 @@
-import { Physics } from '@react-three/cannon';
+import { Physics } from '@react-three/rapier';
 import { AdaptiveDpr, Loader, Preload } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
 
-import { Bounds } from './features/Bounds';
 import { Camera } from './features/Camera';
 import { Controls } from './features/Controls';
 import { Info } from './features/Info';
-import { Items } from './features/Items';
 import { Lights } from './features/Lights';
 import Pool from './features/Pool';
 import { UI } from './features/UI';
+import { RapierBounds } from './features/rapier/RapierBounds';
+import { RapierItems } from './features/rapier/RapierItems';
 
 export function App() {
   return (
@@ -32,8 +32,8 @@ export function App() {
           <Suspense fallback={null}>
             <Pool />
           </Suspense>
-          <Items />
-          <Bounds />
+          <RapierItems />
+          <RapierBounds />
         </Physics>
         <Info />
         <AdaptiveDpr pixelated />
