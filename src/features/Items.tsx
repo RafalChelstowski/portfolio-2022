@@ -5,11 +5,12 @@ import { useRef, useEffect, useState, useMemo } from 'react';
 import { InstancedMesh } from 'three';
 import * as THREE from 'three';
 import { items, sets } from '../data/items';
+import { itemPhysicsConstants } from './physics/constants';
 import { useStore } from '../store/store';
 import { getSize } from '../utils/getSize';
 
 const directionVector = new THREE.Vector3();
-const centerVector = new THREE.Vector3(0, -2, 0);
+const centerVector = new THREE.Vector3(...itemPhysicsConstants.centerTarget);
 const currentPositionVector = new THREE.Vector3(0, 0, 0);
 const targetPositionVector = new THREE.Vector3(0, 0, 0);
 
@@ -60,7 +61,12 @@ export function Items() {
 
   useEffect(() => {
     for (let index = 0; index < items.length; index += 1) {
-      at(index).position.set(0, 12 + index, 0);
+      at(index).position.set(
+        0,
+        itemPhysicsConstants.spawnBaseHeight +
+          itemPhysicsConstants.spawnHeightStep * index,
+        0
+      );
       at(index).scaleOverride(getSize(items[index].size));
     }
   }, [at]);
@@ -95,7 +101,7 @@ export function Items() {
             currentPositionVector.set(...currentPosition)
           )
           .normalize()
-          .multiplyScalar(20);
+          .multiplyScalar(itemPhysicsConstants.steeringStrength);
 
         const [x, y, z] = directionVector.toArray();
 
@@ -113,7 +119,7 @@ export function Items() {
             currentPositionVector.set(...currentPosition)
           )
           .normalize()
-          .multiplyScalar(20);
+          .multiplyScalar(itemPhysicsConstants.steeringStrength);
 
         const [x, y, z] = direction.toArray();
 

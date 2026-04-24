@@ -13,6 +13,13 @@ export interface PoolPhysicsBounds {
   backWall: BoxPhysicsBounds;
 }
 
+export interface ItemPhysicsConstants {
+  spawnBaseHeight: number;
+  spawnHeightStep: number;
+  centerTarget: PhysicsVector3;
+  steeringStrength: number;
+}
+
 const FLOOR_POSITION: PhysicsVector3 = [0, -2.5, 0];
 const FLOOR_SIZE: PhysicsVector3 = [22, 1, 32];
 
@@ -43,4 +50,11 @@ export const poolPhysicsBounds: PoolPhysicsBounds = {
     position: [0, WALL_Y, -FRONT_BACK_WALL_Z],
     size: FRONT_BACK_WALL_SIZE,
   },
+};
+
+export const itemPhysicsConstants: ItemPhysicsConstants = {
+  spawnBaseHeight: 12,
+  spawnHeightStep: 1,
+  centerTarget: [0, -2, 0],
+  steeringStrength: 20,
 };
