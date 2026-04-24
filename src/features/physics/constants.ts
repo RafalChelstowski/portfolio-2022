@@ -11,6 +11,7 @@ export interface PoolPhysicsBounds {
   rightWall: BoxPhysicsBounds;
   frontWall: BoxPhysicsBounds;
   backWall: BoxPhysicsBounds;
+  catchSurface: BoxPhysicsBounds;
 }
 
 export interface ItemPhysicsConstants {
@@ -22,6 +23,9 @@ export interface ItemPhysicsConstants {
 
 const FLOOR_POSITION: PhysicsVector3 = [0, -2.5, 0];
 const FLOOR_SIZE: PhysicsVector3 = [22, 1, 32];
+const CATCH_SURFACE_Y_OFFSET = -0.5;
+const CATCH_SURFACE_SIZE_MULTIPLIER = 4;
+const CATCH_SURFACE_THICKNESS = 1;
 
 const WALL_Y = -1;
 const SIDE_WALL_X = 15.5;
@@ -49,6 +53,14 @@ export const poolPhysicsBounds: PoolPhysicsBounds = {
   backWall: {
     position: [0, WALL_Y, -FRONT_BACK_WALL_Z],
     size: FRONT_BACK_WALL_SIZE,
+  },
+  catchSurface: {
+    position: [0, FLOOR_POSITION[1] + CATCH_SURFACE_Y_OFFSET, 0],
+    size: [
+      FLOOR_SIZE[0] * CATCH_SURFACE_SIZE_MULTIPLIER,
+      CATCH_SURFACE_THICKNESS,
+      FLOOR_SIZE[2] * CATCH_SURFACE_SIZE_MULTIPLIER,
+    ],
   },
 };
 
