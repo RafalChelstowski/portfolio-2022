@@ -19,7 +19,7 @@
 - [x] Cut `src/App.tsx` over from Cannon `Physics` to Rapier `Physics` and mount the Rapier bounds/items components | AC: `src/App.tsx` imports Rapier physics, the live scene uses the Rapier bounds and items implementations, and `npm run typecheck && npm run lint && npm run build` pass
 - [x] Remove remaining Cannon imports and the `@react-three/cannon` dependency | AC: no source file imports `@react-three/cannon`, `package.json` and `package-lock.json` no longer include the package, and `npm run typecheck && npm run lint && npm run build` pass
 - [x] Tune Rapier rigid-body settings for falling and settling parity | AC: gravity, damping, sleep, restitution, and related rigid-body settings are tuned as needed so the scene behavior remains plausibly close to the current Cannon setup, and the repo still passes `npm run typecheck && npm run lint && npm run build`
-- [ ] Record static migration handoff findings for manual runtime verification | AC: `npm run typecheck && npm run lint && npm run build` pass for the final migration state, remaining runtime caveats are written under `## Findings`, and the branch is ready for Rafal to do manual browser verification
+- [x] Record static migration handoff findings for manual runtime verification | AC: `npm run typecheck && npm run lint && npm run build` pass for the final migration state, remaining runtime caveats are written under `## Findings`, and the branch is ready for Rafal to do manual browser verification
 
 ## Findings
 
@@ -43,3 +43,5 @@
 - Rapier parity tuning now lives in `src/features/physics/constants.ts` under `rapierPhysicsConstants`; the scene now uses explicit world gravity, cube body mass/damping/canSleep/restitution/friction, and shared non-bouncy boundary collider friction/restitution instead of engine defaults.
 - This checkout's `node_modules` can arrive with the wrong platform-specific `esbuild` package even when `package-lock.json` includes `esbuild-darwin-64`; restoring the cached macOS package into `node_modules/esbuild-darwin-64` unblocks `npm run build` on this host.
 - Browser/runtime verification for this migration is manual and owned by Rafal outside the loop. Use static verification (`npm run typecheck && npm run lint && npm run build`) plus precise handoff notes in `## Findings`.
+- Final static gate run succeeded on 2026-04-24 (UTC): `npm run typecheck && npm run lint && npm run build` all passed after Rapier cutover and Cannon removal.
+- Manual browser handoff caveats for Rafal: validate post-4s one-time UI reveal on first floor contact, confirm hover/click white highlight + presenting state on instanced cubes, and check `sort` plus set-filter steering still keeps cubes bounded by Rapier walls/catch surface during long settling.
