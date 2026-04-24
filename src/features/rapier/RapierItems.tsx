@@ -73,6 +73,15 @@ export function RapierItems(): JSX.Element {
           e.stopPropagation();
           setHovered(undefined);
         }}
+        onClick={(e) => {
+          e.stopPropagation();
+
+          if (e.instanceId === undefined) {
+            return;
+          }
+
+          useStore.setState({ isPresenting: e.instanceId });
+        }}
       >
         <boxGeometry args={[1, 1, 1]}>
           <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
