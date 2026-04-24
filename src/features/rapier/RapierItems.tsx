@@ -1,13 +1,18 @@
 import { InstancedRigidBodies, type InstancedRigidBodyProps } from '@react-three/rapier';
-import { useMemo, type JSX } from 'react';
-import { Color } from 'three';
+import { useMemo, useRef, useEffect, useState, type JSX } from 'react';
+import { Color, InstancedMesh } from 'three';
 
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
+import { useStore } from '../../store/store';
 
 const instanceCount = itemInstanceDescriptors.length;
 const color = new Color();
 
 export function RapierItems(): JSX.Element {
+  const ref = useRef<InstancedMesh>(null);
+  const isPresenting = useStore((state) => state.isPresenting);
+  const [hovered, setHovered] = useState<number | undefined>(undefined);
+
   const instances = useMemo<InstancedRigidBodyProps[]>(
     () =>
       itemInstanceDescriptors.map((descriptor) => ({
@@ -33,9 +38,42 @@ export function RapierItems(): JSX.Element {
     return values;
   }, []);
 
+  useEffect(() => {
+    for (let index = 0; index < instanceCount; index += 1) {
+      const descriptor = itemInstanceDescriptors[index];
+
+      if (index === hovered || index === isPresenting) {
+        color.setRGB(1, 1, 1);
+      } else {
+        color.set(descriptor.color);
+      }
+
+      colors[index * 3] = color.r;
+      colors[index * 3 + 1] = color.g;
+      colors[index * 3 + 2] = color.b;
+    }
+
+    if (ref.current) {
+      ref.current.geometry.attributes.color.needsUpdate = true;
+    }
+  }, [colors, hovered, isPresenting]);
+
   return (
     <InstancedRigidBodies colliders="cuboid" instances={instances}>
-      <instancedMesh castShadow receiveShadow args={[undefined, undefined, instanceCount]}>
+      <instancedMesh
+        castShadow
+        receiveShadow
+        ref={ref}
+        args={[undefined, undefined, instanceCount]}
+        onPointerEnter={(e) => {
+          e.stopPropagation();
+          setHovered(e.instanceId);
+        }}
+        onPointerLeave={(e) => {
+          e.stopPropagation();
+          setHovered(undefined);
+        }}
+      >
         <boxGeometry args={[1, 1, 1]}>
           <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
         </boxGeometry>
