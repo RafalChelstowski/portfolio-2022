@@ -1,11 +1,11 @@
 Implement ONE feature task from docs/progress.md.
 
-IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <promise>COMPLETE</promise> and stop. Do not do anything else.
+IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <promise>RALPH_DOCS_PROGRESS_COMPLETE</promise> and stop. Do not do anything else.
 
 ## THIS ITERATION
 
 1. Read `docs/progress.md`
-2. If no `- [ ]` or `- [/]` items remain, output `<promise>COMPLETE</promise>` and stop immediately
+2. If no `- [ ]` or `- [/]` items remain, output `<promise>RALPH_DOCS_PROGRESS_COMPLETE</promise>` and stop immediately
 3. Pick the first `- [ ]` or `- [/]` item
 4. Read `## Findings` in `docs/progress.md` and reuse relevant discoveries
 5. Parse the item:
@@ -23,7 +23,7 @@ IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <pro
 13. Add brief notes to `## Findings` only when they reduce future loop risk
 14. Commit all changed files for the item together:
     `git add -A && git commit -m "chore: <item-name>"`
-15. End the iteration. Output `<promise>COMPLETE</promise>` only when step 2 triggered
+15. End the iteration. Output `<promise>RALPH_DOCS_PROGRESS_COMPLETE</promise>` only when step 2 triggered
 
 ## SUCCESS = REQUIRED GATES PASS
 
