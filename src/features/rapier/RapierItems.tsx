@@ -1,15 +1,26 @@
-import { InstancedRigidBodies, type InstancedRigidBodyProps } from '@react-three/rapier';
+import {
+  InstancedRigidBodies,
+  type InstancedRigidBodyProps,
+  type RapierRigidBody,
+} from '@react-three/rapier';
+import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useEffect, useState, type JSX } from 'react';
-import { Color, InstancedMesh } from 'three';
+import { Color, InstancedMesh, Vector3 } from 'three';
 
-import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
+import { items } from '../../data/items';
 import { useStore } from '../../store/store';
+import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
+import { itemPhysicsConstants } from '../physics/constants';
 
 const instanceCount = itemInstanceDescriptors.length;
 const color = new Color();
+const directionVector = new Vector3();
+const currentPositionVector = new Vector3();
+const targetPositionVector = new Vector3();
 
 export function RapierItems(): JSX.Element {
   const ref = useRef<InstancedMesh>(null);
+  const bodiesRef = useRef<(RapierRigidBody | null)[] | null>(null);
   const isPresenting = useStore((state) => state.isPresenting);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
 
@@ -58,8 +69,45 @@ export function RapierItems(): JSX.Element {
     }
   }, [colors, hovered, isPresenting]);
 
+  useFrame(() => {
+    const { sortOption } = useStore.getState();
+
+    if (sortOption !== 'sort') {
+      return;
+    }
+
+    const rigidBodies = bodiesRef.current;
+
+    if (!rigidBodies) {
+      return;
+    }
+
+    for (let index = 0; index < instanceCount; index += 1) {
+      const rigidBody = rigidBodies[index];
+
+      if (rigidBody) {
+        const { x, y, z } = rigidBody.translation();
+        const [targetX, targetY, targetZ] = items[index].sortingVelocity;
+
+        directionVector
+          .subVectors(
+            targetPositionVector.set(targetX, targetY, targetZ),
+            currentPositionVector.set(x, y, z)
+          )
+          .normalize()
+          .multiplyScalar(itemPhysicsConstants.steeringStrength);
+
+        rigidBody.setLinvel(directionVector, true);
+      }
+    }
+  });
+
   return (
-    <InstancedRigidBodies colliders="cuboid" instances={instances}>
+    <InstancedRigidBodies
+      ref={bodiesRef}
+      colliders="cuboid"
+      instances={instances}
+    >
       <instancedMesh
         castShadow
         receiveShadow
