@@ -6,8 +6,8 @@ import { InstancedMesh } from 'three';
 import * as THREE from 'three';
 import { items, sets } from '../data/items';
 import { itemPhysicsConstants } from './physics/constants';
+import { itemInstanceDescriptors } from './physics/itemInstanceDescriptors';
 import { useStore } from '../store/store';
-import { getSize } from '../utils/getSize';
 
 const directionVector = new THREE.Vector3();
 const centerVector = new THREE.Vector3(...itemPhysicsConstants.centerTarget);
@@ -19,20 +19,20 @@ const color = new THREE.Color();
 export function Items() {
   const counterRef = useRef(0);
   const colors = useMemo(() => {
-    const arr = new Float32Array(items.length * 3);
-    for (let index = 0; index < items.length; index += 1) {
-      color.set(items[index].customColor).toArray(arr, index * 3);
+    const arr = new Float32Array(itemInstanceDescriptors.length * 3);
+    for (let index = 0; index < itemInstanceDescriptors.length; index += 1) {
+      color.set(itemInstanceDescriptors[index].color).toArray(arr, index * 3);
     }
     return arr;
   }, []);
 
   const [hovered, setHovered] = useState<number | undefined>(undefined);
 
-  const [ref, api] = useBox<InstancedMesh>(() => ({
+  const [ref, api] = useBox<InstancedMesh>((index) => ({
     mass: 1,
     position: [0, 20, 0],
     args: [0.8, 0.8, 0.8],
-    rotation: [Math.random(), Math.random(), Math.random()],
+    rotation: itemInstanceDescriptors[index].initialRotationSeed,
     allowSleep: false,
     onCollide: (e) => {
       if (
@@ -51,7 +51,7 @@ export function Items() {
 
   useEffect(() => {
     if (positionRef.current) {
-      for (let index = 0; index < items.length; index += 1) {
+      for (let index = 0; index < itemInstanceDescriptors.length; index += 1) {
         at(index).position.subscribe((p) => {
           positionRef.current[index] = p;
         });
@@ -60,25 +60,22 @@ export function Items() {
   }, [at]);
 
   useEffect(() => {
-    for (let index = 0; index < items.length; index += 1) {
-      at(index).position.set(
-        0,
-        itemPhysicsConstants.spawnBaseHeight +
-          itemPhysicsConstants.spawnHeightStep * index,
-        0
-      );
-      at(index).scaleOverride(getSize(items[index].size));
+    for (let index = 0; index < itemInstanceDescriptors.length; index += 1) {
+      const descriptor = itemInstanceDescriptors[index];
+      at(index).position.set(...descriptor.spawnPosition);
+      at(index).scaleOverride(descriptor.scale);
     }
   }, [at]);
 
   useFrame(({ clock }) => {
     counterRef.current = clock.getElapsedTime();
 
-    for (let index = 0; index < items.length; index += 1) {
+    for (let index = 0; index < itemInstanceDescriptors.length; index += 1) {
       if (ref.current) {
+        const descriptor = itemInstanceDescriptors[index];
         (index === hovered || index === useStore.getState().isPresenting
           ? color.setRGB(1, 1, 1)
-          : color.set(items[index].customColor)
+          : color.set(descriptor.color)
         ).toArray(colors, index * 3);
         ref.current.geometry.attributes.color.needsUpdate = true;
       }
@@ -91,7 +88,7 @@ export function Items() {
     }
 
     if (sortOption === 'sort') {
-      for (let index = 0; index < items.length; index += 1) {
+      for (let index = 0; index < itemInstanceDescriptors.length; index += 1) {
         const [vx, vy, vz] = items[index].sortingVelocity;
         const currentPosition = positionRef.current[index];
 
@@ -110,7 +107,7 @@ export function Items() {
     } else {
       const itemSet = sets[sortOption];
 
-      for (let index = 0; index < items.length; index += 1) {
+      for (let index = 0; index < itemInstanceDescriptors.length; index += 1) {
         const currentPosition = positionRef.current[index];
 
         const direction = directionVector
@@ -137,7 +134,7 @@ export function Items() {
       castShadow
       receiveShadow
       ref={ref}
-      args={[undefined, undefined, items.length]}
+      args={[undefined, undefined, itemInstanceDescriptors.length]}
       onPointerEnter={(e) => {
         e.stopPropagation();
 
