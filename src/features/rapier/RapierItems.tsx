@@ -7,7 +7,7 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useEffect, useState, type JSX } from 'react';
 import { Color, InstancedMesh, Vector3 } from 'three';
 
-import { items } from '../../data/items';
+import { items, sets } from '../../data/items';
 import { useStore } from '../../store/store';
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
 import { itemPhysicsConstants } from '../physics/constants';
@@ -17,6 +17,7 @@ const color = new Color();
 const directionVector = new Vector3();
 const currentPositionVector = new Vector3();
 const targetPositionVector = new Vector3();
+const centerTargetVector = new Vector3(...itemPhysicsConstants.centerTarget);
 
 export function RapierItems(): JSX.Element {
   const ref = useRef<InstancedMesh>(null);
@@ -72,7 +73,7 @@ export function RapierItems(): JSX.Element {
   useFrame(() => {
     const { sortOption } = useStore.getState();
 
-    if (sortOption !== 'sort') {
+    if (sortOption === null) {
       return;
     }
 
@@ -82,22 +83,50 @@ export function RapierItems(): JSX.Element {
       return;
     }
 
+    if (sortOption === 'sort') {
+      for (let index = 0; index < instanceCount; index += 1) {
+        const rigidBody = rigidBodies[index];
+
+        if (rigidBody) {
+          const { x, y, z } = rigidBody.translation();
+          const [targetX, targetY, targetZ] = items[index].sortingVelocity;
+
+          directionVector
+            .subVectors(
+              targetPositionVector.set(targetX, targetY, targetZ),
+              currentPositionVector.set(x, y, z)
+            )
+            .normalize()
+            .multiplyScalar(itemPhysicsConstants.steeringStrength);
+
+          rigidBody.setLinvel(directionVector, true);
+        }
+      }
+
+      return;
+    }
+
+    const itemSet = sets[sortOption];
+
     for (let index = 0; index < instanceCount; index += 1) {
       const rigidBody = rigidBodies[index];
 
       if (rigidBody) {
         const { x, y, z } = rigidBody.translation();
-        const [targetX, targetY, targetZ] = items[index].sortingVelocity;
 
         directionVector
-          .subVectors(
-            targetPositionVector.set(targetX, targetY, targetZ),
-            currentPositionVector.set(x, y, z)
-          )
+          .subVectors(centerTargetVector, currentPositionVector.set(x, y, z))
           .normalize()
           .multiplyScalar(itemPhysicsConstants.steeringStrength);
 
-        rigidBody.setLinvel(directionVector, true);
+        if (itemSet.includes(index)) {
+          rigidBody.setLinvel(directionVector, true);
+        } else {
+          rigidBody.setLinvel(
+            targetPositionVector.set(-directionVector.x, -1, -directionVector.z),
+            true
+          );
+        }
       }
     }
   });
