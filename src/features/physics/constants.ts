@@ -21,6 +21,30 @@ export interface ItemPhysicsConstants {
   steeringStrength: number;
 }
 
+export interface RapierWorldPhysicsConstants {
+  gravity: PhysicsVector3;
+}
+
+export interface RapierItemBodyPhysicsConstants {
+  mass: number;
+  canSleep: boolean;
+  linearDamping: number;
+  angularDamping: number;
+  restitution: number;
+  friction: number;
+}
+
+export interface RapierBoundsColliderPhysicsConstants {
+  restitution: number;
+  friction: number;
+}
+
+export interface RapierPhysicsConstants {
+  world: RapierWorldPhysicsConstants;
+  items: RapierItemBodyPhysicsConstants;
+  bounds: RapierBoundsColliderPhysicsConstants;
+}
+
 const FLOOR_POSITION: PhysicsVector3 = [0, -2.5, 0];
 const FLOOR_SIZE: PhysicsVector3 = [22, 1, 32];
 const CATCH_SURFACE_Y_OFFSET = -0.5;
@@ -69,4 +93,22 @@ export const itemPhysicsConstants: ItemPhysicsConstants = {
   spawnHeightStep: 1,
   centerTarget: [0, -2, 0],
   steeringStrength: 20,
+};
+
+export const rapierPhysicsConstants: RapierPhysicsConstants = {
+  world: {
+    gravity: [0, -9.81, 0],
+  },
+  items: {
+    mass: 1,
+    canSleep: false,
+    linearDamping: 0.01,
+    angularDamping: 0.01,
+    restitution: 0,
+    friction: 0.3,
+  },
+  bounds: {
+    restitution: 0,
+    friction: 0.4,
+  },
 };

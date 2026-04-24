@@ -1,7 +1,7 @@
 import { CuboidCollider, RigidBody, type CollisionEnterPayload } from '@react-three/rapier';
 import { useRef, type JSX } from 'react';
 
-import { poolPhysicsBounds, type PhysicsVector3 } from '../physics/constants';
+import { poolPhysicsBounds, rapierPhysicsConstants, type PhysicsVector3 } from '../physics/constants';
 import { useStore } from '../../store/store';
 
 const floorHalfExtents: PhysicsVector3 = poolPhysicsBounds.floor.size.map(
@@ -33,7 +33,12 @@ export function RapierFloorCollider(): JSX.Element {
 
   return (
     <RigidBody colliders={false} position={poolPhysicsBounds.floor.position} type="fixed">
-      <CuboidCollider args={floorHalfExtents} onCollisionEnter={handleCollisionEnter} />
+      <CuboidCollider
+        args={floorHalfExtents}
+        onCollisionEnter={handleCollisionEnter}
+        restitution={rapierPhysicsConstants.bounds.restitution}
+        friction={rapierPhysicsConstants.bounds.friction}
+      />
     </RigidBody>
   );
 }

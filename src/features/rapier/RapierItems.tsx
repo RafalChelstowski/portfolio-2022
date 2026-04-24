@@ -10,7 +10,7 @@ import { Color, InstancedMesh, Vector3 } from 'three';
 import { items, sets } from '../../data/items';
 import { useStore } from '../../store/store';
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
-import { itemPhysicsConstants } from '../physics/constants';
+import { itemPhysicsConstants, rapierPhysicsConstants } from '../physics/constants';
 
 const instanceCount = itemInstanceDescriptors.length;
 const color = new Color();
@@ -136,6 +136,12 @@ export function RapierItems(): JSX.Element {
       ref={bodiesRef}
       colliders="cuboid"
       instances={instances}
+      mass={rapierPhysicsConstants.items.mass}
+      canSleep={rapierPhysicsConstants.items.canSleep}
+      linearDamping={rapierPhysicsConstants.items.linearDamping}
+      angularDamping={rapierPhysicsConstants.items.angularDamping}
+      restitution={rapierPhysicsConstants.items.restitution}
+      friction={rapierPhysicsConstants.items.friction}
     >
       <instancedMesh
         castShadow

@@ -9,6 +9,7 @@ import { Info } from './features/Info';
 import { Lights } from './features/Lights';
 import Pool from './features/Pool';
 import { UI } from './features/UI';
+import { rapierPhysicsConstants } from './features/physics/constants';
 import { RapierBounds } from './features/rapier/RapierBounds';
 import { RapierItems } from './features/rapier/RapierItems';
 
@@ -28,7 +29,7 @@ export function App() {
         <Camera />
         <Lights />
         <Controls />
-        <Physics>
+        <Physics gravity={rapierPhysicsConstants.world.gravity}>
           <Suspense fallback={null}>
             <Pool />
           </Suspense>
