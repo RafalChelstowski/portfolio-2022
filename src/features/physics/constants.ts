@@ -18,7 +18,12 @@ export interface ItemPhysicsConstants {
   spawnBaseHeight: number;
   spawnHeightStep: number;
   centerTarget: PhysicsVector3;
-  steeringStrength: number;
+}
+
+export interface RapierSteeringPhysicsConstants {
+  sortPull: number;
+  setMatchSeek: number;
+  setMissRepel: number;
 }
 
 export interface RapierWorldPhysicsConstants {
@@ -43,6 +48,7 @@ export interface RapierPhysicsConstants {
   world: RapierWorldPhysicsConstants;
   items: RapierItemBodyPhysicsConstants;
   bounds: RapierBoundsColliderPhysicsConstants;
+  steering: RapierSteeringPhysicsConstants;
 }
 
 const FLOOR_POSITION: PhysicsVector3 = [0, -2.5, 0];
@@ -92,7 +98,6 @@ export const itemPhysicsConstants: ItemPhysicsConstants = {
   spawnBaseHeight: 12,
   spawnHeightStep: 1,
   centerTarget: [0, -2, 0],
-  steeringStrength: 20,
 };
 
 export const rapierPhysicsConstants: RapierPhysicsConstants = {
@@ -110,5 +115,10 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
   bounds: {
     restitution: 0,
     friction: 0.4,
+  },
+  steering: {
+    sortPull: 20,
+    setMatchSeek: 20,
+    setMissRepel: 20,
   },
 };

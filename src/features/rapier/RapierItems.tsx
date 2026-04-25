@@ -4,6 +4,7 @@ import {
   type RapierRigidBody,
 } from '@react-three/rapier';
 import { useFrame } from '@react-three/fiber';
+import { useControls } from 'leva';
 import { useMemo, useRef, useEffect, useState, type JSX } from 'react';
 import { Color, InstancedMesh, Vector3 } from 'three';
 
@@ -24,6 +25,26 @@ export function RapierItems(): JSX.Element {
   const bodiesRef = useRef<(RapierRigidBody | null)[] | null>(null);
   const isPresenting = useStore((state) => state.isPresenting);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
+  const steeringControls = useControls('Rapier steering', {
+    sortPull: {
+      value: rapierPhysicsConstants.steering.sortPull,
+      min: 0,
+      max: 40,
+      step: 0.25,
+    },
+    setMatchSeek: {
+      value: rapierPhysicsConstants.steering.setMatchSeek,
+      min: 0,
+      max: 40,
+      step: 0.25,
+    },
+    setMissRepel: {
+      value: rapierPhysicsConstants.steering.setMissRepel,
+      min: 0,
+      max: 40,
+      step: 0.25,
+    },
+  });
 
   const instances = useMemo<InstancedRigidBodyProps[]>(
     () =>
@@ -97,7 +118,7 @@ export function RapierItems(): JSX.Element {
               currentPositionVector.set(x, y, z)
             )
             .normalize()
-            .multiplyScalar(itemPhysicsConstants.steeringStrength);
+            .multiplyScalar(steeringControls.sortPull);
 
           rigidBody.setLinvel(directionVector, true);
         }
@@ -116,14 +137,18 @@ export function RapierItems(): JSX.Element {
 
         directionVector
           .subVectors(centerTargetVector, currentPositionVector.set(x, y, z))
-          .normalize()
-          .multiplyScalar(itemPhysicsConstants.steeringStrength);
+          .normalize();
 
         if (itemSet.includes(index)) {
+          directionVector.multiplyScalar(steeringControls.setMatchSeek);
           rigidBody.setLinvel(directionVector, true);
         } else {
           rigidBody.setLinvel(
-            targetPositionVector.set(-directionVector.x, -1, -directionVector.z),
+            targetPositionVector.set(
+              -directionVector.x * steeringControls.setMissRepel,
+              -1,
+              -directionVector.z * steeringControls.setMissRepel
+            ),
             true
           );
         }

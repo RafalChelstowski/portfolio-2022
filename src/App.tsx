@@ -1,6 +1,7 @@
 import { Physics } from '@react-three/rapier';
 import { AdaptiveDpr, Loader, Preload } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
+import { Leva } from 'leva';
 import { Suspense } from 'react';
 
 import { Camera } from './features/Camera';
@@ -41,6 +42,7 @@ export function App() {
         <Preload all />
       </Canvas>
       <Loader />
+      <Leva collapsed />
       <UI />
     </main>
   );
