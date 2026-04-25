@@ -23,18 +23,43 @@ function createRotationSeed(index: number): PhysicsVector3 {
   return [x, y, z];
 }
 
+const SPAWN_GROUP_CENTERS: [number, number][] = [
+  [-4.5, -4.5],
+  [4.5, -4.5],
+  [-4.5, 4.5],
+  [4.5, 4.5],
+];
+
+const SPAWN_GROUP_OFFSETS: [number, number][] = [
+  [0, 0],
+  [1.2, 0.6],
+  [-1.2, -0.6],
+  [0.9, -1],
+  [-0.9, 1],
+];
+
+function createSpawnPosition(index: number): PhysicsVector3 {
+  const groupIndex = index % SPAWN_GROUP_CENTERS.length;
+  const dropLayer = Math.floor(index / SPAWN_GROUP_CENTERS.length);
+  const [groupX, groupZ] = SPAWN_GROUP_CENTERS[groupIndex];
+  const [offsetX, offsetZ] =
+    SPAWN_GROUP_OFFSETS[dropLayer % SPAWN_GROUP_OFFSETS.length];
+
+  return [
+    groupX + offsetX,
+    itemPhysicsConstants.spawnBaseHeight +
+      itemPhysicsConstants.spawnHeightStep * dropLayer,
+    groupZ + offsetZ,
+  ];
+}
+
 export const itemInstanceDescriptors: ItemInstanceDescriptor[] = items.map(
   (item, index) => ({
     index,
     color: item.customColor,
     scaleSource: item.size,
     scale: getSize(item.size),
-    spawnPosition: [
-      0,
-      itemPhysicsConstants.spawnBaseHeight +
-        itemPhysicsConstants.spawnHeightStep * index,
-      0,
-    ],
+    spawnPosition: createSpawnPosition(index),
     initialRotationSeed: createRotationSeed(index),
   })
 );
