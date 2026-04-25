@@ -6,7 +6,14 @@ import {
 import { useFrame } from '@react-three/fiber';
 import { useControls } from 'leva';
 import { useMemo, useRef, useEffect, useState, type JSX } from 'react';
-import { Color, InstancedMesh, Vector3 } from 'three';
+import {
+  Color,
+  InstancedMesh,
+  MeshDepthMaterial,
+  MeshDistanceMaterial,
+  RGBADepthPacking,
+  Vector3,
+} from 'three';
 
 import { items, sets } from '../../data/items';
 import { useStore } from '../../store/store';
@@ -70,6 +77,14 @@ export function RapierItems(): JSX.Element {
 
     return values;
   }, []);
+  const shadowDepthMaterial = useMemo(
+    () =>
+      new MeshDepthMaterial({
+        depthPacking: RGBADepthPacking,
+      }),
+    []
+  );
+  const shadowDistanceMaterial = useMemo(() => new MeshDistanceMaterial(), []);
 
   useEffect(() => {
     for (let index = 0; index < instanceCount; index += 1) {
@@ -173,6 +188,8 @@ export function RapierItems(): JSX.Element {
         receiveShadow
         ref={ref}
         args={[undefined, undefined, instanceCount]}
+        customDepthMaterial={shadowDepthMaterial}
+        customDistanceMaterial={shadowDistanceMaterial}
         onPointerEnter={(e) => {
           e.stopPropagation();
           setHovered(e.instanceId);
