@@ -250,7 +250,10 @@ export function RapierItems(): JSX.Element {
           currentPositionVector.set(x, y, z)
         );
         const distanceToTarget = directionVector.length();
-        const distanceToCenterSquared = x * x + z * z;
+        const centerDeltaX = x - centerTargetVector.x;
+        const centerDeltaZ = z - centerTargetVector.z;
+        const distanceToCenterSquared =
+          centerDeltaX * centerDeltaX + centerDeltaZ * centerDeltaZ;
 
         if (isMatched) {
           if (distanceToTarget > 0) {
@@ -271,22 +274,27 @@ export function RapierItems(): JSX.Element {
             rapierPhysicsConstants.steering.activeLerp
           );
         } else {
-          if (distanceToCenterSquared <= centerAreaRadiusSquared) {
-            directionVector
-              .set(x, 0, z)
-              .normalize()
-              .multiplyScalar(rapierPhysicsConstants.steering.setMissRepel);
-          } else {
-            directionVector.set(0, -1, 0);
-          }
+          const distanceToCenter = Math.sqrt(distanceToCenterSquared);
+          const [fallbackX, , fallbackZ] = centerAreaOffsets[index];
+          const repelDirectionX =
+            distanceToCenter > 0.001 ? centerDeltaX / distanceToCenter : fallbackX;
+          const repelDirectionZ =
+            distanceToCenter > 0.001 ? centerDeltaZ / distanceToCenter : fallbackZ;
+          const nearCenterBoost =
+            distanceToCenterSquared <= centerAreaRadiusSquared ? 1.6 : 1;
+          const targetMissSpeed = Math.min(
+            rapierPhysicsConstants.steering.maxSetMissSpeed,
+            rapierPhysicsConstants.steering.setMissRepel * nearCenterBoost
+          );
 
-          if (directionVector.lengthSq() > 0) {
-            directionVector.setLength(
-              Math.min(
-                directionVector.length(),
-                rapierPhysicsConstants.steering.maxSetMissSpeed
-              )
-            );
+          directionVector.set(
+            repelDirectionX * targetMissSpeed,
+            -0.35,
+            repelDirectionZ * targetMissSpeed
+          );
+
+          if (directionVector.lengthSq() === 0) {
+            directionVector.set(0, -0.35, 0);
           }
 
           blendVelocity(
