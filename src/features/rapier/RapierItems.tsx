@@ -107,6 +107,9 @@ export function RapierItems(): JSX.Element {
   }, [colors, hovered, isPresenting]);
 
   useFrame(() => {
+    // Keep interaction bounds aligned with physics-driven instance transforms.
+    ref.current?.computeBoundingSphere();
+
     const { sortOption } = useStore.getState();
 
     if (sortOption === null) {
@@ -190,11 +193,16 @@ export function RapierItems(): JSX.Element {
         args={[undefined, undefined, instanceCount]}
         customDepthMaterial={shadowDepthMaterial}
         customDistanceMaterial={shadowDistanceMaterial}
-        onPointerEnter={(e) => {
+        onPointerMove={(e) => {
           e.stopPropagation();
+
+          if (e.instanceId === undefined) {
+            return;
+          }
+
           setHovered(e.instanceId);
         }}
-        onPointerLeave={(e) => {
+        onPointerOut={(e) => {
           e.stopPropagation();
           setHovered(undefined);
         }}
