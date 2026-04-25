@@ -17,6 +17,8 @@ export interface PoolPhysicsBounds {
 export interface ItemPhysicsConstants {
   spawnBaseHeight: number;
   spawnHeightStep: number;
+  spawnFastDropSpeed: number;
+  spawnFastDropCutoffY: number;
   centerTarget: PhysicsVector3;
 }
 
@@ -103,6 +105,8 @@ export const poolPhysicsBounds: PoolPhysicsBounds = {
 export const itemPhysicsConstants: ItemPhysicsConstants = {
   spawnBaseHeight: 8,
   spawnHeightStep: 0.45,
+  spawnFastDropSpeed: 20,
+  spawnFastDropCutoffY: 2,
   centerTarget: [0, -2, 0],
 };
 

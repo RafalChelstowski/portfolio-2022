@@ -24,37 +24,39 @@ function createRotationSeed(index: number): PhysicsVector3 {
 }
 
 const SPAWN_GROUP_CENTERS: [number, number][] = [
-  [-6, -6],
-  [0, -6],
-  [6, -6],
-  [-6, 0],
-  [0, 0],
-  [6, 0],
-  [-6, 6],
-  [0, 6],
-  [6, 6],
+  [-6.8, -5.4],
+  [-1.8, -6.6],
+  [4.8, -5.9],
+  [-7.3, 0.2],
+  [0.7, -0.8],
+  [6.6, 1.4],
+  [-4.6, 6.4],
+  [2.2, 5.6],
 ];
 
-const SPAWN_GROUP_OFFSETS: [number, number][] = [
-  [0, 0],
-  [1, 0.5],
-  [-1, -0.5],
-  [0.75, -0.9],
-  [-0.75, 0.9],
-];
+function seededUnit(index: number, salt: number): number {
+  const value = Math.sin((index + 1) * 12.9898 + salt * 78.233) * 43758.5453;
+  return value - Math.floor(value);
+}
 
 function createSpawnPosition(index: number): PhysicsVector3 {
   const groupIndex = index % SPAWN_GROUP_CENTERS.length;
   const dropLayer = Math.floor(index / SPAWN_GROUP_CENTERS.length);
   const [groupX, groupZ] = SPAWN_GROUP_CENTERS[groupIndex];
-  const [offsetX, offsetZ] =
-    SPAWN_GROUP_OFFSETS[dropLayer % SPAWN_GROUP_OFFSETS.length];
+  const angle = seededUnit(index, dropLayer + 1) * Math.PI * 2;
+  const radius =
+    0.45 +
+    seededUnit(index, dropLayer + 7) * 1.75 +
+    (dropLayer % 3) * 0.1;
+  const offsetX = Math.cos(angle) * radius;
+  const offsetZ = Math.sin(angle) * radius;
+  const layerWave = (dropLayer % 2 === 0 ? 1 : -1) * 0.3;
 
   return [
-    groupX + offsetX,
+    groupX + offsetX + layerWave * 0.35,
     itemPhysicsConstants.spawnBaseHeight +
       itemPhysicsConstants.spawnHeightStep * dropLayer,
-    groupZ + offsetZ,
+    groupZ + offsetZ - layerWave * 0.2,
   ];
 }
 

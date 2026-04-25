@@ -181,13 +181,25 @@ export function RapierItems(): JSX.Element {
         const rigidBody = rigidBodies[index];
 
         if (rigidBody) {
-          blendVelocity(
-            rigidBody,
-            0,
-            0,
-            0,
-            rapierPhysicsConstants.steering.settleLerp
-          );
+          const { y } = rigidBody.translation();
+
+          if (y > itemPhysicsConstants.spawnFastDropCutoffY) {
+            blendVelocity(
+              rigidBody,
+              0,
+              -itemPhysicsConstants.spawnFastDropSpeed,
+              0,
+              rapierPhysicsConstants.steering.activeLerp
+            );
+          } else {
+            blendVelocity(
+              rigidBody,
+              0,
+              0,
+              0,
+              rapierPhysicsConstants.steering.settleLerp
+            );
+          }
         }
       }
 
