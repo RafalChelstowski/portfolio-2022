@@ -101,8 +101,8 @@ export const poolPhysicsBounds: PoolPhysicsBounds = {
 };
 
 export const itemPhysicsConstants: ItemPhysicsConstants = {
-  spawnBaseHeight: 12,
-  spawnHeightStep: 1,
+  spawnBaseHeight: 8,
+  spawnHeightStep: 0.45,
   centerTarget: [0, -2, 0],
 };
 

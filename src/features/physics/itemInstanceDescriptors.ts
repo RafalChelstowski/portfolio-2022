@@ -24,18 +24,23 @@ function createRotationSeed(index: number): PhysicsVector3 {
 }
 
 const SPAWN_GROUP_CENTERS: [number, number][] = [
-  [-4.5, -4.5],
-  [4.5, -4.5],
-  [-4.5, 4.5],
-  [4.5, 4.5],
+  [-6, -6],
+  [0, -6],
+  [6, -6],
+  [-6, 0],
+  [0, 0],
+  [6, 0],
+  [-6, 6],
+  [0, 6],
+  [6, 6],
 ];
 
 const SPAWN_GROUP_OFFSETS: [number, number][] = [
   [0, 0],
-  [1.2, 0.6],
-  [-1.2, -0.6],
-  [0.9, -1],
-  [-0.9, 1],
+  [1, 0.5],
+  [-1, -0.5],
+  [0.75, -0.9],
+  [-0.75, 0.9],
 ];
 
 function createSpawnPosition(index: number): PhysicsVector3 {
