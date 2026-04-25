@@ -195,7 +195,10 @@ export function RapierItems(): JSX.Element {
               y >= poolFloorY &&
               y <= poolTopY;
 
-            if (isInsidePoolVolume) {
+            if (
+              isInsidePoolVolume &&
+              firstPoolContactByIndexRef.current[index]
+            ) {
               inPoolCount += 1;
             }
           }
