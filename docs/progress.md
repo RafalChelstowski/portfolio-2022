@@ -21,7 +21,7 @@
 - [x] Tune Rapier rigid-body settings for falling, settling, and steering parity | AC: gravity, damping, sleep, restitution, and sort/filter steering are tuned as needed so the scene behavior remains plausibly close to the current Cannon setup, Leva exposes the relevant steering controls for Rafal to calibrate sort pull, set-match seek, and set-miss repel behavior live, and the repo still passes `npm run typecheck && npm run lint && npm run build`
 - [x] Record static migration handoff findings for manual runtime verification | AC: `npm run typecheck && npm run lint && npm run build` pass for the final migration state, remaining runtime caveats are written under `## Findings`, and the branch is ready for Rafal to do manual browser verification
 - [x] Restore visible cube shadows in the active Rapier scene | AC: the instanced Rapier cubes cast readable shadows into the pool scene again without regressing the current look or interaction flow, and the repo still passes `npm run typecheck && npm run lint && npm run build`
-- [ ] Stop tracking generated Vite build output in git | AC: `dist/` is ignored, tracked generated `dist` artifacts are removed from the repo index, Vercel still builds from source with `dist` as the output directory, and the repo still passes `npm run typecheck && npm run lint && npm run build`
+- [x] Stop tracking generated Vite build output in git | AC: `dist/` is ignored, tracked generated `dist` artifacts are removed from the repo index, Vercel still builds from source with `dist` as the output directory, and the repo still passes `npm run typecheck && npm run lint && npm run build`
 
 ## Findings
 
