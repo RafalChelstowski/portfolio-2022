@@ -1,7 +1,11 @@
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import type { JSX } from 'react';
 
-import { poolPhysicsBounds, type PhysicsVector3 } from '../physics/constants';
+import {
+  poolPhysicsBounds,
+  rapierColliderNames,
+  type PhysicsVector3,
+} from '../physics/constants';
 
 const catchSurfaceHalfExtents: PhysicsVector3 = poolPhysicsBounds.catchSurface.size.map(
   (value) => value / 2
@@ -17,9 +21,15 @@ export function RapierCatchSurfaceCollider({
   restitution,
 }: RapierCatchSurfaceColliderProps): JSX.Element {
   return (
-    <RigidBody colliders={false} position={poolPhysicsBounds.catchSurface.position} type="fixed">
+    <RigidBody
+      colliders={false}
+      name={rapierColliderNames.catchSurface}
+      position={poolPhysicsBounds.catchSurface.position}
+      type="fixed"
+    >
       <CuboidCollider
         args={catchSurfaceHalfExtents}
+        name={rapierColliderNames.catchSurface}
         restitution={restitution}
         friction={friction}
       />

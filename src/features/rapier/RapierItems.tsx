@@ -1,10 +1,18 @@
 import {
   InstancedRigidBodies,
+  type CollisionEnterPayload,
   type InstancedRigidBodyProps,
   type RapierRigidBody,
 } from '@react-three/rapier';
 import { useFrame } from '@react-three/fiber';
-import { useMemo, useRef, useEffect, useState, type JSX } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useRef,
+  useEffect,
+  useState,
+  type JSX,
+} from 'react';
 import {
   Color,
   InstancedMesh,
@@ -20,6 +28,7 @@ import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
 import {
   itemPhysicsConstants,
   poolPhysicsBounds,
+  rapierColliderNames,
   rapierPhysicsConstants,
   type PhysicsVector3,
 } from '../physics/constants';
@@ -74,9 +83,29 @@ function blendVelocity(
 export function RapierItems(): JSX.Element {
   const ref = useRef<InstancedMesh>(null);
   const bodiesRef = useRef<(RapierRigidBody | null)[] | null>(null);
+  const firstPoolContactByIndexRef = useRef<boolean[]>(Array(instanceCount).fill(false));
   const hasRevealedUiRef = useRef<boolean>(false);
   const isPresenting = useStore((state) => state.isPresenting);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
+
+  const markFirstPoolContact = useCallback(
+    (index: number, payload: CollisionEnterPayload): void => {
+      if (firstPoolContactByIndexRef.current[index]) {
+        return;
+      }
+
+      const otherName =
+        payload.other.rigidBodyObject?.name ?? payload.other.colliderObject?.name;
+
+      if (
+        otherName === rapierColliderNames.floor ||
+        otherName === rapierColliderNames.catchSurface
+      ) {
+        firstPoolContactByIndexRef.current[index] = true;
+      }
+    },
+    []
+  );
 
   const instances = useMemo<InstancedRigidBodyProps[]>(
     () =>
@@ -85,8 +114,11 @@ export function RapierItems(): JSX.Element {
         position: descriptor.spawnPosition,
         rotation: descriptor.initialRotationSeed,
         scale: descriptor.scale,
+        onCollisionEnter: (payload) => {
+          markFirstPoolContact(descriptor.index, payload);
+        },
       })),
-    []
+    [markFirstPoolContact]
   );
 
   const colors = useMemo(() => {
@@ -181,9 +213,7 @@ export function RapierItems(): JSX.Element {
         const rigidBody = rigidBodies[index];
 
         if (rigidBody) {
-          const { y } = rigidBody.translation();
-
-          if (y > itemPhysicsConstants.spawnFastDropCutoffY) {
+          if (!firstPoolContactByIndexRef.current[index]) {
             blendVelocity(
               rigidBody,
               0,

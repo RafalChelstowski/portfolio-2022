@@ -18,7 +18,6 @@ export interface ItemPhysicsConstants {
   spawnBaseHeight: number;
   spawnHeightStep: number;
   spawnFastDropSpeed: number;
-  spawnFastDropCutoffY: number;
   centerTarget: PhysicsVector3;
 }
 
@@ -58,6 +57,11 @@ export interface RapierPhysicsConstants {
   bounds: RapierBoundsColliderPhysicsConstants;
   steering: RapierSteeringPhysicsConstants;
 }
+
+export const rapierColliderNames = {
+  floor: 'rapier-pool-floor',
+  catchSurface: 'rapier-pool-catch-surface',
+} as const;
 
 const FLOOR_POSITION: PhysicsVector3 = [0, -2.5, 0];
 const FLOOR_SIZE: PhysicsVector3 = [22, 1, 32];
@@ -106,7 +110,6 @@ export const itemPhysicsConstants: ItemPhysicsConstants = {
   spawnBaseHeight: 8,
   spawnHeightStep: 0.45,
   spawnFastDropSpeed: 20,
-  spawnFastDropCutoffY: 2,
   centerTarget: [0, -2, 0],
 };
 
