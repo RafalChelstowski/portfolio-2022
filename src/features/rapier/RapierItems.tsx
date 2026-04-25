@@ -32,6 +32,32 @@ export function RapierItems(): JSX.Element {
   const bodiesRef = useRef<(RapierRigidBody | null)[] | null>(null);
   const isPresenting = useStore((state) => state.isPresenting);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
+  const cubeContactControls = useControls('Rapier cube contact', {
+    cubeFriction: {
+      value: rapierPhysicsConstants.items.friction,
+      min: 0,
+      max: 2,
+      step: 0.01,
+    },
+    cubeRestitution: {
+      value: rapierPhysicsConstants.items.restitution,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    cubeLinearDamping: {
+      value: rapierPhysicsConstants.items.linearDamping,
+      min: 0,
+      max: 5,
+      step: 0.01,
+    },
+    cubeAngularDamping: {
+      value: rapierPhysicsConstants.items.angularDamping,
+      min: 0,
+      max: 5,
+      step: 0.01,
+    },
+  });
   const steeringControls = useControls('Rapier steering', {
     sortPull: {
       value: rapierPhysicsConstants.steering.sortPull,
@@ -181,10 +207,10 @@ export function RapierItems(): JSX.Element {
       instances={instances}
       mass={rapierPhysicsConstants.items.mass}
       canSleep={rapierPhysicsConstants.items.canSleep}
-      linearDamping={rapierPhysicsConstants.items.linearDamping}
-      angularDamping={rapierPhysicsConstants.items.angularDamping}
-      restitution={rapierPhysicsConstants.items.restitution}
-      friction={rapierPhysicsConstants.items.friction}
+      linearDamping={cubeContactControls.cubeLinearDamping}
+      angularDamping={cubeContactControls.cubeAngularDamping}
+      restitution={cubeContactControls.cubeRestitution}
+      friction={cubeContactControls.cubeFriction}
     >
       <instancedMesh
         castShadow

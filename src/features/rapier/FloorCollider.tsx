@@ -1,7 +1,7 @@
 import { CuboidCollider, RigidBody, type CollisionEnterPayload } from '@react-three/rapier';
 import { useRef, type JSX } from 'react';
 
-import { poolPhysicsBounds, rapierPhysicsConstants, type PhysicsVector3 } from '../physics/constants';
+import { poolPhysicsBounds, type PhysicsVector3 } from '../physics/constants';
 import { useStore } from '../../store/store';
 
 const floorHalfExtents: PhysicsVector3 = poolPhysicsBounds.floor.size.map(
@@ -9,7 +9,12 @@ const floorHalfExtents: PhysicsVector3 = poolPhysicsBounds.floor.size.map(
 ) as PhysicsVector3;
 const startupGracePeriodMs = 4000;
 
-export function RapierFloorCollider(): JSX.Element {
+interface RapierFloorColliderProps {
+  friction: number;
+  restitution: number;
+}
+
+export function RapierFloorCollider({ friction, restitution }: RapierFloorColliderProps): JSX.Element {
   const mountedAtMsRef = useRef<number>(Date.now());
   const hasRevealedUiRef = useRef<boolean>(false);
 
@@ -36,8 +41,8 @@ export function RapierFloorCollider(): JSX.Element {
       <CuboidCollider
         args={floorHalfExtents}
         onCollisionEnter={handleCollisionEnter}
-        restitution={rapierPhysicsConstants.bounds.restitution}
-        friction={rapierPhysicsConstants.bounds.friction}
+        restitution={restitution}
+        friction={friction}
       />
     </RigidBody>
   );

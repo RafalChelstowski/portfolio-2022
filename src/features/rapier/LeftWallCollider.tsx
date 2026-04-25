@@ -1,19 +1,27 @@
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import type { JSX } from 'react';
 
-import { poolPhysicsBounds, rapierPhysicsConstants, type PhysicsVector3 } from '../physics/constants';
+import { poolPhysicsBounds, type PhysicsVector3 } from '../physics/constants';
 
 const leftWallHalfExtents: PhysicsVector3 = poolPhysicsBounds.leftWall.size.map(
   (value) => value / 2
 ) as PhysicsVector3;
 
-export function RapierLeftWallCollider(): JSX.Element {
+interface RapierLeftWallColliderProps {
+  friction: number;
+  restitution: number;
+}
+
+export function RapierLeftWallCollider({
+  friction,
+  restitution,
+}: RapierLeftWallColliderProps): JSX.Element {
   return (
     <RigidBody colliders={false} position={poolPhysicsBounds.leftWall.position} type="fixed">
       <CuboidCollider
         args={leftWallHalfExtents}
-        restitution={rapierPhysicsConstants.bounds.restitution}
-        friction={rapierPhysicsConstants.bounds.friction}
+        restitution={restitution}
+        friction={friction}
       />
     </RigidBody>
   );
