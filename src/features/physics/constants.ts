@@ -24,6 +24,12 @@ export interface RapierSteeringPhysicsConstants {
   sortPull: number;
   setMatchSeek: number;
   setMissRepel: number;
+  maxSortSpeed: number;
+  maxSetMatchSpeed: number;
+  maxSetMissSpeed: number;
+  settleLerp: number;
+  activeLerp: number;
+  centerAreaRadius: number;
 }
 
 export interface RapierWorldPhysicsConstants {
@@ -118,7 +124,13 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
   },
   steering: {
     sortPull: 8,
-    setMatchSeek: 20,
-    setMissRepel: 20,
+    setMatchSeek: 5,
+    setMissRepel: 3,
+    maxSortSpeed: 10,
+    maxSetMatchSpeed: 6,
+    maxSetMissSpeed: 4,
+    settleLerp: 0.12,
+    activeLerp: 0.2,
+    centerAreaRadius: 3.2,
   },
 };
