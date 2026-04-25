@@ -18,18 +18,30 @@ import {
 import { items, sets } from '../../data/items';
 import { useStore } from '../../store/store';
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
-import { itemPhysicsConstants, rapierPhysicsConstants } from '../physics/constants';
+import { itemPhysicsConstants, poolPhysicsBounds, rapierPhysicsConstants } from '../physics/constants';
 
 const instanceCount = itemInstanceDescriptors.length;
+const majorityInPoolCount = Math.floor(instanceCount / 2) + 1;
 const color = new Color();
 const directionVector = new Vector3();
 const currentPositionVector = new Vector3();
 const targetPositionVector = new Vector3();
 const centerTargetVector = new Vector3(...itemPhysicsConstants.centerTarget);
+const poolInnerMinX =
+  poolPhysicsBounds.leftWall.position[0] + poolPhysicsBounds.leftWall.size[0] / 2;
+const poolInnerMaxX =
+  poolPhysicsBounds.rightWall.position[0] - poolPhysicsBounds.rightWall.size[0] / 2;
+const poolInnerMinZ =
+  poolPhysicsBounds.backWall.position[2] + poolPhysicsBounds.backWall.size[2] / 2;
+const poolInnerMaxZ =
+  poolPhysicsBounds.frontWall.position[2] - poolPhysicsBounds.frontWall.size[2] / 2;
+const poolFloorY = poolPhysicsBounds.floor.position[1] + poolPhysicsBounds.floor.size[1] / 2;
+const poolTopY = poolPhysicsBounds.leftWall.position[1] + poolPhysicsBounds.leftWall.size[1] / 2;
 
 export function RapierItems(): JSX.Element {
   const ref = useRef<InstancedMesh>(null);
   const bodiesRef = useRef<(RapierRigidBody | null)[] | null>(null);
+  const hasRevealedUiRef = useRef<boolean>(false);
   const isPresenting = useStore((state) => state.isPresenting);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
   const cubeContactControls = useControls('Rapier cube contact', {
@@ -136,15 +148,48 @@ export function RapierItems(): JSX.Element {
     // Keep interaction bounds aligned with physics-driven instance transforms.
     ref.current?.computeBoundingSphere();
 
-    const { sortOption } = useStore.getState();
-
-    if (sortOption === null) {
-      return;
-    }
+    const storeState = useStore.getState();
+    const { sortOption } = storeState;
 
     const rigidBodies = bodiesRef.current;
 
     if (!rigidBodies) {
+      return;
+    }
+
+    if (!hasRevealedUiRef.current) {
+      if (storeState.displayUi) {
+        hasRevealedUiRef.current = true;
+      } else {
+        let inPoolCount = 0;
+
+        for (let index = 0; index < instanceCount; index += 1) {
+          const rigidBody = rigidBodies[index];
+
+          if (rigidBody) {
+            const { x, y, z } = rigidBody.translation();
+            const isInsidePoolVolume =
+              x >= poolInnerMinX &&
+              x <= poolInnerMaxX &&
+              z >= poolInnerMinZ &&
+              z <= poolInnerMaxZ &&
+              y >= poolFloorY &&
+              y <= poolTopY;
+
+            if (isInsidePoolVolume) {
+              inPoolCount += 1;
+            }
+          }
+        }
+
+        if (inPoolCount >= majorityInPoolCount) {
+          useStore.setState({ displayUi: true });
+          hasRevealedUiRef.current = true;
+        }
+      }
+    }
+
+    if (sortOption === null) {
       return;
     }
 
