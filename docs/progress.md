@@ -2,6 +2,8 @@
 
 ## Checklist
 
+- [ ] Use object refs for per-family InstancedRigidBodies | AC: `RapierItems` stores each family `InstancedRigidBodies` ref in a stable mutable object ref accepted by `@react-three/rapier`, not a callback ref; `familyRuntimeRef.current[family].bodies` or equivalent is populated during `useFrame`; `hasAnyBody` becomes true after mount; toolbar/project hover steering can reach live Rapier bodies
+- [ ] Final Feedback 4 sorting audit | AC: `npm run typecheck`, `npm run lint`, and `npm run build` pass; code no longer uses callback refs for `InstancedRigidBodies`; per-family object refs are read through `.current`; hovering `dev`, `creative`, `ai`, `career`, `sort`, `kitchen`, `portfolio`, and `tpp` has a live body map to steer; existing hover highlight and click selection still map to the correct global item index
 - [x] Fix family body-slot mapping from Codex reviewer feedback | AC: per-family `InstancedRigidBodies` use dense local instance keys/body slots (`0..familyCount-1`) or another verified local-slot mapping; each local body slot maps explicitly to the correct global item index; category hover, project hover, and `sort` steering update every family item, including families whose global item indexes do not start at zero; do not rely on sparse global item indexes as per-family body-array indexes
 - [x] Make main toolbar separator white | AC: the `|` between `career` and `sort` renders white like the toolbar text/buttons; the separator remains visual only and is not a hover/sort target
 - [x] Remove individual course items now covered by Continuous learning | AC: individual course/learning items such as `3D Computer Graphics Programming`, `GLSL Shaders from scratch`, `three.js journey`, `Epic React`, and `React Query Essentials` no longer appear as separate scene/card items; `Continuous learning` remains as the single consolidated career item with provider/course information; item imports/exports contain no dead `courses` merge path
@@ -311,6 +313,8 @@ Project cards should support an outcome/impact line, especially Kitchen and Trea
 
 ## Findings
 
+- Feedback 4 / Codex reviewer: `InstancedRigidBodies` from `@react-three/rapier` does not populate the callback refs currently used in `src/features/rapier/RapierItems.tsx`, so `familyRuntimeRef.current[family].bodies` stays null, `useFrame` exits through `!hasAnyBody`, and menu hover `sortOption` changes never reach physics steering. Use stable object refs per family and read `.current` when reconstructing the global body map.
+- The body-slot mapping fix from Feedback 3 is necessary but insufficient unless the family body refs are actually captured. The next pass must preserve dense local keys and add object refs for the per-family `InstancedRigidBodies` batches.
 - Feedback 3 from Rafal: Codex reviewer's sorting comment is valid and likely explains the still-broken hover sorting. PR #6 inline review says `InstancedRigidBodies` returns a dense local-slot body array, but current code maps `bodySlotToItemIndex` using global `itemIndex` keys and later reads by local `bodySlot`; families whose global indexes do not start at zero resolve to `undefined` and do not receive velocity steering updates.
 - Feedback 3 from Rafal: the separator between `career` and `sort` currently renders black; make it white like the toolbar text.
 - Feedback 3 from Rafal: individual course/learning items should be removed because they are now represented by the single `Continuous learning` item.
