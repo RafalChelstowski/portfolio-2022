@@ -9,16 +9,16 @@ export function UI() {
   const isPresenting = useStore((state) => isNumber(state.isPresenting));
 
   return (
-    <div className="absolute inset-x-0 top-0">
-      <header className="m-4 max-w-md">
-        <h1 className="text-lg mb-1">Portfolio 2026</h1>
-        <h2 className="mb-1">Senior Software Engineer</h2>
-        <p className="mb-1 text-white">
+    <div className="absolute inset-x-0 top-0 z-10">
+      <header className="m-4 max-w-[calc(100vw-2rem)] sm:max-w-md">
+        <h1 className="mb-1 text-base sm:text-lg">Portfolio 2026</h1>
+        <h2 className="mb-1 text-sm sm:text-base">Senior Software Engineer</h2>
+        <p className="mb-1 text-sm text-white sm:text-base">
           Interactive 3D web tools, creative systems, and AI-assisted engineering
           workflows.
         </p>
-        <p className="mb-1 text-white">Frankfurt am Main</p>
-        <h3>
+        <p className="mb-1 text-sm text-white sm:text-base">Frankfurt am Main</p>
+        <h3 className="text-sm sm:text-base">
           <a
             href="https://www.linkedin.com/in/chelstowskirafal/?locale=en_US"
             target="blank"
@@ -34,11 +34,11 @@ export function UI() {
 
       {displayUi && !isPresenting && (
         <>
-          <div className="flex w-full place-content-center place-items-center text-sm">
+          <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 text-xs sm:text-sm">
             {mainFilterControls.map((control) => (
               <button
                 key={control}
-                className="m-4"
+                className="px-1 py-0.5 sm:px-0 sm:py-0"
                 onMouseEnter={() => {
                   useStore.setState({ sortOption: control });
                 }}
@@ -51,11 +51,11 @@ export function UI() {
               </button>
             ))}
           </div>
-          <div className="fixed right-4 top-1/2 flex -translate-y-1/2 flex-col text-right text-sm">
+          <div className="fixed bottom-4 left-1/2 flex -translate-x-1/2 flex-row gap-4 rounded-sm bg-black/30 px-3 py-2 text-xs backdrop-blur-sm sm:left-auto sm:right-4 sm:top-1/2 sm:bottom-auto sm:block sm:-translate-x-0 sm:-translate-y-1/2 sm:rounded-none sm:bg-transparent sm:px-0 sm:py-0 sm:text-right sm:text-sm sm:backdrop-blur-none">
             {projectConstellationOrder.map((constellation) => (
               <button
                 key={constellation}
-                className="my-3"
+                className="sm:my-3"
                 onMouseEnter={() => {
                   useStore.setState({ sortOption: constellation });
                 }}

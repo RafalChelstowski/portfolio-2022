@@ -37,7 +37,9 @@ export function Info(): JSX.Element | null {
 
   return (
     <Html position={[4.5, 7, 1]}>
-      <div className={`w-96 bg-white/95 p-6 rounded-lg ${familyStyles[item.family]}`}>
+      <div
+        className={`max-h-[min(70vh,34rem)] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto rounded-lg bg-white/95 p-4 sm:p-6 ${familyStyles[item.family]}`}
+      >
         <p className="mb-2">{familyLabel}</p>
         {item.date && <p className="mb-2">{formatDisplayDate(item.date)}</p>}
         <p className="text-xl mb-2">{item.title}</p>
