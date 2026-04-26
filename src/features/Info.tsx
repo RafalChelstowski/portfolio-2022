@@ -32,17 +32,18 @@ export function Info(): JSX.Element | null {
   }
 
   const item = items[isPresenting];
-  const familyLabel = `${item.family} / ${item.categories.join(', ')}`;
+  const familyLabel = item.family;
   const cardFields = item.cardFields ? Object.entries(item.cardFields) : [];
+  const familyTitleClass = familyStyles[item.family].split(' ')[0];
 
   return (
     <Html position={[4.5, 7, 1]}>
       <div
-        className={`max-h-[min(70vh,34rem)] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto rounded-lg bg-white/95 p-4 sm:p-6 ${familyStyles[item.family]}`}
+        className="max-h-[min(70vh,34rem)] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border bg-white/95 p-4 text-black sm:p-6"
       >
         <p className="mb-2">{familyLabel}</p>
-        {item.date && <p className="mb-2">{formatDisplayDate(item.date)}</p>}
-        <p className="text-xl mb-2">{item.title}</p>
+        {item.date && <p className="mb-2 text-black">{formatDisplayDate(item.date)}</p>}
+        <p className={`mb-2 text-xl ${familyTitleClass}`}>{item.title}</p>
         {item.location && <p className="mb-2">{item.location}</p>}
         {item.subtitle && <p className="mb-2">{item.subtitle}</p>}
         {item.description && <p className="mb-2">{item.description}</p>}
@@ -54,7 +55,7 @@ export function Info(): JSX.Element | null {
         ))}
         {item.link && (
           <p className="mb-2">
-            <a href={item.link} target="_blank" rel="noreferrer">
+            <a className="text-black" href={item.link} target="_blank" rel="noreferrer">
               Link
             </a>
           </p>
