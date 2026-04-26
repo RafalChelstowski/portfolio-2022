@@ -47,11 +47,11 @@ export function UI() {
               </button>
             ))}
           </div>
-          <div className="fixed bottom-4 left-1/2 flex -translate-x-1/2 flex-row gap-4 rounded-sm bg-black/30 px-3 py-2 text-xs backdrop-blur-sm sm:left-auto sm:right-4 sm:top-1/2 sm:bottom-auto sm:block sm:-translate-x-0 sm:-translate-y-1/2 sm:rounded-none sm:bg-transparent sm:px-0 sm:py-0 sm:text-right sm:text-sm sm:backdrop-blur-none">
+          <div className="fixed left-4 top-1/2 flex -translate-y-1/2 flex-col items-start gap-3 text-xs sm:text-sm">
             {projectConstellationOrder.map((constellation) => (
               <button
                 key={constellation}
-                className="sm:my-3"
+                className="block text-left"
                 onMouseEnter={() => {
                   useStore.setState({ sortOption: constellation });
                 }}
