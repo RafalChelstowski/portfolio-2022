@@ -9,7 +9,16 @@ import {
   type RapierRigidBody,
 } from '@react-three/rapier';
 import { useFrame } from '@react-three/fiber';
-import { useCallback, useMemo, useRef, useEffect, useState, type JSX, type ReactNode } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useRef,
+  useEffect,
+  useState,
+  type JSX,
+  type MutableRefObject,
+  type ReactNode,
+} from 'react';
 import {
   Color,
   type BufferAttribute,
@@ -63,6 +72,12 @@ interface FamilyBatch {
 interface FamilyBatchRuntime {
   bodies: (RapierRigidBody | null)[] | null;
   mesh: InstancedMesh | null;
+}
+
+type FamilyBodiesRef = MutableRefObject<(RapierRigidBody | null)[] | null>;
+
+function createFamilyBodiesRef(): FamilyBodiesRef {
+  return { current: null };
 }
 
 function createCenterAreaOffset(index: number): PhysicsVector3 {
@@ -154,6 +169,13 @@ function getFamilyColliderNodes(family: ItemFamily): ReactNode[] {
 }
 
 export function RapierItems(): JSX.Element {
+  const familyBodiesRef = useRef<Record<ItemFamily, FamilyBodiesRef>>({
+    project: createFamilyBodiesRef(),
+    ai: createFamilyBodiesRef(),
+    stack: createFamilyBodiesRef(),
+    creative: createFamilyBodiesRef(),
+    career: createFamilyBodiesRef(),
+  });
   const familyRuntimeRef = useRef<Record<ItemFamily, FamilyBatchRuntime>>({
     project: { bodies: null, mesh: null },
     ai: { bodies: null, mesh: null },
@@ -282,7 +304,8 @@ export function RapierItems(): JSX.Element {
     }
 
     familyBatches.forEach((batch) => {
-      const batchBodies = familyRuntimeRef.current[batch.family].bodies;
+      const batchBodies = familyBodiesRef.current[batch.family].current;
+      familyRuntimeRef.current[batch.family].bodies = batchBodies;
 
       if (batchBodies) {
         for (let bodySlot = 0; bodySlot < batchBodies.length; bodySlot += 1) {
@@ -482,9 +505,7 @@ export function RapierItems(): JSX.Element {
       {familyBatches.map((batch) => (
         <InstancedRigidBodies
           key={batch.family}
-          ref={(value) => {
-            familyRuntimeRef.current[batch.family].bodies = value;
-          }}
+          ref={familyBodiesRef.current[batch.family]}
           colliders={false}
           colliderNodes={getFamilyColliderNodes(batch.family)}
           instances={batch.instances}
