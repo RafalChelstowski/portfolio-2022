@@ -47,11 +47,12 @@ export default function Model() {
       <mesh receiveShadow castShadow geometry={nodes.flamingo.geometry}>
         {material}
       </mesh>
-      <mesh receiveShadow geometry={nodes.rim.geometry}>
+      <mesh receiveShadow castShadow geometry={nodes.rim.geometry}>
         {material}
       </mesh>
       <mesh
         receiveShadow
+        castShadow
         geometry={nodes.inside.geometry}
         material={nodes.inside.material}
       >
