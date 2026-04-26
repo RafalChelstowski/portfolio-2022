@@ -2,6 +2,8 @@ import isNumber from 'lodash/isNumber.js';
 import { mainCategoryOrder } from '../data/items';
 import { useStore } from '../store/store';
 
+const mainFilterControls = [...mainCategoryOrder, 'sort'] as const;
+
 export function UI() {
   const displayUi = useStore((state) => state.displayUi);
   const isPresenting = useStore((state) => isNumber(state.isPresenting));
@@ -32,34 +34,21 @@ export function UI() {
 
       {displayUi && !isPresenting && (
         <div className="flex w-full place-content-center place-items-center text-sm">
-          {mainCategoryOrder.map((set) => (
+          {mainFilterControls.map((control) => (
             <button
-              key={set}
+              key={control}
               className="m-4"
               onMouseEnter={() => {
-                useStore.setState({ sortOption: set });
+                useStore.setState({ sortOption: control });
               }}
               onMouseLeave={() => {
                 useStore.setState({ sortOption: null });
               }}
               type="button"
             >
-              {set}
+              {control}
             </button>
           ))}
-          <span className="mx-4 text-white">|</span>
-          <button
-            className="m-4"
-            onMouseEnter={() => {
-              useStore.setState({ sortOption: 'sort' });
-            }}
-            onMouseLeave={() => {
-              useStore.setState({ sortOption: null });
-            }}
-            type="button"
-          >
-            sort
-          </button>
         </div>
       )}
     </div>
