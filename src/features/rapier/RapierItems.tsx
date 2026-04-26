@@ -93,6 +93,12 @@ export function RapierItems(): JSX.Element {
   const isPresenting = useStore((state) => state.isPresenting);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
 
+  useEffect(() => {
+    if (isPresenting !== null) {
+      setHovered(undefined);
+    }
+  }, [isPresenting]);
+
   const markFirstPoolContact = useCallback(
     (index: number, payload: CollisionEnterPayload): void => {
       if (firstPoolContactByIndexRef.current[index]) {
@@ -395,6 +401,13 @@ export function RapierItems(): JSX.Element {
           e.stopPropagation();
           setHovered(undefined);
         }}
+        onPointerLeave={(e) => {
+          e.stopPropagation();
+          setHovered(undefined);
+        }}
+        onPointerMissed={() => {
+          setHovered(undefined);
+        }}
         onClick={(e) => {
           e.stopPropagation();
 
@@ -402,7 +415,7 @@ export function RapierItems(): JSX.Element {
             return;
           }
 
-          useStore.setState({ isPresenting: e.instanceId });
+          useStore.setState({ isPresenting: e.instanceId, sortOption: null });
         }}
       >
         <boxGeometry args={[1, 1, 1]}>
