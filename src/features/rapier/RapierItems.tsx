@@ -192,13 +192,12 @@ export function RapierItems(): JSX.Element {
         .map((descriptor) => descriptor.index);
       const bodySlotToItemIndex = new Map<number, number>();
 
-      const familyInstances = indexes.map<InstancedRigidBodyProps>((itemIndex) => {
+      const familyInstances = indexes.map<InstancedRigidBodyProps>((itemIndex, localBodySlot) => {
         const descriptor = itemInstanceDescriptors[itemIndex];
-        const instanceKey = itemIndex;
-        bodySlotToItemIndex.set(instanceKey, itemIndex);
+        bodySlotToItemIndex.set(localBodySlot, itemIndex);
 
         return {
-          key: instanceKey,
+          key: localBodySlot,
           position: descriptor.spawnPosition,
           rotation: descriptor.initialRotationSeed,
           scale: descriptor.scale,
