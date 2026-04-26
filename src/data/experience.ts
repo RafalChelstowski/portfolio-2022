@@ -7,6 +7,7 @@ const data: Array<{
   title: string;
   subtitle?: string;
   description?: string;
+  cardFields?: SourceItem['cardFields'];
   date: string;
   location: string;
   current?: boolean;
@@ -72,6 +73,39 @@ const data: Array<{
     categories: ['career'],
     projects: [],
     description: 'History, Political Science',
+  },
+  {
+    title: 'Continuous learning',
+    subtitle: 'ongoing software, 3D, creative tooling, and AI learning',
+    date: '2004 - now',
+    location: 'Remote',
+    size: 'l',
+    categories: ['career', 'dev', 'creative'],
+    projects: ['portfolio'],
+    cardFields: {
+      providers: [
+        'Pikuma',
+        'Frontend Masters',
+        'SimonDev',
+        'Bruno Simon',
+        'LinkedIn Learning/Lynda',
+        'Grant Abbitt',
+        'Wes Bos',
+        'Kent C. Dodds',
+        'TanStack',
+      ],
+      courses: [
+        '3D programming',
+        'software engineering',
+        'math and shaders for web/game dev',
+        'three.js journey',
+        'Blender and Substance Painter',
+        'Blender courses',
+        'web development',
+        'Epic React / Epic Web / Epic MCP / Testing JavaScript',
+        'React Query Essentials',
+      ],
+    },
   },
 ];
 
