@@ -33,7 +33,11 @@ export function UI() {
           <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 text-xs sm:text-sm">
             {mainFilterControls.map((control) => (
               <div key={control} className="flex items-center gap-4">
-                {control === 'sort' && <span aria-hidden="true">|</span>}
+                {control === 'sort' && (
+                  <span aria-hidden="true" className="pointer-events-none select-none text-white">
+                    |
+                  </span>
+                )}
                 <button
                   className="px-1 py-0.5 sm:px-0 sm:py-0"
                   onMouseEnter={() => {
