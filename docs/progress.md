@@ -2,6 +2,11 @@
 
 ## Checklist
 
+- [ ] Restore functional hover sorting from the previous implementation | AC: hovering `dev`, `creative`, `ai`, or `career` actively pulls matching items into the center and repels non-matching items using the existing Rapier steering behavior; hovering `sort` actively sends all items toward their `sortingVelocity`; the fix reuses the previous working sort/hover behavior and does not only change toolbar styling; category sorting works after the family-specific geometry/collider split
+- [ ] Fix project constellation hover sorting and placement | AC: `kitchen`, `portfolio`, and `tpp` controls are displayed vertically with one item per line on the left side of the viewport; hovering each project constellation actively pulls the project object plus related evidence items into the center; project sorting uses `projectConstellationGroups` and the same steering behavior as category filters
+- [ ] Add main toolbar separator before sort | AC: main toolbar visually reads `dev creative ai career | sort`; the separator is text/visual only and does not become a hover target; `sort` remains its own hover target and still triggers general sorting
+- [ ] Audit Rapier body-index mapping after family batching | AC: `RapierItems` maps every global item index to the correct live `RapierRigidBody` after splitting items into per-family `InstancedRigidBodies`; sparse/non-contiguous instance keys cannot break category/project steering; hover, selection, first-pool-contact tracking, and color highlighting still use the correct global item index
+- [ ] Final toolbar behavior audit | AC: `npm run typecheck`, `npm run lint`, and `npm run build` pass; both toolbars are visible; hovering every main category, `sort`, and every project constellation visibly changes item motion in the pool; existing card selection still works
 - [x] Restore visible sorting controls after feedback | AC: main controls `dev`, `creative`, `ai`, `career`, and `sort` are visibly present and interactive in the running UI; project controls `kitchen`, `portfolio`, and `tpp` are visibly present and interactive; if `displayUi` reveal logic, z-index, placement, or responsive styling hides the controls, that cause is fixed; controls remain hover-based
 - [x] Apply header copy and typography feedback | AC: visible header name is `Rafal Chelstowski` instead of `Portfolio 2026`; role remains `Senior Software Engineer`; the subtitle/tagline sentence is removed from the visible header; `Frankfurt am Main` remains visible and uses the same header/title font treatment as the name and role; LinkedIn/GitHub links remain
 - [x] Apply card label and text-color feedback | AC: card eyebrow/label displays only the general item family/category label such as `creative`, not combined assignment text like `creative / creative` and not project/category membership; card title keeps the family accent color; dates, locations, subtitles, descriptions, outcomes, and dynamic card-field text render black; `CLOSE` remains uppercase
@@ -281,7 +286,8 @@ Project cards should support an outcome/impact line, especially Kitchen and Trea
 ### UI and Interaction Notes
 
 - Main category filters remain the primary sorting controls.
-- Project constellations should be a separate right-side vertical menu with similar hover-based sorting behavior.
+- Main category toolbar should visually read `dev creative ai career | sort`.
+- Project constellations should be a separate left-side vertical menu with one item per line and similar hover-based sorting behavior.
 - Keep the current interaction model unless a task explicitly changes it.
 - Basic responsive behavior is enough for this pass: controls and cards must not overlap or become unreadable.
 
@@ -300,6 +306,10 @@ Project cards should support an outcome/impact line, especially Kitchen and Trea
 
 ## Findings
 
+- Feedback 2 from Rafal: main toolbar now appears, but it needs a separator so it reads `dev creative ai career | sort`; more importantly, hovering main toolbar text currently does not move/sort pool items, so restore the previous working hover-to-sort behavior rather than treating this as styling-only.
+- Feedback 2 from Rafal: project controls should move from the bottom/right responsive placement to the left side and stack vertically (`kitchen`, `portfolio`, `tpp` below each other). Hovering project control text must pull the project constellation items into the center.
+- Investigation note for Feedback 2: the pre-family-split implementation used one `InstancedRigidBodies` batch whose body ref array aligned directly with global item indexes. The current implementation splits items into one `InstancedRigidBodies` batch per family, then reconstructs `bodyByItemIndexRef` from per-family body arrays. This body/index mapping is the likely place to verify first, because category/project groups are still global item indexes.
+- Investigation note for Feedback 2: if `@react-three/rapier` stores instanced body refs by `instances[].key`, sparse global keys inside each family batch can make local-index lookup wrong. Prefer contiguous per-batch keys plus an explicit global item index mapping, or another verified mapping that guarantees each global item index points to the correct live body.
 - Feedback 1 from Rafal supersedes the original header copy: visible name should be `Rafal Chelstowski`, role remains `Senior Software Engineer`, the long subtitle/tagline should be deleted, and `Frankfurt am Main` should use the same header/title font treatment.
 - Feedback 1 highest-priority issue: the main sorting toolbar and project toolbar are not appearing in the reviewed UI, leaving no way to sort by categories/projects. Fix toolbar visibility/reveal before cosmetic follow-ups.
 - Toolbar visibility was blocked by `displayUi` starting as `false` in Zustand while UI controls were gated behind that flag in `src/features/UI.tsx`; defaulting `displayUi` to `true` restores immediate visibility for both hover toolbars without changing hover sort interactions.
