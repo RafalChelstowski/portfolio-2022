@@ -23,7 +23,7 @@
 - [x] Improve shadow coverage | AC: light/shadow settings or Drei shadow support are adjusted so the flamingo/pool scene has stronger visible shadow coverage without removing existing lighting/environment setup
 - [x] Apply basic responsive overlay cleanup | AC: header, main filters, right-side project menu, and cards avoid obvious overlap or unreadability on narrower screens using existing CSS/Tailwind patterns
 - [x] Remove obsolete `.vscode` project config | AC: `.vscode/launch.json` is deleted and no `.vscode` project config remains tracked in the working tree
-- [ ] Final content and behavior audit | AC: every source item has family, size, categories, and projects field; every size is `s`, `m`, or `l`; TODO comments are present only for the specified uncertainties; no confidential Treatment Planning Platform detail is introduced; `npm run typecheck`, `npm run lint`, and `npm run build` pass
+- [x] Final content and behavior audit | AC: every source item has family, size, categories, and projects field; every size is `s`, `m`, or `l`; TODO comments are present only for the specified uncertainties; no confidential Treatment Planning Platform detail is introduced; `npm run typecheck`, `npm run lint`, and `npm run build` pass
 
 ## Source Content
 
@@ -311,3 +311,4 @@ Project cards should support an outcome/impact line, especially Kitchen and Trea
 - Sort responsiveness is now tuned in `rapierPhysicsConstants.steering` (`sortPull`, `setMatchSeek`, `maxSortSpeed`, `maxSetMatchSpeed`, `activeLerp`) in `src/features/physics/constants.ts`, so future speed adjustments can stay centralized without touching sort loop logic in `RapierItems`.
 - Shadow coverage now combines a wider directional-light shadow frustum and tuned bias values with Drei `ContactShadows` in `src/features/Lights.tsx`, which makes flamingo/pool shadows read stronger while keeping the existing ambient/point/environment setup.
 - Overlay responsiveness now keeps controls readable on narrow screens: header text scales down, main filters wrap, project constellation controls move to a bottom row on small breakpoints, and `Info` cards clamp width/height with scroll in `src/features/UI.tsx` and `src/features/Info.tsx`.
+- Final audit confirms source items remain typed through `SourceItem`, sizes are still constrained to `s|m|l`, and the only source-data uncertainty TODO markers are the specified React Query and Adobe Creative Suite lines, with required `typecheck`/`lint`/`build` gates passing.
