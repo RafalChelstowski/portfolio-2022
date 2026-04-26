@@ -2,6 +2,10 @@
 
 ## Checklist
 
+- [ ] Fix family body-slot mapping from Codex reviewer feedback | AC: per-family `InstancedRigidBodies` use dense local instance keys/body slots (`0..familyCount-1`) or another verified local-slot mapping; each local body slot maps explicitly to the correct global item index; category hover, project hover, and `sort` steering update every family item, including families whose global item indexes do not start at zero; do not rely on sparse global item indexes as per-family body-array indexes
+- [ ] Make main toolbar separator white | AC: the `|` between `career` and `sort` renders white like the toolbar text/buttons; the separator remains visual only and is not a hover/sort target
+- [ ] Remove individual course items now covered by Continuous learning | AC: individual course/learning items such as `3D Computer Graphics Programming`, `GLSL Shaders from scratch`, `three.js journey`, `Epic React`, and `React Query Essentials` no longer appear as separate scene/card items; `Continuous learning` remains as the single consolidated career item with provider/course information; item imports/exports contain no dead `courses` merge path
+- [ ] Final Feedback 3 audit | AC: `npm run typecheck`, `npm run lint`, and `npm run build` pass; toolbar hover visibly changes item motion for `dev`, `creative`, `ai`, `career`, `sort`, `kitchen`, `portfolio`, and `tpp`; separator is white; individual course cards are gone while Continuous learning remains
 - [x] Restore functional hover sorting from the previous implementation | AC: hovering `dev`, `creative`, `ai`, or `career` actively pulls matching items into the center and repels non-matching items using the existing Rapier steering behavior; hovering `sort` actively sends all items toward their `sortingVelocity`; the fix reuses the previous working sort/hover behavior and does not only change toolbar styling; category sorting works after the family-specific geometry/collider split
 - [x] Fix project constellation hover sorting and placement | AC: `kitchen`, `portfolio`, and `tpp` controls are displayed vertically with one item per line on the left side of the viewport; hovering each project constellation actively pulls the project object plus related evidence items into the center; project sorting uses `projectConstellationGroups` and the same steering behavior as category filters
 - [x] Add main toolbar separator before sort | AC: main toolbar visually reads `dev creative ai career | sort`; the separator is text/visual only and does not become a hover target; `sort` remains its own hover target and still triggers general sorting
@@ -267,6 +271,7 @@ Selecting a project constellation should pull the project object plus related ev
   - projects: portfolio
   - subtitle: ongoing software, 3D, creative tooling, and AI learning
   - providers: pikuma.com multiple courses on 3D programming; frontend masters multiple courses on software engineering topics; simondev courses on math and shaders for web/game dev; Bruno Simon three.js journey; LinkedIn Learning/Lynda courses on Blender and Substance Painter; Grant Abbitt Blender courses; Wes Bos web dev courses; Kent C. Dodds Epic React, Epic Web, Epic MCP, Testing JavaScript; Tanstack React Query Essentials
+  - note: this consolidated item replaces smaller individual learning/course scene items
 
 ### Card Model
 
@@ -286,7 +291,7 @@ Project cards should support an outcome/impact line, especially Kitchen and Trea
 ### UI and Interaction Notes
 
 - Main category filters remain the primary sorting controls.
-- Main category toolbar should visually read `dev creative ai career | sort`.
+- Main category toolbar should visually read `dev creative ai career | sort`, with the separator rendered white.
 - Project constellations should be a separate left-side vertical menu with one item per line and similar hover-based sorting behavior.
 - Keep the current interaction model unless a task explicitly changes it.
 - Basic responsive behavior is enough for this pass: controls and cards must not overlap or become unreadable.
@@ -306,7 +311,10 @@ Project cards should support an outcome/impact line, especially Kitchen and Trea
 
 ## Findings
 
-- Hover/category steering regression came from sparse global `instances[].key` values reused inside per-family `InstancedRigidBodies`; switching to contiguous per-family keys with explicit global index mapping restored stable `bodyByItemIndexRef` steering for main category hover and `sort`.
+- Feedback 3 from Rafal: Codex reviewer's sorting comment is valid and likely explains the still-broken hover sorting. PR #6 inline review says `InstancedRigidBodies` returns a dense local-slot body array, but current code maps `bodySlotToItemIndex` using global `itemIndex` keys and later reads by local `bodySlot`; families whose global indexes do not start at zero resolve to `undefined` and do not receive velocity steering updates.
+- Feedback 3 from Rafal: the separator between `career` and `sort` currently renders black; make it white like the toolbar text.
+- Feedback 3 from Rafal: individual course/learning items should be removed because they are now represented by the single `Continuous learning` item.
+- Prior feedback-2 body mapping note was overconfident: the intended fix did not actually switch to dense local per-family keys, so the next pass must correct `src/features/rapier/RapierItems.tsx` rather than trusting the existing mapping.
 - Feedback 2 from Rafal: main toolbar now appears, but it needs a separator so it reads `dev creative ai career | sort`; more importantly, hovering main toolbar text currently does not move/sort pool items, so restore the previous working hover-to-sort behavior rather than treating this as styling-only.
 - Feedback 2 from Rafal: project controls should move from the bottom/right responsive placement to the left side and stack vertically (`kitchen`, `portfolio`, `tpp` below each other). Hovering project control text must pull the project constellation items into the center.
 - Investigation note for Feedback 2: the pre-family-split implementation used one `InstancedRigidBodies` batch whose body ref array aligned directly with global item indexes. The current implementation splits items into one `InstancedRigidBodies` batch per family, then reconstructs `bodyByItemIndexRef` from per-family body arrays. This body/index mapping is the likely place to verify first, because category/project groups are still global item indexes.
