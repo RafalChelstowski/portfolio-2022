@@ -3,7 +3,7 @@
 ## Checklist
 
 - [x] Define Portfolio 2026 taxonomy and unified item model | AC: source types support `family`, `size`, `categories`, `projects`, and flexible card fields; families are `project`, `ai`, `stack`, `creative`, `career`; sizes are restricted to `s`, `m`, `l`; old `ExperienceType`/`Sets` coupling is removed from the public item model
-- [ ] Rebuild project items from the source content | AC: Kitchen, Portfolio 2026, and Treatment Planning Platform exist with required family/size/categories/projects/subtitle fields; Kitchen keeps its public link; old Tactics/Project Tactics item is gone; Treatment Planning Platform copy stays public-safe and high level
+- [x] Rebuild project items from the source content | AC: Kitchen, Portfolio 2026, and Treatment Planning Platform exist with required family/size/categories/projects/subtitle fields; Kitchen keeps its public link; old Tactics/Project Tactics item is gone; Treatment Planning Platform copy stays public-safe and high level
 - [ ] Add AI workflow items | AC: Codex, opencode, Claude Code, openclaw, and ralph-loop exist as `ai` family items with sizes/categories/projects/subtitles matching the source content
 - [ ] Prune and rebuild stack items | AC: stack items match the source content; obsolete old stack entries are removed; React Query has a `// TODO:` line directly above the item noting the public/personal project membership uncertainty
 - [ ] Prune and rebuild creative items | AC: creative items match the source content; Adobe Creative Suite has a `// TODO:` line directly above the item noting the project constellation uncertainty; old unrelated creative/tooling items are removed unless represented by the source content
