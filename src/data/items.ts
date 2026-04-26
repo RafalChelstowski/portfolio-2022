@@ -1,4 +1,5 @@
 import type { Item3d, MainCategory, SourceItem } from '../types';
+import { ai } from './ai';
 import { courses } from './courses';
 import { experience } from './experience';
 import { projects } from './projects';
@@ -6,6 +7,7 @@ import { technologies } from './technologies';
 
 const sourceItems: SourceItem[] = [
   ...courses,
+  ...ai,
   ...technologies,
   ...experience,
   ...projects,
