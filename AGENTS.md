@@ -34,18 +34,24 @@ IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <pro
 ## Project Context
 
 - Portfolio app is a small React + Three + R3F scene with Zustand state and static assets in `public/`
-- Current goal on this branch is physics migration only: replace Cannon with Rapier while preserving the existing scene behavior
-- Preserve the current look and interaction model before redesigning visuals or content
-- The visual pool mesh is separate from the current collision shape. Use the existing hidden container layout as the first-pass behavioral reference
-- Cubes must still fall from the sky into a pool-like container bounded on all sides
-- Sorting and filtering behavior must remain intact after the physics migration
-- Keep tasks granular. If the migration reveals extra work, add checklist items instead of widening the current one
+- Active goal on this branch is the Portfolio 2026 update described in `docs/progress.md`: new taxonomy, pruned portfolio content, unified cards, main category filters, project constellations, family-specific shapes/colliders, and small polish.
+- Preserve the current interaction model unless a checklist item explicitly changes it: items fall from the sky into the pool-like container, remain bounded on all sides, can be sorted/filtered, can be hovered, and can be selected to open a card.
+- Preserve the current React + Three + React Three Fiber + Rapier architecture before redesigning visuals. Prefer small refactors that make the requested taxonomy and UI possible.
+- Main category filters are `dev`, `creative`, `ai`, `career`, plus the existing general `sort` behavior.
+- Project constellations are `kitchen`, `portfolio`, and `tpp`; they should be a separate right-side hover menu and should focus the project object plus related evidence items.
+- Item family describes what an object is. Categories describe which sortable story it supports. Project constellations describe project-related evidence.
+- Item families and visual targets: `project` box, `ai` cone with 3 radial segments, `stack` icosahedron with 0 detail, `creative` dodecahedron with 0 detail, `career` cylinder with 5 radial segments.
+- Family-specific Rapier colliders should be approximate and stable. Do not chase perfect collider geometry if it risks the fall/sort/select behavior.
+- Every item must include `family`, `size`, `categories`, and `projects` when relevant. Sizes are only `s`, `m`, or `l` and mean current portfolio signal strength, not years of experience.
+- If category, size, project membership, or copy is uncertain, put a `// TODO:` line directly above that item in the source data.
+- Treatment Planning Platform copy must stay public-safe and high level. Do not add proprietary details, screenshots, product internals, or confidential claims.
+- Feature-delivery remains no-tests for this loop: do not add tests, do not add test infrastructure, and do not run `npm run test`.
 - Browser/runtime verification is handled manually by Rafal outside this loop. Do not block checklist progress on browser automation in this sandbox.
+- Keep tasks granular. If implementation reveals adjacent work, add a new checklist item instead of widening the current one.
 
 ### Preserved prior AGENTS context
 
-- Portfolio app is a small React + Three + R3F scene with Zustand state and static assets in `public/`
-- Current refresh goal is foundation only: modern toolchain, runtime compatibility, and stable automation
-- Follow-up goal on `modernize`: push direct dependencies to the newest compatible stable set, especially the React 19 + Fiber/Drei/Cannon renderer stack
-- Preserve current behavior before redesigning content or visuals
-- Watch for breakpoints around `@react-three/cannon`, Three color APIs, and Vite asset handling
+- Prior physics work migrated the scene to Rapier. Keep Rapier pool bounds, falling behavior, sorting behavior, filtering behavior, and selection behavior stable during this content/UI pass.
+- The visual pool mesh is separate from the collision shape. Treat the existing hidden Rapier container layout as the first-pass behavioral reference.
+- Current refresh foundation uses modern React, Three, Fiber/Drei, Vite, TypeScript, Zustand, and Rapier. Preserve runtime compatibility and stable automation.
+- Watch for breakpoints around Three color/light APIs, Vite asset handling, and React Three Fiber/Rapier instance behavior.

@@ -1,79 +1,117 @@
-import { Sets, ExperienceType } from '../types';
-import type { ExperienceItem } from '../types';
+import type { MainCategory, SourceItem } from '../types';
 
-const vel = [0, -2, 0];
-const col = '#426271';
+const velocity: [number, number, number] = [0, -2, 0];
+const color = '#426271';
 
-const data = [
+const data: Array<{
+  title: string;
+  subtitle?: string;
+  description?: string;
+  cardFields?: SourceItem['cardFields'];
+  date: string;
+  location: string;
+  current?: boolean;
+  size: SourceItem['size'];
+  categories: MainCategory[];
+  projects: SourceItem['projects'];
+}> = [
   {
-    name: 'Align Technology, Front-end Developer',
-    fromTo: 'Nov 2022 -> current',
-    where: 'Frankfurt am Main',
+    title: 'Align Technology, Senior Software Engineer',
+    subtitle: 'senior software engineering on various industry-leading projects',
+    date: 'Nov 2022',
+    location: 'Frankfurt am Main',
     current: true,
-    size: 'xl',
-    set: [Sets.FRONTEND_DEV],
+    size: 'l',
+    categories: ['dev', 'career'],
+    projects: ['tpp'],
   },
   {
-    name: 'TouK, Front-end Developer',
-    fromTo: 'Jul 2020 -> Nov 2022',
-    where: 'Warsaw',
-    size: 'xl',
-    set: [Sets.FRONTEND_DEV],
+    title: 'TouK, Front-end Developer',
+    date: 'Jul 2020 -> Nov 2022',
+    location: 'Warsaw',
+    size: 'm',
+    categories: ['career'],
+    projects: ['kitchen'],
   },
   {
-    name: 'Itransition Group, Front-end Developer',
-    fromTo: 'Jan 2020 - Apr 2020',
-    where: 'Warsaw',
-    size: 'lg',
-    set: [Sets.FRONTEND_DEV],
+    title: 'Itransition Group, Front-end Developer',
+    date: 'Jan 2020 - Apr 2020',
+    location: 'Warsaw',
+    size: 's',
+    categories: ['career'],
+    projects: [],
   },
   {
-    name: 'Credit Suisse,  Multimedia Designer -> Front-End Developer -> Senior Web Developer',
-    fromTo: 'May 2016 - Dec 2019',
-    where: 'Wroclaw',
-    size: 'xl',
-    set: [Sets.FRONTEND_DEV],
+    title: 'Credit Suisse, Multimedia Designer -> Senior Front-end Developer',
+    date: 'May 2016 - Dec 2019',
+    location: 'Wroclaw',
+    size: 'm',
+    categories: ['career', 'dev', 'creative'],
+    projects: [],
   },
   {
-    name: 'Getback SA, Marketing Specialist -> Marketing Lead -> Creative Projects Lead',
-    fromTo: 'May 2014 - Dec 2015',
-    where: 'Wroclaw',
-    size: 'md',
-    set: [Sets.MARKETING],
+    title: 'Getback SA, Marketing Specialist -> Creative Projects Lead',
+    date: 'May 2014 - Dec 2015',
+    location: 'Wroclaw',
+    size: 'm',
+    categories: ['career', 'creative'],
+    projects: [],
   },
   {
-    name: 'Marketing / web / print freelancer',
-    fromTo: 'Sep 2007 - May 2016',
-    where: 'Wroclaw',
-    size: 'md',
-    set: [Sets.FREELANCE],
+    title: 'Marketing / web / print freelancer',
+    date: 'Sep 2007 - May 2016',
+    location: 'Wroclaw',
+    size: 'm',
+    categories: ['career', 'creative'],
+    projects: [],
   },
   {
-    name: 'University of Wroclaw, MA History',
-    fromTo: '2004 - 2011',
-    where: 'Wroclaw',
-    size: 'md',
-    set: [Sets.FREELANCE, Sets.LEARNING],
+    title: 'University of Wroclaw, Universite libre de Bruxelles',
+    date: '2004 - 2011',
+    location: 'Wroclaw, Brussels',
+    size: 'm',
+    categories: ['career'],
+    projects: [],
+    description: 'History, Political Science',
   },
   {
-    name: 'University of Wroclaw, Political Science',
-    fromTo: '2007 - 2012',
-    where: 'Wroclaw',
-    size: 'md',
-    set: [Sets.FREELANCE, Sets.LEARNING],
-  },
-  {
-    name: 'Université libre de Bruxelles, Political Science',
-    fromTo: '2011',
-    where: 'Brussels',
-    size: 'md',
-    set: [Sets.FREELANCE, Sets.LEARNING],
+    title: 'Continuous learning',
+    subtitle: 'ongoing software, 3D, creative tooling, and AI learning',
+    date: '2004 - now',
+    location: 'Remote',
+    size: 'l',
+    categories: ['career', 'dev', 'creative'],
+    projects: ['portfolio'],
+    cardFields: {
+      providers: [
+        'Pikuma',
+        'Frontend Masters',
+        'SimonDev',
+        'Bruno Simon',
+        'LinkedIn Learning/Lynda',
+        'Grant Abbitt',
+        'Wes Bos',
+        'Kent C. Dodds',
+        'TanStack',
+      ],
+      courses: [
+        '3D programming',
+        'software engineering',
+        'math and shaders for web/game dev',
+        'three.js journey',
+        'Blender and Substance Painter',
+        'Blender courses',
+        'web development',
+        'Epic React / Epic Web / Epic MCP / Testing JavaScript',
+        'React Query Essentials',
+      ],
+    },
   },
 ];
 
-export const experience: ExperienceItem[] = data.map((el) => ({
-  ...el,
-  type: ExperienceType.Experience,
-  sortingVelocity: vel,
-  customColor: col,
+export const experience: SourceItem[] = data.map((item) => ({
+  ...item,
+  family: 'career',
+  sortingVelocity: velocity,
+  customColor: color,
 }));

@@ -1,29 +1,38 @@
-import { Sets, ExperienceType } from '../types';
-import type { ProjectItem } from '../types';
+import type { SourceItem } from '../types';
 
-const vel = [-4, -2, -4];
-const col = '#956062';
+const velocity: [number, number, number] = [-4, -2, -4];
+const color = '#956062';
 
-const data = [
+export const projects: SourceItem[] = [
   {
-    name: 'Kitchen',
-    description: '3D interactive cafeteria',
+    title: 'Kitchen',
+    subtitle: '3D interactive cafeteria',
     link: 'https://kitchen.vercel.app/',
-    size: 'xl',
-    set: [Sets.CREATIVE_DEV],
+    family: 'project',
+    size: 'l',
+    categories: ['creative'],
+    projects: ['kitchen'],
+    sortingVelocity: velocity,
+    customColor: color,
   },
   {
-    name: 'Tactics',
-    description: '"Final Fantasy Tactics-like" 3D game engine concept /  wip',
-    link: 'https://project-tactics.web.app/',
-    size: 'lg',
-    set: [Sets.CREATIVE_DEV],
+    title: 'Portfolio 2026',
+    subtitle: 'interactive 3D portfolio and creative lab',
+    family: 'project',
+    size: 'm',
+    categories: ['creative', 'dev', 'ai'],
+    projects: ['portfolio'],
+    sortingVelocity: velocity,
+    customColor: color,
+  },
+  {
+    title: 'Treatment Planning Platform',
+    subtitle: 'leading dentistry treatment planning app',
+    family: 'project',
+    size: 'l',
+    categories: ['dev', 'career'],
+    projects: ['tpp'],
+    sortingVelocity: velocity,
+    customColor: color,
   },
 ];
-
-export const projects: ProjectItem[] = data.map((el) => ({
-  ...el,
-  type: ExperienceType.Project,
-  sortingVelocity: vel,
-  customColor: col,
-}));

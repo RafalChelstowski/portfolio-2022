@@ -1,17 +1,20 @@
 import isNumber from 'lodash/isNumber.js';
+import { mainCategoryOrder, projectConstellationOrder } from '../data/items';
 import { useStore } from '../store/store';
-import { Sets } from '../types';
+
+const mainFilterControls = [...mainCategoryOrder, 'sort'] as const;
 
 export function UI() {
   const displayUi = useStore((state) => state.displayUi);
   const isPresenting = useStore((state) => isNumber(state.isPresenting));
 
   return (
-    <div className="absolute top-0 left-0 w-full">
-      <div className="m-4">
-        <h1 className="text-lg mb-1">RAFAL CHELSTOWSKI</h1>
-        <h2 className="mb-1">creative frontend developer</h2>
-        <h3>
+    <div className="absolute inset-x-0 top-0 z-10">
+      <header className="m-4 max-w-[calc(100vw-2rem)] sm:max-w-md">
+        <h1 className="mb-1 text-base sm:text-lg">Rafal Chelstowski</h1>
+        <h2 className="mb-1 text-sm sm:text-base">Senior Software Engineer</h2>
+        <h2 className="mb-1 text-sm sm:text-base">Frankfurt am Main</h2>
+        <h3 className="text-sm sm:text-base">
           <a
             href="https://www.linkedin.com/in/chelstowskirafal/?locale=en_US"
             target="blank"
@@ -20,42 +23,54 @@ export function UI() {
           </a>
           <span className="mx-4">|</span>
           <a href="https://github.com/RafalChelstowski" target="blank">
-            Github
+            GitHub
           </a>
         </h3>
-      </div>
+      </header>
 
       {displayUi && !isPresenting && (
-        <div className="flex w-full place-content-center place-items-center text-sm">
-          {Object.values(Sets).map((set) => (
-            <button
-              key={set}
-              className="m-4"
-              onMouseEnter={() => {
-                useStore.setState({ sortOption: set });
-              }}
-              onMouseLeave={() => {
-                useStore.setState({ sortOption: null });
-              }}
-              type="button"
-            >
-              {set}
-            </button>
-          ))}
-          <span className="mx-4 text-white">|</span>
-          <button
-            className="m-4"
-            onMouseEnter={() => {
-              useStore.setState({ sortOption: 'sort' });
-            }}
-            onMouseLeave={() => {
-              useStore.setState({ sortOption: null });
-            }}
-            type="button"
-          >
-            sort
-          </button>
-        </div>
+        <>
+          <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 text-xs sm:text-sm">
+            {mainFilterControls.map((control) => (
+              <div key={control} className="flex items-center gap-4">
+                {control === 'sort' && (
+                  <span aria-hidden="true" className="pointer-events-none select-none text-white">
+                    |
+                  </span>
+                )}
+                <button
+                  className="px-1 py-0.5 sm:px-0 sm:py-0"
+                  onMouseEnter={() => {
+                    useStore.setState({ sortOption: control });
+                  }}
+                  onMouseLeave={() => {
+                    useStore.setState({ sortOption: null });
+                  }}
+                  type="button"
+                >
+                  {control}
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="fixed left-4 top-1/2 flex -translate-y-1/2 flex-col items-start gap-3 text-xs sm:text-sm">
+            {projectConstellationOrder.map((constellation) => (
+              <button
+                key={constellation}
+                className="block text-left"
+                onMouseEnter={() => {
+                  useStore.setState({ sortOption: constellation });
+                }}
+                onMouseLeave={() => {
+                  useStore.setState({ sortOption: null });
+                }}
+                type="button"
+              >
+                {constellation}
+              </button>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

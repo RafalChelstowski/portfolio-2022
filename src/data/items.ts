@@ -1,33 +1,76 @@
-import without from 'lodash/without.js';
-import { Sets } from '../types';
-import type { Item3d } from '../types';
-import { courses } from './courses';
+import type {
+  Item3d,
+  MainCategory,
+  ProjectConstellation,
+  SourceItem,
+} from '../types';
+import { ai } from './ai';
+import { creative } from './creative';
 import { experience } from './experience';
 import { projects } from './projects';
 import { technologies } from './technologies';
 
-export const items: Item3d[] = [
-  ...courses,
+const sourceItems: SourceItem[] = [
+  ...ai,
+  ...creative,
   ...technologies,
   ...experience,
   ...projects,
-].map((el, idx) => ({
-  ...el,
-  id: `${el.type}-${idx}`,
+];
+
+export const items: Item3d[] = sourceItems.map((item, index) => ({
+  ...item,
+  id: `${item.family}-${index}`,
 }));
 
-function createSets(): Record<string, number[]> {
-  let s = {};
-  Object.entries(Sets).forEach(([, value]) => {
-    const values = without(
-      items.map((item, idx) => (item.set?.includes(value) ? idx : undefined)),
-      undefined
-    );
+export const mainCategoryOrder: MainCategory[] = ['dev', 'creative', 'ai', 'career'];
+export const projectConstellationOrder: ProjectConstellation[] = [
+  'kitchen',
+  'portfolio',
+  'tpp',
+];
 
-    s = { ...s, [value]: values };
-  });
+function createMainCategoryGroups(): Record<MainCategory, number[]> {
+  return mainCategoryOrder.reduce<Record<MainCategory, number[]>>(
+    (groups, category) => ({
+      ...groups,
+      [category]: items.reduce<number[]>((matches, item, index) => {
+        if (item.categories.includes(category)) {
+          matches.push(index);
+        }
 
-  return s;
+        return matches;
+      }, []),
+    }),
+    {
+      dev: [],
+      creative: [],
+      ai: [],
+      career: [],
+    }
+  );
 }
 
-export const sets = createSets();
+export const mainCategoryGroups = createMainCategoryGroups();
+
+function createProjectConstellationGroups(): Record<ProjectConstellation, number[]> {
+  return projectConstellationOrder.reduce<Record<ProjectConstellation, number[]>>(
+    (groups, constellation) => ({
+      ...groups,
+      [constellation]: items.reduce<number[]>((matches, item, index) => {
+        if (item.projects.includes(constellation)) {
+          matches.push(index);
+        }
+
+        return matches;
+      }, []),
+    }),
+    {
+      kitchen: [],
+      portfolio: [],
+      tpp: [],
+    }
+  );
+}
+
+export const projectConstellationGroups = createProjectConstellationGroups();
