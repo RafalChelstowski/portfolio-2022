@@ -2,6 +2,12 @@
 
 ## Checklist
 
+- [ ] Restore visible sorting controls after feedback | AC: main controls `dev`, `creative`, `ai`, `career`, and `sort` are visibly present and interactive in the running UI; project controls `kitchen`, `portfolio`, and `tpp` are visibly present and interactive; if `displayUi` reveal logic, z-index, placement, or responsive styling hides the controls, that cause is fixed; controls remain hover-based
+- [ ] Apply header copy and typography feedback | AC: visible header name is `Rafal Chelstowski` instead of `Portfolio 2026`; role remains `Senior Software Engineer`; the subtitle/tagline sentence is removed from the visible header; `Frankfurt am Main` remains visible and uses the same header/title font treatment as the name and role; LinkedIn/GitHub links remain
+- [ ] Apply card label and text-color feedback | AC: card eyebrow/label displays only the general item family/category label such as `creative`, not combined assignment text like `creative / creative` and not project/category membership; card title keeps the family accent color; dates, locations, subtitles, descriptions, outcomes, and dynamic card-field text render black; `CLOSE` remains uppercase
+- [ ] Retune item size mapping from feedback | AC: visual scale mapping makes `l` items slightly larger than the current implementation and makes `s` and `m` items noticeably larger than the current implementation; all sizes remain stable in the pool and preserve hover/select/sort behavior
+- [ ] Make pool bands cast shadows | AC: pool band/rim meshes cast shadows as well as receive them; the existing flamingo/pool shadow improvements remain; no pool mesh loses its existing material or receive-shadow behavior
+- [ ] Final feedback-round audit | AC: `npm run typecheck`, `npm run lint`, and `npm run build` pass; the visible header matches feedback exactly; both toolbars are visible and usable; card labels/colors match feedback; item size bumps are centralized; pool bands cast shadows
 - [x] Define Portfolio 2026 taxonomy and unified item model | AC: source types support `family`, `size`, `categories`, `projects`, and flexible card fields; families are `project`, `ai`, `stack`, `creative`, `career`; sizes are restricted to `s`, `m`, `l`; old `ExperienceType`/`Sets` coupling is removed from the public item model
 - [x] Rebuild project items from the source content | AC: Kitchen, Portfolio 2026, and Treatment Planning Platform exist with required family/size/categories/projects/subtitle fields; Kitchen keeps its public link; old Tactics/Project Tactics item is gone; Treatment Planning Platform copy stays public-safe and high level
 - [x] Add AI workflow items | AC: Codex, opencode, Claude Code, openclaw, and ralph-loop exist as `ai` family items with sizes/categories/projects/subtitles matching the source content
@@ -29,12 +35,12 @@
 
 ### Positioning
 
-- Page name: Portfolio 2026.
+- Visible header name: Rafal Chelstowski.
 - Header role: Senior Software Engineer.
-- Subtitle direction: interactive 3D web tools, creative systems, and AI-assisted engineering workflows.
-- Location: Frankfurt am Main.
+- Do not show the subtitle/tagline sentence in the header.
+- Location: Frankfurt am Main, using the same header/title font treatment as the name and role.
 - Keep LinkedIn and GitHub links.
-- Overall story: senior software engineer building interactive 3D web tools, exploring creative ideas, and incorporating AI into everyday workflow.
+- Overall content story can still support senior software engineering, interactive 3D web tools, creative systems, and AI-assisted workflow, but do not use that sentence as visible header copy.
 
 ### Main Categories
 
@@ -261,7 +267,7 @@ Selecting a project constellation should pull the project object plus related ev
 
 Use one flexible card model across item families:
 
-- family/category label on top
+- general family/category label on top only; do not list category/project assignments in the card eyebrow
 - optional year/date/location
 - title
 - optional subtitle
@@ -287,11 +293,17 @@ Project cards should support an outcome/impact line, especially Kitchen and Trea
 - Family-specific colliders should be approximate and stable, not perfect.
 - Preserve sorting, filtering, selection, hover, and pool behavior before visual redesign.
 - Increase shadow box or shadow coverage so the flamingo casts a visible shadow; check whether Drei baked shadows help or whether current light/shadow settings are enough.
+- Pool bands/rims should also cast shadows, not only receive them.
 - Increase speed of items while sorting through main categories.
+- Feedback size tuning: bump `l` item scale slightly; bump `s` and `m` item scale more noticeably.
 - Remove `.vscode` because it is obsolete.
 
 ## Findings
 
+- Feedback 1 from Rafal supersedes the original header copy: visible name should be `Rafal Chelstowski`, role remains `Senior Software Engineer`, the long subtitle/tagline should be deleted, and `Frankfurt am Main` should use the same header/title font treatment.
+- Feedback 1 highest-priority issue: the main sorting toolbar and project toolbar are not appearing in the reviewed UI, leaving no way to sort by categories/projects. Fix toolbar visibility/reveal before cosmetic follow-ups.
+- Feedback 1 card rule: do not render combined labels like `creative / creative`; show only the general family/category label in the card eyebrow. Keep card titles accented, but make descriptions, dates, and locations black.
+- Feedback 1 visual rule: increase item visual sizes, with `l` only slightly larger and `s`/`m` bumped more; also ensure pool bands/rims cast shadows.
 - Unified public item model is now `SourceItem/Item3d` in `src/types/index.ts` with strict `family` and `size` unions and flexible optional card fields (`subtitle`, `description`, `outcome`, `link`, `cardFields`), so future content tasks should avoid reintroducing `type`/`set`.
 - Main filtering now consumes `mainCategoryGroups` derived from `item.categories` in `src/data/items.ts`, so follow-up filter/project-menu work should build from data derivation rather than static enums.
 - AI workflow entries now live in `src/data/ai.ts` and are merged in `src/data/items.ts`, so future AI-only edits can stay isolated from stack data pruning.
