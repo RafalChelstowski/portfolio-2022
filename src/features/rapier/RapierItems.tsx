@@ -55,6 +55,7 @@ const familyOrder: ItemFamily[] = ['project', 'ai', 'stack', 'creative', 'career
 interface FamilyBatch {
   family: ItemFamily;
   indexes: number[];
+  bodySlotToItemIndex: Map<number, number>;
   instances: InstancedRigidBodyProps[];
   colors: Float32Array;
 }
@@ -189,12 +190,15 @@ export function RapierItems(): JSX.Element {
       const indexes = itemInstanceDescriptors
         .filter((descriptor) => items[descriptor.index].family === family)
         .map((descriptor) => descriptor.index);
+      const bodySlotToItemIndex = new Map<number, number>();
 
-      const familyInstances = indexes.map<InstancedRigidBodyProps>((itemIndex, localIndex) => {
+      const familyInstances = indexes.map<InstancedRigidBodyProps>((itemIndex) => {
         const descriptor = itemInstanceDescriptors[itemIndex];
+        const instanceKey = itemIndex;
+        bodySlotToItemIndex.set(instanceKey, itemIndex);
 
         return {
-          key: localIndex,
+          key: instanceKey,
           position: descriptor.spawnPosition,
           rotation: descriptor.initialRotationSeed,
           scale: descriptor.scale,
@@ -216,6 +220,7 @@ export function RapierItems(): JSX.Element {
       return {
         family,
         indexes,
+        bodySlotToItemIndex,
         instances: familyInstances,
         colors: familyColors,
       };
@@ -281,12 +286,13 @@ export function RapierItems(): JSX.Element {
       const batchBodies = familyRuntimeRef.current[batch.family].bodies;
 
       if (batchBodies) {
-        for (let localIndex = 0; localIndex < batch.indexes.length; localIndex += 1) {
-          const body = batchBodies[localIndex];
+        for (let bodySlot = 0; bodySlot < batchBodies.length; bodySlot += 1) {
+          const itemIndex = batch.bodySlotToItemIndex.get(bodySlot);
+          const body = batchBodies[bodySlot];
 
-          if (body) {
+          if (itemIndex !== undefined && body) {
             hasAnyBody = true;
-            rigidBodies[batch.indexes[localIndex]] = body;
+            rigidBodies[itemIndex] = body;
           }
         }
       }
