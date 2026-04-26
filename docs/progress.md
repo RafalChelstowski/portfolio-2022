@@ -2,7 +2,7 @@
 
 ## Checklist
 
-- [ ] Define Portfolio 2026 taxonomy and unified item model | AC: source types support `family`, `size`, `categories`, `projects`, and flexible card fields; families are `project`, `ai`, `stack`, `creative`, `career`; sizes are restricted to `s`, `m`, `l`; old `ExperienceType`/`Sets` coupling is removed from the public item model
+- [x] Define Portfolio 2026 taxonomy and unified item model | AC: source types support `family`, `size`, `categories`, `projects`, and flexible card fields; families are `project`, `ai`, `stack`, `creative`, `career`; sizes are restricted to `s`, `m`, `l`; old `ExperienceType`/`Sets` coupling is removed from the public item model
 - [ ] Rebuild project items from the source content | AC: Kitchen, Portfolio 2026, and Treatment Planning Platform exist with required family/size/categories/projects/subtitle fields; Kitchen keeps its public link; old Tactics/Project Tactics item is gone; Treatment Planning Platform copy stays public-safe and high level
 - [ ] Add AI workflow items | AC: Codex, opencode, Claude Code, openclaw, and ralph-loop exist as `ai` family items with sizes/categories/projects/subtitles matching the source content
 - [ ] Prune and rebuild stack items | AC: stack items match the source content; obsolete old stack entries are removed; React Query has a `// TODO:` line directly above the item noting the public/personal project membership uncertainty
@@ -292,4 +292,5 @@ Project cards should support an outcome/impact line, especially Kitchen and Trea
 
 ## Findings
 
-- No findings yet.
+- Unified public item model is now `SourceItem/Item3d` in `src/types/index.ts` with strict `family` and `size` unions and flexible optional card fields (`subtitle`, `description`, `outcome`, `link`, `cardFields`), so future content tasks should avoid reintroducing `type`/`set`.
+- Main filtering now consumes `mainCategoryGroups` derived from `item.categories` in `src/data/items.ts`, so follow-up filter/project-menu work should build from data derivation rather than static enums.

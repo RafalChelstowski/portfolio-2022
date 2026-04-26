@@ -1,190 +1,218 @@
-import { Sets, ExperienceType } from '../types';
-import type { TechnologyItem } from '../types';
+import type { MainCategory, SourceItem } from '../types';
 
-const data = [
+const velocity: [number, number, number] = [4, -2, 4];
+const color = '#d89ea6';
+
+function categoriesFromLegacySets(legacySets: string[]): MainCategory[] {
+  const values: MainCategory[] = [];
+
+  if (legacySets.includes('frontend dev')) {
+    values.push('dev');
+  }
+
+  if (legacySets.includes('creative dev')) {
+    values.push('creative');
+  }
+
+  if (legacySets.includes('marketing lead') || legacySets.includes('freelancer')) {
+    if (!values.includes('career')) {
+      values.push('career');
+    }
+  }
+
+  if (values.length === 0) {
+    values.push('dev');
+  }
+
+  return values;
+}
+
+const data: Array<{
+  title: string;
+  size: SourceItem['size'];
+  categories: MainCategory[];
+}> = [
   {
-    name: 'react',
-    size: 'xl',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'react',
+    size: 'l',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'angular.js',
-    size: 'sm',
-    set: [Sets.FRONTEND_DEV],
+    title: 'angular.js',
+    size: 's',
+    categories: categoriesFromLegacySets(['frontend dev']),
   },
   {
-    name: 'IBM carbon design system',
-    size: 'sm',
-    set: [Sets.FRONTEND_DEV],
+    title: 'IBM carbon design system',
+    size: 's',
+    categories: categoriesFromLegacySets(['frontend dev']),
   },
   {
-    name: 'storybook',
-    size: 'sm',
-    set: [Sets.FRONTEND_DEV],
+    title: 'storybook',
+    size: 's',
+    categories: categoriesFromLegacySets(['frontend dev']),
   },
   {
-    name: 'draft-js',
-    size: 'sm',
-    set: [Sets.FRONTEND_DEV],
+    title: 'draft-js',
+    size: 's',
+    categories: categoriesFromLegacySets(['frontend dev']),
   },
   {
-    name: 'typescript',
-    size: 'lg',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'typescript',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'react-query',
-    size: 'lg',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'react-query',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'three.js',
-    size: 'md',
-    set: [Sets.CREATIVE_DEV],
+    title: 'three.js',
+    size: 'm',
+    categories: categoriesFromLegacySets(['creative dev']),
   },
   {
-    name: 'react-three-fiber',
-    size: 'lg',
-    set: [Sets.CREATIVE_DEV],
+    title: 'react-three-fiber',
+    size: 'm',
+    categories: categoriesFromLegacySets(['creative dev']),
   },
   {
-    name: 'redux',
-    size: 'lg',
-    set: [Sets.FRONTEND_DEV],
+    title: 'redux',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev']),
   },
   {
-    name: 'zustand',
-    size: 'lg',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'zustand',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'firebase',
-    size: 'md',
-    set: [Sets.CREATIVE_DEV],
+    title: 'firebase',
+    size: 'm',
+    categories: categoriesFromLegacySets(['creative dev']),
   },
   {
-    name: 'jest',
-    size: 'lg',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'jest',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'react-testing-library',
-    size: 'lg',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'react-testing-library',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'cypress',
-    size: 'md',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'cypress',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'tailwindcss',
-    size: 'md',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'tailwindcss',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'react-transition-group',
-    size: 'md',
-    set: [Sets.CREATIVE_DEV],
+    title: 'react-transition-group',
+    size: 'm',
+    categories: categoriesFromLegacySets(['creative dev']),
   },
   {
-    name: 'react-spring',
-    size: 'md',
-    set: [Sets.CREATIVE_DEV],
+    title: 'react-spring',
+    size: 'm',
+    categories: categoriesFromLegacySets(['creative dev']),
   },
   {
-    name: 'es-lint/config-airbnb/prettier',
-    size: 'md',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'es-lint/config-airbnb/prettier',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'scss',
-    size: 'md',
-    set: [Sets.FRONTEND_DEV],
+    title: 'scss',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev']),
   },
   {
-    name: 'git',
-    size: 'md',
-    set: [Sets.FRONTEND_DEV],
+    title: 'git',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev']),
   },
   {
-    name: 'agile - team member',
-    size: 'lg',
-    set: [Sets.FRONTEND_DEV],
+    title: 'agile - team member',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev']),
   },
   {
-    name: 'macos',
-    size: 'sm',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'macos',
+    size: 's',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'vscode',
-    size: 'md',
-    set: [Sets.FRONTEND_DEV, Sets.CREATIVE_DEV],
+    title: 'vscode',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev', 'creative dev']),
   },
   {
-    name: 'blender',
-    size: 'lg',
-    set: [Sets.CREATIVE_DEV],
+    title: 'blender',
+    size: 'm',
+    categories: categoriesFromLegacySets(['creative dev']),
   },
   {
-    name: 'adobe substance painter',
-    size: 'md',
-    set: [Sets.CREATIVE_DEV],
+    title: 'adobe substance painter',
+    size: 'm',
+    categories: categoriesFromLegacySets(['creative dev']),
   },
   {
-    name: 'trello',
-    size: 'sm',
-    set: [Sets.CREATIVE_DEV],
+    title: 'trello',
+    size: 's',
+    categories: categoriesFromLegacySets(['creative dev']),
   },
   {
-    name: 'adobe photoshop, illustrator, inDesign',
-    size: 'md',
-    set: [Sets.MARKETING, Sets.FREELANCE],
+    title: 'adobe photoshop, illustrator, inDesign',
+    size: 'm',
+    categories: categoriesFromLegacySets(['marketing lead', 'freelancer']),
   },
   {
-    name: 'affinity photo, designer, publisher',
-    size: 'md',
-    set: [Sets.MARKETING, Sets.FREELANCE],
+    title: 'affinity photo, designer, publisher',
+    size: 'm',
+    categories: categoriesFromLegacySets(['marketing lead', 'freelancer']),
   },
   {
-    name: 'marketing team lead',
-    size: 'md',
-    set: [Sets.MARKETING],
+    title: 'marketing team lead',
+    size: 'm',
+    categories: categoriesFromLegacySets(['marketing lead']),
   },
   {
-    name: 'ui design',
-    size: 'md',
-    set: [Sets.FRONTEND_DEV],
+    title: 'ui design',
+    size: 'm',
+    categories: categoriesFromLegacySets(['frontend dev']),
   },
   {
-    name: 'branding / corporate branding',
-    size: 'md',
-    set: [Sets.MARKETING, Sets.FREELANCE, Sets.FRONTEND_DEV],
+    title: 'branding / corporate branding',
+    size: 'm',
+    categories: categoriesFromLegacySets(['marketing lead', 'freelancer', 'frontend dev']),
   },
   {
-    name: 'desktop publishing',
-    size: 'md',
-    set: [Sets.MARKETING],
+    title: 'desktop publishing',
+    size: 'm',
+    categories: categoriesFromLegacySets(['marketing lead']),
   },
   {
-    name: 'creative copywriting',
-    size: 'lg',
-    set: [Sets.MARKETING, Sets.FREELANCE],
+    title: 'creative copywriting',
+    size: 'm',
+    categories: categoriesFromLegacySets(['marketing lead', 'freelancer']),
   },
   {
-    name: 'wordpress administration',
-    size: 'sm',
-    set: [Sets.MARKETING, Sets.FREELANCE],
+    title: 'wordpress administration',
+    size: 's',
+    categories: categoriesFromLegacySets(['marketing lead', 'freelancer']),
   },
 ];
 
-const vel = [4, -2, 4];
-const col = '#d89ea6';
-
-export const technologies: TechnologyItem[] = data.map((el) => ({
-  ...el,
-  type: ExperienceType.Technology,
-  sortingVelocity: vel,
-  customColor: col,
+export const technologies: SourceItem[] = data.map((item) => ({
+  ...item,
+  family: 'stack',
+  projects: [],
+  sortingVelocity: velocity,
+  customColor: color,
 }));

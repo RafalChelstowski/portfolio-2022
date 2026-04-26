@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import type { Sets } from '../types';
+import type { SortOption } from '../types';
 
 export type Store = {
   displayUi: boolean;
   isPresenting: number | null;
-  sortOption: Sets | 'sort' | null;
+  sortOption: SortOption | null;
 };
 
 const useStore = create<Store>()(() => ({

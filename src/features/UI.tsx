@@ -1,6 +1,6 @@
 import isNumber from 'lodash/isNumber.js';
+import { mainCategoryOrder } from '../data/items';
 import { useStore } from '../store/store';
-import { Sets } from '../types';
 
 export function UI() {
   const displayUi = useStore((state) => state.displayUi);
@@ -27,7 +27,7 @@ export function UI() {
 
       {displayUi && !isPresenting && (
         <div className="flex w-full place-content-center place-items-center text-sm">
-          {Object.values(Sets).map((set) => (
+          {mainCategoryOrder.map((set) => (
             <button
               key={set}
               className="m-4"

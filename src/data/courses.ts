@@ -1,110 +1,101 @@
-import { Sets, ExperienceType } from '../types';
-import type { LearningItem } from '../types';
+import type { SourceItem } from '../types';
 
-const vel = [3, -2, -3];
-const col = '#17829b';
+const velocity: [number, number, number] = [3, -2, -3];
+const color = '#17829b';
 
-const data = [
+const data: Array<{
+  title: string;
+  subtitle?: string;
+  link?: string;
+  size: SourceItem['size'];
+}> = [
   {
-    name: '3D Computer Graphics Programming',
-    description: 'pikuma.com',
+    title: '3D Computer Graphics Programming',
+    subtitle: 'pikuma.com',
     link: 'https://pikuma.com/courses/learn-3d-computer-graphics-programming',
-    size: 'md',
-    set: [Sets.LEARNING],
+    size: 'm',
   },
   {
-    name: 'GLSL Shaders from scratch',
+    title: 'GLSL Shaders from scratch',
     link: 'https://simondev.teachable.com/p/glsl-shaders-from-scratch',
-    size: 'md',
-    set: [Sets.LEARNING],
+    size: 'm',
   },
   {
-    name: 'three.js journey',
-    description: 'Bruno Simon',
+    title: 'three.js journey',
+    subtitle: 'Bruno Simon',
     link: 'https://threejs-journey.com/',
-    size: 'md',
-    set: [Sets.LEARNING],
+    size: 'm',
   },
   {
-    name: 'Blender and Substance Painter: Architectural Visualization',
-    description: 'Darrin Lile',
+    title: 'Blender and Substance Painter: Architectural Visualization',
+    subtitle: 'Darrin Lile',
     link: 'https://www.linkedin.com/learning/blender-and-substance-painter-architectural-visualization',
-    size: 'md',
-    set: [Sets.LEARNING],
+    size: 'm',
   },
   {
-    name: 'Blender Environment Artist',
-    description: 'Grant Abbitt, gamedev.tv',
-    size: 'sm',
-    set: [Sets.LEARNING],
+    title: 'Blender Environment Artist',
+    subtitle: 'Grant Abbitt, gamedev.tv',
+    size: 's',
   },
   {
-    name: 'Complete Blender Creator 2.8',
-    description: 'Rick Davidson, gamedev.tv',
+    title: 'Complete Blender Creator 2.8',
+    subtitle: 'Rick Davidson, gamedev.tv',
     link: 'https://www.linkedin.com/learning/blender-and-substance-painter-architectural-visualization',
-    size: 'sm',
-    set: [Sets.LEARNING],
+    size: 's',
   },
   {
-    name: 'Blender Character Creator v2.0',
-    description: 'Grant Abbitt, gamedev.tv',
-    size: 'sm',
-    set: [Sets.LEARNING],
+    title: 'Blender Character Creator v2.0',
+    subtitle: 'Grant Abbitt, gamedev.tv',
+    size: 's',
   },
   {
-    name: 'Creating 3D enviroments in Blender',
-    description: 'Rob Tuytel, Erik Selin, udemy',
-    size: 'sm',
-    set: [Sets.LEARNING],
+    title: 'Creating 3D enviroments in Blender',
+    subtitle: 'Rob Tuytel, Erik Selin, udemy',
+    size: 's',
   },
   {
-    name: 'Advanced React and GraphQL',
-    description: 'Wes Bos',
-    size: 'md',
-    set: [Sets.LEARNING],
+    title: 'Advanced React and GraphQL',
+    subtitle: 'Wes Bos',
+    size: 'm',
   },
   {
-    name: 'ES6 for Everyone',
-    description: 'Wes Bos',
-    size: 'md',
-    set: [Sets.LEARNING],
+    title: 'ES6 for Everyone',
+    subtitle: 'Wes Bos',
+    size: 'm',
   },
   {
-    name: 'Learn Node',
-    description: 'Wes Bos',
-    size: 'md',
-    set: [Sets.LEARNING],
+    title: 'Learn Node',
+    subtitle: 'Wes Bos',
+    size: 'm',
   },
   {
-    name: 'Epic React',
-    description: 'Kent C. Dodds',
+    title: 'Epic React',
+    subtitle: 'Kent C. Dodds',
     link: 'https://epicreact.dev/',
-    size: 'md',
-    set: [Sets.LEARNING],
+    size: 'm',
   },
   {
-    name: 'Testing Javascript',
-    description: 'Kent C. Dodds',
+    title: 'Testing Javascript',
+    subtitle: 'Kent C. Dodds',
     link: 'https://testingjavascript.com/',
-    size: 'md',
-    set: [Sets.LEARNING],
+    size: 'm',
   },
   {
-    name: 'React Query Essentials',
+    title: 'React Query Essentials',
     link: 'https://learn.tanstack.com/p/react-query-essentials',
-    size: 'md',
-    set: [Sets.LEARNING],
+    size: 'm',
   },
   {
-    name: 'math - weekly private lessons',
-    size: 'md',
-    set: [Sets.LEARNING],
+    title: 'math - weekly private lessons',
+    size: 'm',
   },
 ];
 
-export const courses: LearningItem[] = data.map((el) => ({
-  ...el,
-  type: ExperienceType.Learning,
-  sortingVelocity: vel,
-  customColor: col,
+export const courses: SourceItem[] = data.map((item) => ({
+  ...item,
+  family: 'career',
+  categories: ['career'],
+  projects: [],
+  sortingVelocity: velocity,
+  customColor: color,
 }));

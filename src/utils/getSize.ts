@@ -1,12 +1,14 @@
-export function getSize(size: string): [x: number, y: number, z: number] {
+import type { ItemSize } from '../types';
+
+export function getSize(size: ItemSize): [x: number, y: number, z: number] {
   switch (size) {
-    case 'xl':
+    case 'l':
       return [0.75, 0.75, 0.75];
 
-    case 'lg':
+    case 'm':
       return [0.5, 0.5, 0.5];
 
-    case 'sm':
+    case 's':
       return [0.3, 0.3, 0.3];
 
     default:

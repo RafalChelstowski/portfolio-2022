@@ -1,33 +1,42 @@
-import without from 'lodash/without.js';
-import { Sets } from '../types';
-import type { Item3d } from '../types';
+import type { Item3d, MainCategory, SourceItem } from '../types';
 import { courses } from './courses';
 import { experience } from './experience';
 import { projects } from './projects';
 import { technologies } from './technologies';
 
-export const items: Item3d[] = [
+const sourceItems: SourceItem[] = [
   ...courses,
   ...technologies,
   ...experience,
   ...projects,
-].map((el, idx) => ({
-  ...el,
-  id: `${el.type}-${idx}`,
+];
+
+export const items: Item3d[] = sourceItems.map((item, index) => ({
+  ...item,
+  id: `${item.family}-${index}`,
 }));
 
-function createSets(): Record<string, number[]> {
-  let s = {};
-  Object.entries(Sets).forEach(([, value]) => {
-    const values = without(
-      items.map((item, idx) => (item.set?.includes(value) ? idx : undefined)),
-      undefined
-    );
+export const mainCategoryOrder: MainCategory[] = ['dev', 'creative', 'ai', 'career'];
 
-    s = { ...s, [value]: values };
-  });
+function createMainCategoryGroups(): Record<MainCategory, number[]> {
+  return mainCategoryOrder.reduce<Record<MainCategory, number[]>>(
+    (groups, category) => ({
+      ...groups,
+      [category]: items.reduce<number[]>((matches, item, index) => {
+        if (item.categories.includes(category)) {
+          matches.push(index);
+        }
 
-  return s;
+        return matches;
+      }, []),
+    }),
+    {
+      dev: [],
+      creative: [],
+      ai: [],
+      career: [],
+    }
+  );
 }
 
-export const sets = createSets();
+export const mainCategoryGroups = createMainCategoryGroups();

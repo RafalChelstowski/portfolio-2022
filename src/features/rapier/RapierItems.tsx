@@ -22,7 +22,7 @@ import {
   Vector3,
 } from 'three';
 
-import { items, sets } from '../../data/items';
+import { items, mainCategoryGroups } from '../../data/items';
 import { useStore } from '../../store/store';
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
 import {
@@ -278,7 +278,7 @@ export function RapierItems(): JSX.Element {
       return;
     }
 
-    const itemSet = new Set(sets[sortOption]);
+    const itemSet = new Set(mainCategoryGroups[sortOption]);
 
     for (let index = 0; index < instanceCount; index += 1) {
       const rigidBody = rigidBodies[index];
