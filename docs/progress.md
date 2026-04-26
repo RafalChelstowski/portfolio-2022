@@ -22,7 +22,7 @@
 - [x] Increase sorting motion speed | AC: main category and general sorting movement are visibly faster in the physics constants or steering logic while remaining stable enough for items to stay controllable
 - [x] Improve shadow coverage | AC: light/shadow settings or Drei shadow support are adjusted so the flamingo/pool scene has stronger visible shadow coverage without removing existing lighting/environment setup
 - [x] Apply basic responsive overlay cleanup | AC: header, main filters, right-side project menu, and cards avoid obvious overlap or unreadability on narrower screens using existing CSS/Tailwind patterns
-- [ ] Remove obsolete `.vscode` project config | AC: `.vscode/launch.json` is deleted and no `.vscode` project config remains tracked in the working tree
+- [x] Remove obsolete `.vscode` project config | AC: `.vscode/launch.json` is deleted and no `.vscode` project config remains tracked in the working tree
 - [ ] Final content and behavior audit | AC: every source item has family, size, categories, and projects field; every size is `s`, `m`, or `l`; TODO comments are present only for the specified uncertainties; no confidential Treatment Planning Platform detail is introduced; `npm run typecheck`, `npm run lint`, and `npm run build` pass
 
 ## Source Content
