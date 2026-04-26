@@ -184,27 +184,25 @@ export function RapierItems(): JSX.Element {
     }
   }, []);
 
-  const instances = useMemo<InstancedRigidBodyProps[]>(
-    () =>
-      itemInstanceDescriptors.map((descriptor) => ({
-        key: descriptor.index,
-        position: descriptor.spawnPosition,
-        rotation: descriptor.initialRotationSeed,
-        scale: descriptor.scale,
-        onCollisionEnter: (payload) => {
-          markFirstPoolContact(descriptor.index, payload);
-        },
-      })),
-    [markFirstPoolContact]
-  );
-
   const familyBatches = useMemo<FamilyBatch[]>(() => {
     const batches = familyOrder.map((family) => {
       const indexes = itemInstanceDescriptors
         .filter((descriptor) => items[descriptor.index].family === family)
         .map((descriptor) => descriptor.index);
 
-      const familyInstances = indexes.map((index) => instances[index]);
+      const familyInstances = indexes.map<InstancedRigidBodyProps>((itemIndex, localIndex) => {
+        const descriptor = itemInstanceDescriptors[itemIndex];
+
+        return {
+          key: localIndex,
+          position: descriptor.spawnPosition,
+          rotation: descriptor.initialRotationSeed,
+          scale: descriptor.scale,
+          onCollisionEnter: (payload) => {
+            markFirstPoolContact(itemIndex, payload);
+          },
+        };
+      });
       const familyColors = new Float32Array(indexes.length * 3);
 
       for (let localIndex = 0; localIndex < indexes.length; localIndex += 1) {
@@ -224,7 +222,7 @@ export function RapierItems(): JSX.Element {
     });
 
     return batches.filter((batch) => batch.indexes.length > 0);
-  }, [instances]);
+  }, [markFirstPoolContact]);
 
   const shadowDepthMaterial = useMemo(
     () =>
