@@ -1,11 +1,15 @@
 import {
+  BallCollider,
+  ConeCollider,
+  CuboidCollider,
+  CylinderCollider,
   InstancedRigidBodies,
   type CollisionEnterPayload,
   type InstancedRigidBodyProps,
   type RapierRigidBody,
 } from '@react-three/rapier';
 import { useFrame } from '@react-three/fiber';
-import { useCallback, useMemo, useRef, useEffect, useState, type JSX } from 'react';
+import { useCallback, useMemo, useRef, useEffect, useState, type JSX, type ReactNode } from 'react';
 import {
   Color,
   type BufferAttribute,
@@ -126,6 +130,26 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
       <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
     </cylinderGeometry>
   );
+}
+
+function getFamilyColliderNodes(family: ItemFamily): ReactNode[] {
+  if (family === 'project') {
+    return [<CuboidCollider key="project-collider" args={[0.5, 0.5, 0.5]} />];
+  }
+
+  if (family === 'ai') {
+    return [<ConeCollider key="ai-collider" args={[0.62, 0.54]} />];
+  }
+
+  if (family === 'stack') {
+    return [<BallCollider key="stack-collider" args={[0.78]} />];
+  }
+
+  if (family === 'creative') {
+    return [<BallCollider key="creative-collider" args={[0.82]} />];
+  }
+
+  return [<CylinderCollider key="career-collider" args={[0.59, 0.62]} />];
 }
 
 export function RapierItems(): JSX.Element {
@@ -458,7 +482,8 @@ export function RapierItems(): JSX.Element {
           ref={(value) => {
             familyRuntimeRef.current[batch.family].bodies = value;
           }}
-          colliders="cuboid"
+          colliders={false}
+          colliderNodes={getFamilyColliderNodes(batch.family)}
           instances={batch.instances}
           mass={rapierPhysicsConstants.items.mass}
           canSleep={rapierPhysicsConstants.items.canSleep}
