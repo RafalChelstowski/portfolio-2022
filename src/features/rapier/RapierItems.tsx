@@ -22,7 +22,12 @@ import {
   Vector3,
 } from 'three';
 
-import { items, mainCategoryGroups } from '../../data/items';
+import {
+  items,
+  mainCategoryGroups,
+  projectConstellationGroups,
+} from '../../data/items';
+import type { MainCategory, ProjectConstellation } from '../../types';
 import { useStore } from '../../store/store';
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
 import {
@@ -278,7 +283,11 @@ export function RapierItems(): JSX.Element {
       return;
     }
 
-    const itemSet = new Set(mainCategoryGroups[sortOption]);
+    const groupedIndexes =
+      sortOption in mainCategoryGroups
+        ? mainCategoryGroups[sortOption as MainCategory]
+        : projectConstellationGroups[sortOption as ProjectConstellation];
+    const itemSet = new Set(groupedIndexes);
 
     for (let index = 0; index < instanceCount; index += 1) {
       const rigidBody = rigidBodies[index];

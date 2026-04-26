@@ -11,7 +11,7 @@ export type ItemSize = 's' | 'm' | 'l';
 export type MainCategory = 'dev' | 'creative' | 'ai' | 'career';
 export type ProjectConstellation = 'kitchen' | 'portfolio' | 'tpp';
 
-export type SortOption = MainCategory | 'sort';
+export type SortOption = MainCategory | ProjectConstellation | 'sort';
 
 export type CardFieldValue = string | string[];
 

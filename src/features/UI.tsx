@@ -1,5 +1,5 @@
 import isNumber from 'lodash/isNumber.js';
-import { mainCategoryOrder } from '../data/items';
+import { mainCategoryOrder, projectConstellationOrder } from '../data/items';
 import { useStore } from '../store/store';
 
 const mainFilterControls = [...mainCategoryOrder, 'sort'] as const;
@@ -33,23 +33,42 @@ export function UI() {
       </header>
 
       {displayUi && !isPresenting && (
-        <div className="flex w-full place-content-center place-items-center text-sm">
-          {mainFilterControls.map((control) => (
-            <button
-              key={control}
-              className="m-4"
-              onMouseEnter={() => {
-                useStore.setState({ sortOption: control });
-              }}
-              onMouseLeave={() => {
-                useStore.setState({ sortOption: null });
-              }}
-              type="button"
-            >
-              {control}
-            </button>
-          ))}
-        </div>
+        <>
+          <div className="flex w-full place-content-center place-items-center text-sm">
+            {mainFilterControls.map((control) => (
+              <button
+                key={control}
+                className="m-4"
+                onMouseEnter={() => {
+                  useStore.setState({ sortOption: control });
+                }}
+                onMouseLeave={() => {
+                  useStore.setState({ sortOption: null });
+                }}
+                type="button"
+              >
+                {control}
+              </button>
+            ))}
+          </div>
+          <div className="fixed right-4 top-1/2 flex -translate-y-1/2 flex-col text-right text-sm">
+            {projectConstellationOrder.map((constellation) => (
+              <button
+                key={constellation}
+                className="my-3"
+                onMouseEnter={() => {
+                  useStore.setState({ sortOption: constellation });
+                }}
+                onMouseLeave={() => {
+                  useStore.setState({ sortOption: null });
+                }}
+                type="button"
+              >
+                {constellation}
+              </button>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
