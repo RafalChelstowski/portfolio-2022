@@ -11,13 +11,9 @@ export function UI() {
   return (
     <div className="absolute inset-x-0 top-0 z-10">
       <header className="m-4 max-w-[calc(100vw-2rem)] sm:max-w-md">
-        <h1 className="mb-1 text-base sm:text-lg">Portfolio 2026</h1>
+        <h1 className="mb-1 text-base sm:text-lg">Rafal Chelstowski</h1>
         <h2 className="mb-1 text-sm sm:text-base">Senior Software Engineer</h2>
-        <p className="mb-1 text-sm text-white sm:text-base">
-          Interactive 3D web tools, creative systems, and AI-assisted engineering
-          workflows.
-        </p>
-        <p className="mb-1 text-sm text-white sm:text-base">Frankfurt am Main</p>
+        <h2 className="mb-1 text-sm sm:text-base">Frankfurt am Main</h2>
         <h3 className="text-sm sm:text-base">
           <a
             href="https://www.linkedin.com/in/chelstowskirafal/?locale=en_US"
