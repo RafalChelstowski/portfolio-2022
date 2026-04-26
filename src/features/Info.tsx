@@ -17,6 +17,13 @@ function renderCardFieldValue(value: CardFieldValue): string {
   return Array.isArray(value) ? value.join(', ') : value;
 }
 
+function formatDisplayDate(value: string): string {
+  return value.replace(
+    /\b(january|jan|february|feb|march|mar|april|apr|may|june|jun|july|jul|august|aug|september|sep|sept|october|oct|november|nov|december|dec)\b/gi,
+    (match) => match.toUpperCase(),
+  );
+}
+
 export function Info(): JSX.Element | null {
   const isPresenting = useStore((state) => state.isPresenting);
 
@@ -32,7 +39,7 @@ export function Info(): JSX.Element | null {
     <Html position={[4.5, 7, 1]}>
       <div className={`w-96 bg-white/95 p-6 rounded-lg ${familyStyles[item.family]}`}>
         <p className="mb-2">{familyLabel}</p>
-        {item.date && <p className="mb-2">{item.date}</p>}
+        {item.date && <p className="mb-2">{formatDisplayDate(item.date)}</p>}
         <p className="text-xl mb-2">{item.title}</p>
         {item.location && <p className="mb-2">{item.location}</p>}
         {item.subtitle && <p className="mb-2">{item.subtitle}</p>}
