@@ -79,7 +79,7 @@ Canonical pass-3 project content:
 
 ## Tasks
 
-- [ ] Normalize optional card text fields | AC: `subtitle` and `description` are treated as optional content everywhere; items may omit either field without fallback filler copy; card rendering stays stable.
+- [x] Normalize optional card text fields | AC: `subtitle` and `description` are treated as optional content everywhere; items may omit either field without fallback filler copy; card rendering stays stable.
 
 - [ ] Apply pass-3 dataset size corrections | AC: `opencode`, `Creative copywriting`, `React`, and `Neovim / tmux / terminal / Ghostty` use the sizes from this note; no unrelated item size changes are made.
 
