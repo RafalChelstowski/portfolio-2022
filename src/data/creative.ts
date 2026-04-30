@@ -17,7 +17,6 @@ export const creative: SourceItem[] = [
   // TODO: confirm whether this should connect to older career/freelance evidence only, or stay unassigned to project constellations
   {
     title: 'Adobe Creative Suite',
-    subtitle: 'visual design and production tooling',
     family: 'creative',
     size: 'm',
     categories: ['creative'],
@@ -27,7 +26,6 @@ export const creative: SourceItem[] = [
   },
   {
     title: 'Affinity Suite',
-    subtitle: 'visual design and publishing tooling',
     family: 'creative',
     size: 'm',
     categories: ['creative'],
@@ -37,7 +35,6 @@ export const creative: SourceItem[] = [
   },
   {
     title: 'Blender',
-    subtitle: '3D modeling, scene thinking, and asset creation',
     family: 'creative',
     size: 'l',
     categories: ['creative'],

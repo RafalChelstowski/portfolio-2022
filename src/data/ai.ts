@@ -6,7 +6,7 @@ const color = '#6b4d74';
 export const ai: SourceItem[] = [
   {
     title: 'Codex',
-    subtitle: 'agentic coding workflow for planning, implementation, and review',
+    subtitle: 'my main harness for openai models',
     family: 'ai',
     size: 'l',
     categories: ['ai', 'dev'],
@@ -16,7 +16,7 @@ export const ai: SourceItem[] = [
   },
   {
     title: 'opencode',
-    subtitle: 'terminal AI coding workflow and local development automation',
+    subtitle: 'my support harness for anthropic/other models',
     family: 'ai',
     size: 'm',
     categories: ['ai', 'dev'],
@@ -26,7 +26,6 @@ export const ai: SourceItem[] = [
   },
   {
     title: 'Claude Code',
-    subtitle: 'AI coding assistant used for implementation and codebase navigation',
     family: 'ai',
     size: 'm',
     categories: ['ai', 'dev'],
@@ -36,7 +35,8 @@ export const ai: SourceItem[] = [
   },
   {
     title: 'openclaw',
-    subtitle: 'custom or experimental AI workflow tooling',
+    subtitle:
+      'several specialized agents for calendar management/workout analysis/learning/coding with ralph-loops',
     family: 'ai',
     size: 's',
     categories: ['ai', 'dev'],

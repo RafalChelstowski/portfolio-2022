@@ -83,7 +83,7 @@ Canonical pass-3 project content:
 
 - [x] Apply pass-3 dataset size corrections | AC: `opencode`, `Creative copywriting`, `React`, and `Neovim / tmux / terminal / Ghostty` use the sizes from this note; no unrelated item size changes are made.
 
-- [ ] Remove filler descriptions/subtitles not present in pass-3 note | AC: agent compares `src/data/` against this note and removes only copy that the note intentionally omits; no new marketing copy is invented.
+- [x] Remove filler descriptions/subtitles not present in pass-3 note | AC: agent compares `src/data/` against this note and removes only copy that the note intentionally omits; no new marketing copy is invented.
 
 - [ ] Resolve creative tool project memberships | AC: `Adobe Creative Suite` and `Affinity Suite` are assigned to `['kitchen', 'portfolio']`; uncertainty TODO for these items is removed.
 
@@ -100,3 +100,4 @@ Canonical pass-3 project content:
 - Current data still has pass-3 size drift for `opencode`, `Creative copywriting`, `React`, and `Neovim / tmux / terminal / Ghostty`.
 - Current data has uncertainty TODOs for Adobe/Affinity project membership and React Query project membership.
 - Existing repo has `npm run typecheck`, `npm run lint`, and `npm run build`; treat this as a no-tests feature-delivery loop and do not add tests or test infrastructure.
+- Filler copy removal in pass-3 means deleting subtitle fields entirely when omitted by the note, while preserving explicit canonical replacements (for example `Codex`, `opencode`, `openclaw`, and `Kitchen` subtitle text).

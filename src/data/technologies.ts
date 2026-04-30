@@ -6,7 +6,6 @@ const color = '#d89ea6';
 export const technologies: SourceItem[] = [
   {
     title: 'React',
-    subtitle: 'production UI engineering foundation',
     family: 'stack',
     size: 'm',
     categories: ['dev'],
@@ -26,7 +25,6 @@ export const technologies: SourceItem[] = [
   },
   {
     title: 'TypeScript',
-    subtitle: 'typed application development',
     family: 'stack',
     size: 's',
     categories: ['dev'],
@@ -36,7 +34,6 @@ export const technologies: SourceItem[] = [
   },
   {
     title: 'Three.js / React Three Fiber',
-    subtitle: 'interactive 3D web rendering',
     family: 'stack',
     size: 'l',
     categories: ['dev', 'creative'],
@@ -47,7 +44,6 @@ export const technologies: SourceItem[] = [
   // TODO: confirm if React Query should connect to public/personal projects too
   {
     title: 'React Query',
-    subtitle: 'server-state and data synchronization patterns',
     family: 'stack',
     size: 's',
     categories: ['dev'],
@@ -57,7 +53,6 @@ export const technologies: SourceItem[] = [
   },
   {
     title: 'Zustand',
-    subtitle: 'small state management for interactive UI and scenes',
     family: 'stack',
     size: 's',
     categories: ['dev'],
