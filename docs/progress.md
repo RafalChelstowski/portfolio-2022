@@ -85,7 +85,7 @@ Canonical pass-3 project content:
 
 - [x] Remove filler descriptions/subtitles not present in pass-3 note | AC: agent compares `src/data/` against this note and removes only copy that the note intentionally omits; no new marketing copy is invented.
 
-- [ ] Resolve creative tool project memberships | AC: `Adobe Creative Suite` and `Affinity Suite` are assigned to `['kitchen', 'portfolio']`; uncertainty TODO for these items is removed.
+- [x] Resolve creative tool project memberships | AC: `Adobe Creative Suite` and `Affinity Suite` are assigned to `['kitchen', 'portfolio']`; uncertainty TODO for these items is removed.
 
 - [ ] Resolve React Query project membership | AC: `React Query` remains assigned only to `['tpp']`; uncertainty TODO is removed; no extra project memberships are added.
 

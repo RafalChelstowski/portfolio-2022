@@ -14,13 +14,12 @@ export const creative: SourceItem[] = [
     sortingVelocity: velocity,
     customColor: color,
   },
-  // TODO: confirm whether this should connect to older career/freelance evidence only, or stay unassigned to project constellations
   {
     title: 'Adobe Creative Suite',
     family: 'creative',
     size: 'm',
     categories: ['creative'],
-    projects: ['kitchen'],
+    projects: ['kitchen', 'portfolio'],
     sortingVelocity: velocity,
     customColor: color,
   },
@@ -29,7 +28,7 @@ export const creative: SourceItem[] = [
     family: 'creative',
     size: 'm',
     categories: ['creative'],
-    projects: ['kitchen'],
+    projects: ['kitchen', 'portfolio'],
     sortingVelocity: velocity,
     customColor: color,
   },
