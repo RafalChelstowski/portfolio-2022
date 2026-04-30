@@ -89,7 +89,7 @@ Canonical pass-3 project content:
 
 - [x] Resolve React Query project membership | AC: `React Query` remains assigned only to `['tpp']`; uncertainty TODO is removed; no extra project memberships are added.
 
-- [ ] Structure Continuous learning courses | AC: Continuous learning data stores provider/course pairs; UI renders them in a collapsed-by-default panel; existing experience card content remains readable.
+- [x] Structure Continuous learning courses | AC: Continuous learning data stores provider/course pairs; UI renders them in a collapsed-by-default panel; existing experience card content remains readable.
 
 - [ ] Final public-safe copy pass | AC: Treatment Planning Platform copy remains high-level and public-safe; no proprietary details, screenshots, internals, or confidential claims are added.
 
@@ -101,3 +101,4 @@ Canonical pass-3 project content:
 - Current data has uncertainty TODOs for Adobe/Affinity project membership and React Query project membership.
 - Existing repo has `npm run typecheck`, `npm run lint`, and `npm run build`; treat this as a no-tests feature-delivery loop and do not add tests or test infrastructure.
 - Filler copy removal in pass-3 means deleting subtitle fields entirely when omitted by the note, while preserving explicit canonical replacements (for example `Codex`, `opencode`, `openclaw`, and `Kitchen` subtitle text).
+- Continuous learning now uses `learningCourses: Array<{provider, course}>` in `src/data/experience.ts`, and `src/features/Info.tsx` renders it via a collapsed `<details>` panel to keep the card readable by default.
