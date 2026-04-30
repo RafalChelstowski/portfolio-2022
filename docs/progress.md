@@ -87,7 +87,7 @@ Canonical pass-3 project content:
 
 - [x] Resolve creative tool project memberships | AC: `Adobe Creative Suite` and `Affinity Suite` are assigned to `['kitchen', 'portfolio']`; uncertainty TODO for these items is removed.
 
-- [ ] Resolve React Query project membership | AC: `React Query` remains assigned only to `['tpp']`; uncertainty TODO is removed; no extra project memberships are added.
+- [x] Resolve React Query project membership | AC: `React Query` remains assigned only to `['tpp']`; uncertainty TODO is removed; no extra project memberships are added.
 
 - [ ] Structure Continuous learning courses | AC: Continuous learning data stores provider/course pairs; UI renders them in a collapsed-by-default panel; existing experience card content remains readable.
 

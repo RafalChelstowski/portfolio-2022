@@ -41,7 +41,6 @@ export const technologies: SourceItem[] = [
     sortingVelocity: velocity,
     customColor: color,
   },
-  // TODO: confirm if React Query should connect to public/personal projects too
   {
     title: 'React Query',
     family: 'stack',
