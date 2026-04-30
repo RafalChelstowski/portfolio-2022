@@ -18,7 +18,7 @@ export const ai: SourceItem[] = [
     title: 'opencode',
     subtitle: 'terminal AI coding workflow and local development automation',
     family: 'ai',
-    size: 'l',
+    size: 'm',
     categories: ['ai', 'dev'],
     projects: ['portfolio'],
     sortingVelocity: velocity,

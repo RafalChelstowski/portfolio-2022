@@ -8,7 +8,7 @@ export const creative: SourceItem[] = [
     title: 'Creative copywriting',
     subtitle: 'language, concept, and narrative direction for interactive work',
     family: 'creative',
-    size: 'l',
+    size: 'm',
     categories: ['creative'],
     projects: ['portfolio', 'kitchen'],
     sortingVelocity: velocity,
