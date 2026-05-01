@@ -1,8 +1,19 @@
 import isNumber from 'lodash/isNumber.js';
 import { mainCategoryOrder, projectConstellationOrder } from '../data/items';
 import { useStore } from '../store/store';
+import type { SortOption } from '../types';
 
-const mainFilterControls = [...mainCategoryOrder, 'sort'] as const;
+type FilterControl =
+  | { type: 'button'; value: SortOption }
+  | { type: 'divider'; key: string };
+
+const filterControls: FilterControl[] = [
+  ...mainCategoryOrder.map((value) => ({ type: 'button' as const, value })),
+  { type: 'divider', key: 'projects-divider' },
+  ...projectConstellationOrder.map((value) => ({ type: 'button' as const, value })),
+  { type: 'divider', key: 'sort-divider' },
+  { type: 'button', value: 'sort' },
+];
 
 export function UI() {
   const displayUi = useStore((state) => state.displayUi);
@@ -29,48 +40,37 @@ export function UI() {
       </header>
 
       {displayUi && !isPresenting && (
-        <>
-          <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 text-xs sm:text-sm">
-            {mainFilterControls.map((control) => (
-              <div key={control} className="flex items-center gap-4">
-                {control === 'sort' && (
-                  <span aria-hidden="true" className="pointer-events-none select-none text-white">
-                    |
-                  </span>
-                )}
-                <button
-                  className="px-1 py-0.5 sm:px-0 sm:py-0"
-                  onMouseEnter={() => {
-                    useStore.setState({ sortOption: control });
-                  }}
-                  onMouseLeave={() => {
-                    useStore.setState({ sortOption: null });
-                  }}
-                  type="button"
+        <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 text-xs sm:text-sm">
+          {filterControls.map((control) => {
+            if (control.type === 'divider') {
+              return (
+                <span
+                  key={control.key}
+                  aria-hidden="true"
+                  className="pointer-events-none select-none text-white"
                 >
-                  {control}
-                </button>
-              </div>
-            ))}
-          </div>
-          <div className="fixed left-4 top-1/2 flex -translate-y-1/2 flex-col items-start gap-3 text-xs sm:text-sm">
-            {projectConstellationOrder.map((constellation) => (
+                  |
+                </span>
+              );
+            }
+
+            return (
               <button
-                key={constellation}
-                className="block text-left"
+                key={control.value}
+                className="px-1 py-0.5 sm:px-0 sm:py-0"
                 onMouseEnter={() => {
-                  useStore.setState({ sortOption: constellation });
+                  useStore.setState({ sortOption: control.value });
                 }}
                 onMouseLeave={() => {
                   useStore.setState({ sortOption: null });
                 }}
                 type="button"
               >
-                {constellation}
+                {control.value}
               </button>
-            ))}
-          </div>
-        </>
+            );
+          })}
+        </div>
       )}
     </div>
   );

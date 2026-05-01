@@ -34,6 +34,7 @@ export function Info(): JSX.Element | null {
   const item = items[isPresenting];
   const familyLabel = item.family;
   const cardFields = item.cardFields ? Object.entries(item.cardFields) : [];
+  const learningCourses = item.learningCourses ?? [];
   const familyTitleClass = familyStyles[item.family].split(' ')[0];
 
   return (
@@ -53,6 +54,18 @@ export function Info(): JSX.Element | null {
             {key}: {renderCardFieldValue(value)}
           </p>
         ))}
+        {learningCourses.length > 0 && (
+          <details className="mb-2">
+            <summary className="cursor-pointer">Learning courses</summary>
+            <div className="mt-2">
+              {learningCourses.map(({ provider, course }) => (
+                <p key={`${provider}-${course}`} className="mb-1">
+                  <span className="font-semibold">{provider}</span>: {course}
+                </p>
+              ))}
+            </div>
+          </details>
+        )}
         {item.link && (
           <p className="mb-2">
             <a className="text-black" href={item.link} target="_blank" rel="noreferrer">

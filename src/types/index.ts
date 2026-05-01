@@ -14,6 +14,10 @@ export type ProjectConstellation = 'kitchen' | 'portfolio' | 'tpp';
 export type SortOption = MainCategory | ProjectConstellation | 'sort';
 
 export type CardFieldValue = string | string[];
+export interface LearningCourseRow {
+  provider: string;
+  course: string;
+}
 
 export interface PortfolioItem {
   id: string;
@@ -32,6 +36,7 @@ export interface PortfolioItem {
   current?: boolean;
   outcome?: string;
   cardFields?: Record<string, CardFieldValue>;
+  learningCourses?: LearningCourseRow[];
 }
 
 export type Item3d = PortfolioItem;

@@ -8,6 +8,7 @@ const data: Array<{
   subtitle?: string;
   description?: string;
   cardFields?: SourceItem['cardFields'];
+  learningCourses?: SourceItem['learningCourses'];
   date: string;
   location: string;
   current?: boolean;
@@ -82,30 +83,17 @@ const data: Array<{
     size: 'l',
     categories: ['career', 'dev', 'creative'],
     projects: ['portfolio'],
-    cardFields: {
-      providers: [
-        'Pikuma',
-        'Frontend Masters',
-        'SimonDev',
-        'Bruno Simon',
-        'LinkedIn Learning/Lynda',
-        'Grant Abbitt',
-        'Wes Bos',
-        'Kent C. Dodds',
-        'TanStack',
-      ],
-      courses: [
-        '3D programming',
-        'software engineering',
-        'math and shaders for web/game dev',
-        'three.js journey',
-        'Blender and Substance Painter',
-        'Blender courses',
-        'web development',
-        'Epic React / Epic Web / Epic MCP / Testing JavaScript',
-        'React Query Essentials',
-      ],
-    },
+    learningCourses: [
+      { provider: 'Pikuma', course: '3D programming' },
+      { provider: 'Frontend Masters', course: 'software engineering' },
+      { provider: 'SimonDev', course: 'math and shaders for web/game dev' },
+      { provider: 'Bruno Simon', course: 'three.js journey' },
+      { provider: 'LinkedIn Learning/Lynda', course: 'Blender and Substance Painter' },
+      { provider: 'Grant Abbitt', course: 'Blender courses' },
+      { provider: 'Wes Bos', course: 'web development' },
+      { provider: 'Kent C. Dodds', course: 'Epic React / Epic Web / Epic MCP / Testing JavaScript' },
+      { provider: 'TanStack', course: 'React Query Essentials' },
+    ],
   },
 ];
 

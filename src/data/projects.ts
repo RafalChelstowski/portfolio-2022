@@ -6,7 +6,7 @@ const color = '#956062';
 export const projects: SourceItem[] = [
   {
     title: 'Kitchen',
-    subtitle: '3D interactive cafeteria',
+    subtitle: '3D interactive cafeteria, recreated from lidar scans in Blender',
     link: 'https://kitchen.vercel.app/',
     family: 'project',
     size: 'l',
@@ -17,7 +17,6 @@ export const projects: SourceItem[] = [
   },
   {
     title: 'Portfolio 2026',
-    subtitle: 'interactive 3D portfolio and creative lab',
     family: 'project',
     size: 'm',
     categories: ['creative', 'dev', 'ai'],

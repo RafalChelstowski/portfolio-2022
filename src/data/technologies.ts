@@ -6,9 +6,8 @@ const color = '#d89ea6';
 export const technologies: SourceItem[] = [
   {
     title: 'React',
-    subtitle: 'production UI engineering foundation',
     family: 'stack',
-    size: 'l',
+    size: 'm',
     categories: ['dev'],
     projects: ['kitchen', 'portfolio', 'tpp'],
     sortingVelocity: velocity,
@@ -18,7 +17,7 @@ export const technologies: SourceItem[] = [
     title: 'Neovim / tmux / terminal / Ghostty',
     subtitle: 'keyboard-first development environment and workflow',
     family: 'stack',
-    size: 'l',
+    size: 'm',
     categories: ['dev'],
     projects: ['portfolio', 'tpp'],
     sortingVelocity: velocity,
@@ -26,7 +25,6 @@ export const technologies: SourceItem[] = [
   },
   {
     title: 'TypeScript',
-    subtitle: 'typed application development',
     family: 'stack',
     size: 's',
     categories: ['dev'],
@@ -36,7 +34,6 @@ export const technologies: SourceItem[] = [
   },
   {
     title: 'Three.js / React Three Fiber',
-    subtitle: 'interactive 3D web rendering',
     family: 'stack',
     size: 'l',
     categories: ['dev', 'creative'],
@@ -44,10 +41,8 @@ export const technologies: SourceItem[] = [
     sortingVelocity: velocity,
     customColor: color,
   },
-  // TODO: confirm if React Query should connect to public/personal projects too
   {
     title: 'React Query',
-    subtitle: 'server-state and data synchronization patterns',
     family: 'stack',
     size: 's',
     categories: ['dev'],
@@ -57,7 +52,6 @@ export const technologies: SourceItem[] = [
   },
   {
     title: 'Zustand',
-    subtitle: 'small state management for interactive UI and scenes',
     family: 'stack',
     size: 's',
     categories: ['dev'],
