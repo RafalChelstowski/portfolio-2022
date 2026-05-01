@@ -25,9 +25,9 @@ export const items: Item3d[] = sourceItems.map((item, index) => ({
 
 export const mainCategoryOrder: MainCategory[] = ['dev', 'creative', 'ai', 'career'];
 export const projectConstellationOrder: ProjectConstellation[] = [
+  'tpp',
   'kitchen',
   'portfolio',
-  'tpp',
 ];
 
 function createMainCategoryGroups(): Record<MainCategory, number[]> {
