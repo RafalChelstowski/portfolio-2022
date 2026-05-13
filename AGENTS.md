@@ -42,6 +42,9 @@ IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <pro
 - Keep checklist work granular. If implementation reveals adjacent work, add a new checklist item instead of widening the current one.
 - Feature-delivery remains no-tests for this loop: do not add tests, do not add test infrastructure, and do not run `npm run test`.
 - Browser/runtime verification is handled manually by Rafal outside this loop. Do not block checklist progress on browser automation in this sandbox.
+- `src/features/Controls.tsx` uses Drei `OrbitControls`; camera pan must stay disabled even for modifier-assisted left drags so users cannot move the scene into unsupported views.
+- `src/features/Camera.tsx` remains the owner of app-controlled camera positions. Preserve auto-rotation and presentation behavior while blocking pan.
+- Filtered matched items use `maxSetMatchSpeed`; unmatched/sorted-out items use `maxSetMissSpeed` and should move at least as fast as matched items, preferably slightly faster, without changing matched incoming speed.
 
 ### Preserved prior AGENTS context
 
