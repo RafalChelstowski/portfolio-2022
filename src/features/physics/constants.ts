@@ -17,7 +17,6 @@ export interface PoolPhysicsBounds {
 export interface ItemPhysicsConstants {
   spawnBaseHeight: number;
   spawnHeightStep: number;
-  spawnFastDropSpeed: number;
   centerTarget: PhysicsVector3;
 }
 
@@ -28,7 +27,6 @@ export interface RapierSteeringPhysicsConstants {
   maxSortSpeed: number;
   maxSetMatchSpeed: number;
   maxSetMissSpeed: number;
-  settleLerp: number;
   activeLerp: number;
   centerAreaRadius: number;
 }
@@ -109,7 +107,6 @@ export const poolPhysicsBounds: PoolPhysicsBounds = {
 export const itemPhysicsConstants: ItemPhysicsConstants = {
   spawnBaseHeight: 8,
   spawnHeightStep: 0.45,
-  spawnFastDropSpeed: 20,
   centerTarget: [0, -2, 0],
 };
 
@@ -120,7 +117,7 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
   items: {
     mass: 1,
     canSleep: false,
-    linearDamping: 1,
+    linearDamping: 0,
     angularDamping: 3,
     restitution: 0.6,
     friction: 1,
@@ -136,7 +133,6 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
     maxSortSpeed: 14,
     maxSetMatchSpeed: 16,
     maxSetMissSpeed: 7,
-    settleLerp: 0.12,
     activeLerp: 0.24,
     centerAreaRadius: 3.2,
   },
