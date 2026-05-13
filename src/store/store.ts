@@ -8,7 +8,7 @@ export type Store = {
 };
 
 const useStore = create<Store>()(() => ({
-  displayUi: true,
+  displayUi: false,
   isPresenting: null,
   sortOption: null,
 }));
