@@ -357,30 +357,6 @@ export function RapierItems(): JSX.Element {
     }
 
     if (sortOption === null) {
-      for (let index = 0; index < instanceCount; index += 1) {
-        const rigidBody = rigidBodies[index];
-
-        if (rigidBody) {
-          if (!firstPoolContactByIndexRef.current[index]) {
-            blendVelocity(
-              rigidBody,
-              0,
-              -itemPhysicsConstants.spawnFastDropSpeed,
-              0,
-              rapierPhysicsConstants.steering.activeLerp
-            );
-          } else {
-            blendVelocity(
-              rigidBody,
-              0,
-              0,
-              0,
-              rapierPhysicsConstants.steering.settleLerp
-            );
-          }
-        }
-      }
-
       return;
     }
 
