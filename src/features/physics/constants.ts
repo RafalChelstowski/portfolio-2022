@@ -66,6 +66,9 @@ const FLOOR_SIZE: PhysicsVector3 = [22, 1, 32];
 const CATCH_SURFACE_Y_OFFSET = -0.5;
 const CATCH_SURFACE_SIZE_MULTIPLIER = 4;
 const CATCH_SURFACE_THICKNESS = 1;
+const MAX_SET_MATCH_SPEED = 16;
+const SET_MISS_REPEL_SPEED = MAX_SET_MATCH_SPEED + 1;
+const MAX_SET_MISS_SPEED = SET_MISS_REPEL_SPEED + 1;
 
 const WALL_Y = -1;
 const SIDE_WALL_X = 15.5;
@@ -129,10 +132,10 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
   steering: {
     sortPull: 11,
     setMatchSeek: 20,
-    setMissRepel: 5,
+    setMissRepel: SET_MISS_REPEL_SPEED,
     maxSortSpeed: 14,
-    maxSetMatchSpeed: 16,
-    maxSetMissSpeed: 7,
+    maxSetMatchSpeed: MAX_SET_MATCH_SPEED,
+    maxSetMissSpeed: MAX_SET_MISS_SPEED,
     activeLerp: 0.24,
     centerAreaRadius: 3.2,
   },

@@ -4,7 +4,7 @@
 - [x] Remove artificial velocity control during the initial fall | AC: `src/features/rapier/RapierItems.tsx` does not call `setLinvel` or `blendVelocity` while `sortOption === null`; startup bodies are left to Rapier gravity/collisions before sorting is active; existing body-ref mapping and first-pool-contact tracking remain intact; `npm run typecheck && npm run lint && npm run build` passes
 - [x] Remove unused controlled-fall constants after freefall cleanup | AC: `spawnFastDropSpeed` and `settleLerp` are removed if no longer referenced; item linear damping is set to `0` unless implementation proves it is still needed for sorting stability and records that reason in `## Findings`; `npm run typecheck && npm run lint && npm run build` passes
 - [x] Block user camera panning on the scene | AC: `src/features/Controls.tsx` prevents OrbitControls panning at all times, including modifier-assisted left-drag panning with Control/Shift/Option; camera position remains app-controlled by `Camera`; auto-rotation/presentation behavior is preserved; `npm run typecheck && npm run lint && npm run build` passes
-- [ ] Increase sorted-out filter item speed | AC: when a category/project filter is active, unmatched items are repelled at least as fast as matched items are pulled inward and preferably slightly faster; matched incoming item speed remains effectively unchanged; constants/implementation names make the speed relationship clear; `npm run typecheck && npm run lint && npm run build` passes
+- [x] Increase sorted-out filter item speed | AC: when a category/project filter is active, unmatched items are repelled at least as fast as matched items are pulled inward and preferably slightly faster; matched incoming item speed remains effectively unchanged; constants/implementation names make the speed relationship clear; `npm run typecheck && npm run lint && npm run build` passes
 
 ---
 
@@ -22,3 +22,4 @@
 - `src/features/Controls.tsx` currently sets `enablePan={!isPresenting}`. Even with rotation and zoom disabled, OrbitControls can still pan via modifier-assisted left drag; this should be blocked so the camera remains app-controlled.
 - `src/features/Camera.tsx` owns app camera positions for normal and presenting states. Do not move that responsibility into user controls.
 - For active filters, incoming/matched items currently cap at `rapierPhysicsConstants.steering.maxSetMatchSpeed` while unmatched/sorted-out items cap at `maxSetMissSpeed`; sorted-out items are visibly too slow and should be at least as fast, slightly faster if stable.
+- Filter miss speed is now derived above match speed in `src/features/physics/constants.ts`: matched max remains `16`, miss repel is `17`, and miss max is `18`.
