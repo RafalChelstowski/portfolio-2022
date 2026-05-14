@@ -17,7 +17,6 @@ export interface PoolPhysicsBounds {
 export interface ItemPhysicsConstants {
   spawnBaseHeight: number;
   spawnHeightStep: number;
-  spawnFastDropSpeed: number;
   centerTarget: PhysicsVector3;
 }
 
@@ -28,7 +27,6 @@ export interface RapierSteeringPhysicsConstants {
   maxSortSpeed: number;
   maxSetMatchSpeed: number;
   maxSetMissSpeed: number;
-  settleLerp: number;
   activeLerp: number;
   centerAreaRadius: number;
 }
@@ -68,6 +66,9 @@ const FLOOR_SIZE: PhysicsVector3 = [22, 1, 32];
 const CATCH_SURFACE_Y_OFFSET = -0.5;
 const CATCH_SURFACE_SIZE_MULTIPLIER = 4;
 const CATCH_SURFACE_THICKNESS = 1;
+const MAX_SET_MATCH_SPEED = 16;
+const SET_MISS_REPEL_SPEED = MAX_SET_MATCH_SPEED + 1;
+const MAX_SET_MISS_SPEED = SET_MISS_REPEL_SPEED + 1;
 
 const WALL_Y = -1;
 const SIDE_WALL_X = 15.5;
@@ -109,7 +110,6 @@ export const poolPhysicsBounds: PoolPhysicsBounds = {
 export const itemPhysicsConstants: ItemPhysicsConstants = {
   spawnBaseHeight: 8,
   spawnHeightStep: 0.45,
-  spawnFastDropSpeed: 20,
   centerTarget: [0, -2, 0],
 };
 
@@ -120,7 +120,7 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
   items: {
     mass: 1,
     canSleep: false,
-    linearDamping: 1,
+    linearDamping: 0,
     angularDamping: 3,
     restitution: 0.6,
     friction: 1,
@@ -132,11 +132,10 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
   steering: {
     sortPull: 11,
     setMatchSeek: 20,
-    setMissRepel: 5,
+    setMissRepel: SET_MISS_REPEL_SPEED,
     maxSortSpeed: 14,
-    maxSetMatchSpeed: 16,
-    maxSetMissSpeed: 7,
-    settleLerp: 0.12,
+    maxSetMatchSpeed: MAX_SET_MATCH_SPEED,
+    maxSetMissSpeed: MAX_SET_MISS_SPEED,
     activeLerp: 0.24,
     centerAreaRadius: 3.2,
   },

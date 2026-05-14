@@ -9,7 +9,7 @@ export function Controls() {
     <OrbitControls
       autoRotate={!isPresenting}
       autoRotateSpeed={isPresenting ? 0 : 0.5}
-      enablePan={!isPresenting}
+      enablePan={false}
       enableDamping={false}
       enableZoom={false}
       enableRotate={false}
