@@ -32,7 +32,7 @@ const data: Array<{
     date: 'Jul 2020 -> Nov 2022',
     location: 'Warsaw',
     size: 'm',
-    categories: ['career', 'dev'],
+    categories: ['career'],
     projects: ['kitchen'],
   },
   {
@@ -41,7 +41,7 @@ const data: Array<{
     date: 'May 2016 - Dec 2019',
     location: 'Wroclaw',
     size: 'm',
-    categories: ['career', 'dev', 'creative'],
+    categories: ['career', 'creative'],
     projects: [],
   },
   {
@@ -65,8 +65,8 @@ const data: Array<{
       Sources: 'Pikuma, SimonDev, Bruno Simon',
     },
     size: 'm',
-    categories: ['career', 'dev', 'creative'],
-    projects: ['kitchen', 'portfolio'],
+    categories: ['career', 'creative'],
+    projects: [],
   },
   {
     title: 'Dev learning path',
@@ -77,7 +77,7 @@ const data: Array<{
     },
     size: 'm',
     categories: ['career', 'dev'],
-    projects: ['portfolio', 'tpp'],
+    projects: [],
   },
   {
     title: 'AI learning path',
@@ -86,18 +86,19 @@ const data: Array<{
       Source: 'Epic MCP',
     },
     size: 'm',
-    categories: ['career', 'ai', 'dev'],
-    projects: ['portfolio'],
+    categories: ['career', 'ai'],
+    projects: [],
   },
   {
     title: 'Design learning path',
     subtitle: 'Ongoing design and production learning connected to visual tooling and asset workflows.',
     cardFields: {
       Sources: 'LinkedIn Learning/Lynda',
+      Tools: 'Adobe Creative Suite, Affinity Suite',
     },
     size: 'm',
     categories: ['career', 'creative'],
-    projects: ['portfolio', 'kitchen'],
+    projects: [],
   },
 ];
 

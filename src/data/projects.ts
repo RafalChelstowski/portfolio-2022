@@ -25,7 +25,7 @@ export const projects: SourceItem[] = [
       'Turns a portfolio page into a navigable constellation of projects, tools, learning paths, and career evidence.',
     family: 'project',
     size: 'm',
-    categories: ['creative', 'dev', 'ai'],
+    categories: ['creative'],
     projects: ['portfolio'],
     sortingVelocity: velocity,
     customColor: color,

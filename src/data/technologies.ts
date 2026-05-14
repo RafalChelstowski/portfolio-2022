@@ -42,7 +42,7 @@ export const technologies: SourceItem[] = [
     family: 'stack',
     size: 'm',
     categories: ['dev'],
-    projects: ['portfolio', 'tpp'],
+    projects: [],
     sortingVelocity: velocity,
     customColor: color,
   },
