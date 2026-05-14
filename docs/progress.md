@@ -260,6 +260,29 @@ Use LinkedIn or the CV as the place for complete chronology. The portfolio shoul
   - `Sources`: `LinkedIn Learning/Lynda`
   - `Tools`: `Adobe Creative Suite, Affinity Suite`
 
+## Review Round 2 Feedback
+
+This section supersedes earlier source text wherever it conflicts. Keep the same branch and PR. Do not create a new branch or PR for this review round.
+
+- [ ] Keep the role line on one visual line | AC: the header role text `Senior Software Engineer | Creative Front-End Dev` is rendered as a single non-wrapping line at normal portfolio viewport widths; `Dev` must not wrap onto its own line; implementation uses a small, local responsive class/layout adjustment without changing the exact text.
+- [ ] Refine `dev` category membership | AC: the `dev` sort group excludes `3D asset workflow`; excludes all `ai` family items; excludes every `career` family item except `Align Technology, Senior Software Engineer` and `Dev learning path`; among `project` family items, only `World-leading orthodontic software` remains in the `dev` category.
+- [ ] Refine creative tooling details | AC: `3D asset workflow` includes `Substance Painter` in its `cardFields.Tools` alongside `Blender`; no new standalone Substance Painter item is added.
+- [ ] Refine `ai` category membership | AC: `Rafal Chelstowski 2026` is no longer in the `ai` category; AI-family capability cards remain in the `ai` category unless another review-round criterion explicitly removes them from a project constellation.
+- [ ] Refine `tpp` project constellation membership | AC: `Dev learning path` and `Terminal-first workflow` no longer include `tpp` in their `projects`; the intended `tpp` group keeps only items still explicitly associated with treatment-planning/public product work, such as `World-leading orthodontic software`, `Align Technology, Senior Software Engineer`, and shared stack items where still appropriate.
+- [ ] Refine `kitchen` project constellation membership | AC: `3D learning path` and `Design learning path` no longer include `kitchen` in their `projects`; do not remove `Kitchen`, `3D web ecosystem`, or other kitchen-appropriate creative/3D items unless another criterion requires it.
+- [ ] Refine `portfolio` project constellation membership | AC: the `portfolio` project constellation contains exactly these six visible item titles: `React ecosystem`, `3D web ecosystem`, `Rafal Chelstowski 2026`, `3D asset workflow`, `Creative and narrative direction`, and `Agentic workflows`; remove `portfolio` from every other item's `projects` array.
+- [ ] Preserve the Design learning path card tooling detail | AC: if `Design learning path` remains visible as a career/creative item, it includes `cardFields.Tools: Adobe Creative Suite, Affinity Suite` as originally specified; this card is not part of the `portfolio` or `kitchen` project constellations after this round.
+- [ ] Verify review-round changes | AC: no-op test command succeeds; `npm run typecheck`, `npm run lint`, and `npm run build` pass; `docs/progress.md` has no remaining `[ ]` or `[/]` items when complete.
+
 ## Findings
 
 Use this section only for blockers or review feedback. If an item is incomplete, mark it `[/]` above and add exact findings here.
+
+### Review Round 2 - Rafal feedback, 2026-05-14
+
+- Rafal wants the role line to fit on one line; currently `Dev` wraps.
+- Refine category membership: remove `3D asset workflow`, AI-family cards, most career cards, and non-orthodontic project cards from the `dev` sort group.
+- Add `Substance Painter` to `3D asset workflow` tooling.
+- Remove `Rafal Chelstowski 2026` from the `ai` sort group.
+- Refine project constellations: remove `Dev learning path` and `Terminal-first workflow` from `tpp`; remove `3D learning path` and `Design learning path` from `kitchen`; make `portfolio` contain only `React ecosystem`, `3D web ecosystem`, `Rafal Chelstowski 2026`, `3D asset workflow`, `Creative and narrative direction`, and `Agentic workflows`.
+- Codex PR review also noted that `Design learning path` lost its `Tools` field; keep `Adobe Creative Suite, Affinity Suite` on that card if it remains visible.

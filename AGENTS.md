@@ -26,6 +26,7 @@ Follow existing style: named exports, strict TypeScript, small local changes, Ta
 ## Non-Negotiable Guardrails
 
 - Use `docs/progress.md` as the source of truth.
+- Review-round sections in `docs/progress.md` supersede earlier source text where they conflict.
 - Do not add extra portfolio facts not listed in `docs/progress.md`.
 - Do not reintroduce removed items just because they still exist in old source files.
 - Do not turn product references into ownership claims.
@@ -48,6 +49,10 @@ Follow existing style: named exports, strict TypeScript, small local changes, Ta
 - `outcome` and `cardFields` are already supported by the item type and card renderer; adjust rendering only if needed to display the prepared source cleanly.
 - Keep `src/data/items.ts` grouping behavior compatible unless a small change is necessary for the final categories and project constellations.
 - Keep README install, development, script reference, and verification documentation intact while updating the opening framing.
+
+## Current Review Round
+
+The active work is `## Review Round 2 Feedback` in `docs/progress.md`. Keep the same branch and PR. Implement only those unchecked review-round items, then run the required verification commands.
 
 ## Progress Discipline
 
