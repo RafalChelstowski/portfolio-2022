@@ -1,9 +1,8 @@
 import { OrbitControls } from '@react-three/drei';
-import isNumber from 'lodash/isNumber.js';
 import { useStore } from '../store/store';
 
 export function Controls() {
-  const isPresenting = useStore((state) => isNumber(state.isPresenting));
+  const isPresenting = useStore((state) => state.isPresenting !== null);
 
   return (
     <OrbitControls

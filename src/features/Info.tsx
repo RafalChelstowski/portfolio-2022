@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 import { Html } from '@react-three/drei';
-import isNumber from 'lodash/isNumber.js';
 import { useStore } from '../store/store';
 import { items } from '../data/items';
 import type { CardFieldValue, Item3d } from '../types';
@@ -27,7 +26,7 @@ function formatDisplayDate(value: string): string {
 export function Info(): JSX.Element | null {
   const isPresenting = useStore((state) => state.isPresenting);
 
-  if (!isNumber(isPresenting)) {
+  if (isPresenting === null) {
     return null;
   }
 

@@ -1,4 +1,3 @@
-import isNumber from 'lodash/isNumber.js';
 import { mainCategoryOrder, projectConstellationOrder } from '../data/items';
 import { useStore } from '../store/store';
 import type { SortOption } from '../types';
@@ -17,13 +16,15 @@ const filterControls: FilterControl[] = [
 
 export function UI() {
   const displayUi = useStore((state) => state.displayUi);
-  const isPresenting = useStore((state) => isNumber(state.isPresenting));
+  const isPresenting = useStore((state) => state.isPresenting !== null);
 
   return (
     <div className="absolute inset-x-0 top-0 z-10">
       <header className="m-4 max-w-[calc(100vw-2rem)] sm:max-w-md">
         <h1 className="mb-1 text-base sm:text-lg">Rafal Chelstowski</h1>
-        <h2 className="mb-1 text-sm sm:text-base">Senior Software Engineer</h2>
+        <h2 className="mb-1 whitespace-nowrap text-xs sm:text-base">
+          Senior Software Engineer | Creative Front-End Dev
+        </h2>
         <h2 className="mb-1 text-sm sm:text-base">Frankfurt am Main</h2>
         <h3 className="text-sm sm:text-base">
           <a
