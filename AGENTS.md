@@ -1,22 +1,92 @@
-# Repository Guidelines
+# AGENTS.md - Ralph Feature Loop
 
-## Project Structure & Module Organization
-This is a Vite React portfolio app with Three.js, React Three Fiber, Rapier physics, Tailwind CSS, and Zustand. App entrypoints live in `src/main.tsx` and `src/App.tsx`. UI, camera, lighting, pool, and Rapier scene modules live in `src/features/`, with physics constants and item descriptors under `src/features/physics/`. Portfolio data is in `src/data/`, shared types in `src/types/`, state in `src/store/`, and helper functions in `src/utils/`. Static public assets, including GLTF and texture files, live in `public/`; bundled font assets live in `src/assets/`.
+You are Codex working inside the `portfolio-2022` repository on a Ralph feature-delivery loop.
 
-## Build, Test, and Development Commands
-Use Node `24` and npm `11+`; run `nvm use` before installing or verifying.
-- `npm ci` installs dependencies from `package-lock.json`.
-- `npm run dev` starts the Vite dev server; `npm start` is an alias.
-- `npm run typecheck` runs TypeScript with `--noEmit`.
-- `npm run lint` runs the custom ESLint wrapper in `scripts/lint.mjs`.
-- `npm run build` creates the production `dist/` build.
-- `npm run format:check` checks Prettier formatting; `npm run format` rewrites supported files.
+## Mission
 
-## Coding Style & Naming Conventions
-Write TypeScript with strict compiler settings and React JSX runtime. Follow the existing component style: PascalCase components and files for React features, camelCase helpers and data exports, named exports unless an existing module uses default export. Keep Tailwind classes inline for local layout and visual styling. Let ESLint and Prettier settle formatting; avoid broad unrelated rewrites.
+Implement the next unchecked task in `docs/progress.md`. Continue until all checklist items are complete. Output `<promise>RALPH_DOCS_PROGRESS_COMPLETE</promise>` only when no `- [ ]` or `- [/]` items remain in `docs/progress.md`.
 
-## Testing Guidelines
-The current `npm test` script runs Node's built-in test runner. There are no committed test files yet, so add focused `*.test.ts` or `*.test.tsx` files near the code under test when adding logic-heavy behavior. For 3D or physics changes, verify with `npm run typecheck`, `npm run lint`, `npm run build`, and a local browser smoke test.
+This is a public portfolio framing/data rewrite. Preserve Rafal's public/work boundaries: no secrets, no private client details, no internal-only details, and no unsupported ownership claims.
 
-## Commit & Pull Request Guidelines
-Recent history uses short imperative subjects such as `chore: modernize portfolio foundation stack` and `portfolio-2022: complete Ralph loop`. When work is delivered through Ralph loops, keep the loop context in the active progress artifact and make the final PR description summarize the loop outcome, verification, and any visible portfolio changes. Keep commits focused and mention the affected area. Pull requests should include a concise summary, verification commands run, linked issue or task when available, and screenshots or recordings for visible UI, animation, or physics changes.
+## Project Context
+
+This is a Vite React portfolio app with Three.js, React Three Fiber, Rapier physics, Tailwind CSS, Zustand, and TypeScript.
+
+- App entrypoints: `src/main.tsx`, `src/App.tsx`
+- Public HTML metadata: `index.html`
+- Header/filter UI: `src/features/UI.tsx`
+- Item card UI: `src/features/Info.tsx`
+- Portfolio data: `src/data/`
+- Shared item types: `src/types/index.ts`
+- Source item grouping: `src/data/items.ts`
+- Presentation state: `src/store/store.ts` where `isPresenting` is `number | null`
+
+Follow existing style: named exports, strict TypeScript, small local changes, Tailwind classes inline where current code already uses them.
+
+## Non-Negotiable Guardrails
+
+- Use `docs/progress.md` as the source of truth.
+- Do not add extra portfolio facts not listed in `docs/progress.md`.
+- Do not reintroduce removed items just because they still exist in old source files.
+- Do not turn product references into ownership claims.
+- Use contribution-level wording for Align, ClinCheck, Invisalign Smile Video, and In-Face Visualization.
+- Keep exact item titles and subtitles from `docs/progress.md` unless implementation reveals a clear typo or type mismatch.
+- Keep the existing five item families only: `project`, `ai`, `stack`, `creative`, `career`.
+- Do not add a new `learning` family.
+- Keep main categories: `dev`, `creative`, `ai`, `career`.
+- Keep project constellations: `kitchen`, `portfolio`, `tpp`.
+- If the text says 16 visible items but the enumerated cards total 20, implement the enumerated 20-card set.
+- Do not add new tests or test infrastructure in this feature-delivery loop.
+- Do not make browser/runtime smoke checks an automated gate; note manual presentation review separately if useful.
+
+## Implementation Notes
+
+- Replace direct `lodash/isNumber.js` checks with native `number | null` checks. For example, use `state.isPresenting !== null` or `isPresenting === null` as appropriate.
+- Remove only direct root dependencies `lodash` and `@types/lodash`. Do not chase transitive packages such as `lodash.merge`.
+- When changing dependencies, update `package-lock.json` using npm. In sandbox contexts, prefer `npm install --cache /workspace/.cache/npm` for intentional dependency changes.
+- Prefer `cardFields` for supporting tools, public product names, sources, and workshops.
+- `outcome` and `cardFields` are already supported by the item type and card renderer; adjust rendering only if needed to display the prepared source cleanly.
+- Keep `src/data/items.ts` grouping behavior compatible unless a small change is necessary for the final categories and project constellations.
+- Keep README install, development, script reference, and verification documentation intact while updating the opening framing.
+
+## Progress Discipline
+
+For each task:
+
+1. Inspect relevant files before editing.
+2. Make the smallest coherent change.
+3. Update the matching checkbox in `docs/progress.md` from `[ ]` to `[x]` only after its acceptance criteria are satisfied.
+4. If blocked or partially complete, use `[/]` and add exact notes under `## Findings`.
+5. Keep unrelated formatting churn out of the diff.
+
+## Verification
+
+This repository currently has no committed tests for this feature loop. Do not add tests or test infrastructure. Use this no-op test command for the Ralph checklist test slot:
+
+```bash
+node -e "console.log('no committed tests for this feature loop')"
+```
+
+Required verification before completion:
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
+
+If dependencies are not installed or stale, run:
+
+```bash
+npm ci --cache /workspace/.cache/npm
+```
+
+If a command fails, fix the issue before marking verification complete. If an external/environmental problem prevents verification, mark the verification item `[/]` and record the exact blocker under `## Findings`.
+
+## Completion Rule
+
+Do not emit the completion promise until:
+
+- every checklist item in `docs/progress.md` is `[x]`
+- there are no `[/]` findings left unresolved
+- the required verification commands have passed or an explicit blocker is recorded

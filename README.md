@@ -1,6 +1,11 @@
-# portfolio-2022
+# Rafal Chelstowski Portfolio
 
-Personal portfolio app built with React, Vite, Three.js, React Three Fiber, and Zustand.
+Rafal Chelstowski's current portfolio introduction page, built as an interactive
+React, Vite, Three.js, React Three Fiber, and Zustand app.
+
+The project is developed with AI-assisted development workflows, including Ralph
+loops that turn scoped progress notes into implementation passes while keeping
+the public portfolio framing explicit.
 
 ## Requirements
 
