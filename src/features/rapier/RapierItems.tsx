@@ -75,6 +75,36 @@ interface FamilyBatchRuntime {
 }
 
 type FamilyBodiesRef = MutableRefObject<(RapierRigidBody | null)[] | null>;
+type FamilyVisualGeometry =
+  | { kind: 'box'; args: [width: number, height: number, depth: number] }
+  | { kind: 'cone'; args: [radius: number, height: number, radialSegments: number] }
+  | { kind: 'icosahedron'; args: [radius: number, detail: number] }
+  | { kind: 'dodecahedron'; args: [radius: number, detail: number] }
+  | {
+      kind: 'cylinder';
+      args: [radiusTop: number, radiusBottom: number, height: number, radialSegments: number];
+    };
+type FamilyColliderDimensions =
+  | { kind: 'cuboid'; args: [halfWidth: number, halfHeight: number, halfDepth: number] }
+  | { kind: 'cone'; args: [halfHeight: number, radius: number] }
+  | { kind: 'ball'; args: [radius: number] }
+  | { kind: 'cylinder'; args: [halfHeight: number, radius: number] };
+
+const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
+  project: { kind: 'box', args: [1, 1, 1] },
+  ai: { kind: 'cone', args: [0.72, 1.24, 3] },
+  stack: { kind: 'icosahedron', args: [0.8, 0] },
+  creative: { kind: 'dodecahedron', args: [0.64, 0] },
+  career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 5] },
+};
+
+const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
+  project: { kind: 'cuboid', args: [0.5, 0.5, 0.5] },
+  ai: { kind: 'cone', args: [0.62, 0.54] },
+  stack: { kind: 'ball', args: [0.78] },
+  creative: { kind: 'ball', args: [0.64] },
+  career: { kind: 'cylinder', args: [0.59, 0.62] },
+};
 
 function createFamilyBodiesRef(): FamilyBodiesRef {
   return { current: null };
@@ -108,64 +138,71 @@ function blendVelocity(
   rigidBody.setLinvel(targetPositionVector, true);
 }
 
+function getGatherDecayFactor(startedAt: number, now: number): number {
+  const elapsedMs = now - startedAt;
+  const progress = elapsedMs / rapierPhysicsConstants.steering.gatherDurationMs;
+
+  return Math.max(0, Math.min(1, 1 - progress));
+}
+
 function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float32Array }): JSX.Element {
-  if (family === 'project') {
+  const dimensions = familyVisualGeometryDimensions[family];
+
+  if (dimensions.kind === 'box') {
     return (
-      <boxGeometry args={[1, 1, 1]}>
+      <boxGeometry args={dimensions.args}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </boxGeometry>
     );
   }
 
-  if (family === 'ai') {
+  if (dimensions.kind === 'cone') {
     return (
-      <coneGeometry args={[0.72, 1.24, 3]}>
+      <coneGeometry args={dimensions.args}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </coneGeometry>
     );
   }
 
-  if (family === 'stack') {
+  if (dimensions.kind === 'icosahedron') {
     return (
-      <icosahedronGeometry args={[0.8, 0]}>
+      <icosahedronGeometry args={dimensions.args}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </icosahedronGeometry>
     );
   }
 
-  if (family === 'creative') {
+  if (dimensions.kind === 'dodecahedron') {
     return (
-      <dodecahedronGeometry args={[0.84, 0]}>
+      <dodecahedronGeometry args={dimensions.args}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </dodecahedronGeometry>
     );
   }
 
   return (
-    <cylinderGeometry args={[0.65, 0.65, 1.18, 5]}>
+    <cylinderGeometry args={dimensions.args}>
       <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
     </cylinderGeometry>
   );
 }
 
 function getFamilyColliderNodes(family: ItemFamily): ReactNode[] {
-  if (family === 'project') {
-    return [<CuboidCollider key="project-collider" args={[0.5, 0.5, 0.5]} />];
+  const dimensions = familyColliderDimensions[family];
+
+  if (dimensions.kind === 'cuboid') {
+    return [<CuboidCollider key={`${family}-collider`} args={dimensions.args} />];
   }
 
-  if (family === 'ai') {
-    return [<ConeCollider key="ai-collider" args={[0.62, 0.54]} />];
+  if (dimensions.kind === 'cone') {
+    return [<ConeCollider key={`${family}-collider`} args={dimensions.args} />];
   }
 
-  if (family === 'stack') {
-    return [<BallCollider key="stack-collider" args={[0.78]} />];
+  if (dimensions.kind === 'ball') {
+    return [<BallCollider key={`${family}-collider`} args={dimensions.args} />];
   }
 
-  if (family === 'creative') {
-    return [<BallCollider key="creative-collider" args={[0.82]} />];
-  }
-
-  return [<CylinderCollider key="career-collider" args={[0.59, 0.62]} />];
+  return [<CylinderCollider key={`${family}-collider`} args={dimensions.args} />];
 }
 
 export function RapierItems(): JSX.Element {
@@ -187,6 +224,7 @@ export function RapierItems(): JSX.Element {
   const firstPoolContactByIndexRef = useRef<boolean[]>(Array(instanceCount).fill(false));
   const hasRevealedUiRef = useRef<boolean>(false);
   const isPresenting = useStore((state) => state.isPresenting);
+  const presentItem = useStore((state) => state.presentItem);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
 
   useEffect(() => {
@@ -223,6 +261,7 @@ export function RapierItems(): JSX.Element {
           position: descriptor.spawnPosition,
           rotation: descriptor.initialRotationSeed,
           scale: descriptor.scale,
+          mass: rapierPhysicsConstants.items.massBySize[descriptor.scaleSource],
           onCollisionEnter: (payload) => {
             markFirstPoolContact(itemIndex, payload);
           },
@@ -294,7 +333,21 @@ export function RapierItems(): JSX.Element {
     });
 
     const storeState = useStore.getState();
-    const { sortOption } = storeState;
+    const { activeGather } = storeState;
+    const now = Date.now();
+    const gatherDecayFactor =
+      activeGather === null ? 0 : getGatherDecayFactor(activeGather.startedAt, now);
+    const hasExpiredGather = activeGather !== null && gatherDecayFactor <= 0;
+
+    if (hasExpiredGather) {
+      useStore.setState({
+        sortOption: null,
+        activeGather: null,
+      });
+    }
+
+    const sortOption = hasExpiredGather ? null : activeGather?.option ?? storeState.sortOption;
+    const gatherSteeringFactor = hasExpiredGather || activeGather === null ? 1 : gatherDecayFactor;
 
     const rigidBodies = bodyByItemIndexRef.current;
     let hasAnyBody = false;
@@ -378,7 +431,7 @@ export function RapierItems(): JSX.Element {
             const targetSpeed = Math.min(
               rapierPhysicsConstants.steering.maxSortSpeed,
               distance * rapierPhysicsConstants.steering.sortPull
-            );
+            ) * gatherSteeringFactor;
 
             directionVector.normalize().multiplyScalar(targetSpeed);
           } else {
@@ -428,7 +481,7 @@ export function RapierItems(): JSX.Element {
             const targetSpeed = Math.min(
               rapierPhysicsConstants.steering.maxSetMatchSpeed,
               distanceToTarget * rapierPhysicsConstants.steering.setMatchSeek
-            );
+            ) * gatherSteeringFactor;
             directionVector.normalize().multiplyScalar(targetSpeed);
           } else {
             directionVector.set(0, 0, 0);
@@ -452,7 +505,7 @@ export function RapierItems(): JSX.Element {
           const targetMissSpeed = Math.min(
             rapierPhysicsConstants.steering.maxSetMissSpeed,
             rapierPhysicsConstants.steering.setMissRepel * nearCenterBoost
-          );
+          ) * gatherSteeringFactor;
 
           directionVector.set(
             repelDirectionX * targetMissSpeed,
@@ -485,7 +538,6 @@ export function RapierItems(): JSX.Element {
           colliders={false}
           colliderNodes={getFamilyColliderNodes(batch.family)}
           instances={batch.instances}
-          mass={rapierPhysicsConstants.items.mass}
           canSleep={rapierPhysicsConstants.items.canSleep}
           linearDamping={rapierPhysicsConstants.items.linearDamping}
           angularDamping={rapierPhysicsConstants.items.angularDamping}
@@ -528,10 +580,7 @@ export function RapierItems(): JSX.Element {
                 return;
               }
 
-              useStore.setState({
-                isPresenting: batch.indexes[e.instanceId],
-                sortOption: null,
-              });
+              presentItem(batch.indexes[e.instanceId]);
             }}
           >
             <FamilyGeometry family={batch.family} colors={batch.colors} />

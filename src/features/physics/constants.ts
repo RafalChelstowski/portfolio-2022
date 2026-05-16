@@ -1,3 +1,5 @@
+import type { ItemSize } from '../../types';
+
 export type PhysicsVector3 = [number, number, number];
 
 export interface BoxPhysicsBounds {
@@ -21,6 +23,7 @@ export interface ItemPhysicsConstants {
 }
 
 export interface RapierSteeringPhysicsConstants {
+  gatherDurationMs: number;
   sortPull: number;
   setMatchSeek: number;
   setMissRepel: number;
@@ -37,6 +40,7 @@ export interface RapierWorldPhysicsConstants {
 
 export interface RapierItemBodyPhysicsConstants {
   mass: number;
+  massBySize: Record<ItemSize, number>;
   canSleep: boolean;
   linearDamping: number;
   angularDamping: number;
@@ -69,6 +73,7 @@ const CATCH_SURFACE_THICKNESS = 1;
 const MAX_SET_MATCH_SPEED = 16;
 const SET_MISS_REPEL_SPEED = MAX_SET_MATCH_SPEED + 1;
 const MAX_SET_MISS_SPEED = SET_MISS_REPEL_SPEED + 1;
+const GATHER_DURATION_MS = 4000;
 
 const WALL_Y = -1;
 const SIDE_WALL_X = 15.5;
@@ -119,6 +124,11 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
   },
   items: {
     mass: 1,
+    massBySize: {
+      s: 1,
+      m: 1.5,
+      l: 2.25,
+    },
     canSleep: false,
     linearDamping: 0,
     angularDamping: 3,
@@ -130,6 +140,7 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
     friction: 2,
   },
   steering: {
+    gatherDurationMs: GATHER_DURATION_MS,
     sortPull: 11,
     setMatchSeek: 20,
     setMissRepel: SET_MISS_REPEL_SPEED,

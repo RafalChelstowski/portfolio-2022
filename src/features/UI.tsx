@@ -17,9 +17,19 @@ const filterControls: FilterControl[] = [
 export function UI() {
   const displayUi = useStore((state) => state.displayUi);
   const isPresenting = useStore((state) => state.isPresenting !== null);
+  const chromeInteractivityClass = isPresenting ? 'pointer-events-none' : '';
+  const startGather = (sortOption: SortOption): void => {
+    useStore.setState({
+      sortOption,
+      activeGather: {
+        option: sortOption,
+        startedAt: Date.now(),
+      },
+    });
+  };
 
   return (
-    <div className="absolute inset-x-0 top-0 z-10">
+    <div className={`absolute inset-x-0 top-0 z-10 ${chromeInteractivityClass}`}>
       <header className="m-4 max-w-[calc(100vw-2rem)] sm:max-w-md">
         <h1 className="mb-1 text-base sm:text-lg">Rafal Chelstowski</h1>
         <h2 className="mb-1 whitespace-nowrap text-xs sm:text-base">
@@ -59,11 +69,8 @@ export function UI() {
               <button
                 key={control.value}
                 className="px-1 py-0.5 sm:px-0 sm:py-0"
-                onMouseEnter={() => {
-                  useStore.setState({ sortOption: control.value });
-                }}
-                onMouseLeave={() => {
-                  useStore.setState({ sortOption: null });
+                onClick={() => {
+                  startGather(control.value);
                 }}
                 type="button"
               >
