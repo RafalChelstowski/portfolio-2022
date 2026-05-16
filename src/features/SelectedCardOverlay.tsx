@@ -48,8 +48,8 @@ export function SelectedCardOverlay(): JSX.Element | null {
   const showCurrentBadge = item.current === true;
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-10">
-      <div className="pointer-events-auto absolute right-4 top-4 max-h-[min(70vh,34rem)] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border bg-white/95 p-4 text-black sm:p-6">
+    <div className="pointer-events-none absolute inset-0 z-10 flex justify-end overflow-hidden p-4 sm:p-6">
+      <div className="pointer-events-auto max-h-full w-[min(24rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-lg border bg-white/95 p-4 text-black sm:p-6">
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
           {showCurrentBadge && (
