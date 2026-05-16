@@ -52,7 +52,7 @@
 - [x] Final selected-card responsive polish verification sweep | AC: no task introduced committed tests or test infrastructure, no dev server is started, desktop right-panel centering, mobile bottom-sheet sizing, close control styling, and subtitle casing match the requested behavior, and `npm run typecheck && npm run lint && npm run build` passes on the final combined state
 - [x] Move selected-card close control to bottom-left | AC: selected-card close control renders at the bottom-left of the card content rather than the top-right, has a small margin or spacing from adjacent content, remains clickable after scrolling card content, `npm run typecheck && npm run lint && npm run build` passes
 - [x] Polish CURRENT badge spacing and title alignment | AC: CURRENT badge on current career items has consistent horizontal and vertical padding, aligns visually with the selected-card title row rather than floating awkwardly near the family label, non-current items still render no badge, `npm run typecheck && npm run lint && npm run build` passes
-- [ ] Final close-and-current-badge verification sweep | AC: no task introduced committed tests or test infrastructure, no dev server is started, close control placement and current badge title alignment match the requested behavior on desktop and mobile, and `npm run typecheck && npm run lint && npm run build` passes on the final combined state
+- [x] Final close-and-current-badge verification sweep | AC: no task introduced committed tests or test infrastructure, no dev server is started, close control placement and current badge title alignment match the requested behavior on desktop and mobile, and `npm run typecheck && npm run lint && npm run build` passes on the final combined state
 
 ---
 
