@@ -1,6 +1,6 @@
 # Feature Delivery Progress
 
-- [ ] Add explicit card typography class structure | AC: selected item card rendering has distinct family label, title, subtitle, metadata, field key, field value, and link class names or equivalent Tailwind class groupings, no visual behavior changes beyond typography hooks, `npm run typecheck && npm run lint && npm run build` passes
+- [x] Add explicit card typography class structure | AC: selected item card rendering has distinct family label, title, subtitle, metadata, field key, field value, and link class names or equivalent Tailwind class groupings, no visual behavior changes beyond typography hooks, `npm run typecheck && npm run lint && npm run build` passes
 - [ ] Render card family label with presentation uppercase styling | AC: family label renders uppercase via presentation styling rather than modifying item data, family labels remain sourced from item family values, `npm run typecheck && npm run lint && npm run build` passes
 - [ ] Render card title with presentation uppercase styling | AC: selected item title renders uppercase via presentation styling, source item title strings are unchanged, `npm run typecheck && npm run lint && npm run build` passes
 - [ ] Render card subtitle with presentation uppercase styling | AC: selected item subtitles render uppercase via presentation styling when present, source item subtitle strings are unchanged, cards without subtitles still render without empty subtitle elements, `npm run typecheck && npm run lint && npm run build` passes
