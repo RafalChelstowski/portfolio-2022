@@ -57,7 +57,7 @@ export function Info(): JSX.Element | null {
             {formatDisplayDate(item.date)}
           </p>
         )}
-        <p className={`mb-2 text-xl ${familyTitleClass} ${cardTypographyClasses.title}`}>
+        <p className={`mb-2 text-xl uppercase ${familyTitleClass} ${cardTypographyClasses.title}`}>
           {item.title}
         </p>
         {item.location && (
