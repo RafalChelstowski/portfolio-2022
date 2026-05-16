@@ -64,7 +64,7 @@ export function Info(): JSX.Element | null {
           <p className={`mb-2 ${cardTypographyClasses.metadata}`}>{item.location}</p>
         )}
         {item.subtitle && (
-          <p className={`mb-2 ${cardTypographyClasses.subtitle}`}>{item.subtitle}</p>
+          <p className={`mb-2 uppercase ${cardTypographyClasses.subtitle}`}>{item.subtitle}</p>
         )}
         {item.description && <p className="mb-2">{item.description}</p>}
         {item.outcome && <p className="mb-2">{item.outcome}</p>}
