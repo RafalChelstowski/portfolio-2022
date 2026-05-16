@@ -217,6 +217,7 @@ export function RapierItems(): JSX.Element {
   const firstPoolContactByIndexRef = useRef<boolean[]>(Array(instanceCount).fill(false));
   const hasRevealedUiRef = useRef<boolean>(false);
   const isPresenting = useStore((state) => state.isPresenting);
+  const presentItem = useStore((state) => state.presentItem);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
 
   useEffect(() => {
@@ -558,11 +559,7 @@ export function RapierItems(): JSX.Element {
                 return;
               }
 
-              useStore.setState({
-                isPresenting: batch.indexes[e.instanceId],
-                sortOption: null,
-                activeGather: null,
-              });
+              presentItem(batch.indexes[e.instanceId]);
             }}
           >
             <FamilyGeometry family={batch.family} colors={batch.colors} />

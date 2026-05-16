@@ -35,6 +35,7 @@ function formatDisplayDate(value: string): string {
 
 export function SelectedCardOverlay(): JSX.Element | null {
   const isPresenting = useStore((state) => state.isPresenting);
+  const closePresentation = useStore((state) => state.closePresentation);
 
   if (isPresenting === null) {
     return null;
@@ -54,9 +55,7 @@ export function SelectedCardOverlay(): JSX.Element | null {
           <button
             className="text-black text-sm"
             type="button"
-            onClick={() =>
-              useStore.setState({ isPresenting: null, sortOption: null, activeGather: null })
-            }
+            onClick={closePresentation}
           >
             CLOSE
           </button>
