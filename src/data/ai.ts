@@ -1,46 +1,61 @@
 import type { SourceItem } from '../types';
 
-const velocity: [number, number, number] = [2, -2, 5];
-const color = '#6b4d74';
+const dataSetup: Pick<
+  SourceItem,
+  'family' | 'sortingVelocity' | 'customColor'
+> = {
+  family: 'ai',
+  sortingVelocity: [2, -2, 5],
+  customColor: '#6b4d74',
+};
 
 export const ai: SourceItem[] = [
   {
     title: 'AI-assisted development',
     subtitle:
-      'Using Codex as the primary coding harness, with opencode and Claude Code for supporting workflows.',
-    family: 'ai',
+      'Using Codex, Opencode, Claude Code with whole range of OpenAI, Anthropic and local models',
+    cardFields: {
+      Skills:
+        'skills allow me to better steer agents when implementing/reviewing code',
+      'Long running agens':
+        'transforming requirements into long running ralph loops/goals',
+      'Advanced context management':
+        'tools like qmd/rtk/context mode that allow me to maximize agents context window',
+    },
     size: 'l',
     categories: ['ai'],
-    projects: [],
-    sortingVelocity: velocity,
-    customColor: color,
-  },
-  {
-    title: 'Agentic workflows',
-    subtitle: 'Long-running agent loops that turn planning notes into scoped implementation work.',
-    cardFields: {
-      Technique: 'Ralph loops',
-    },
-    family: 'ai',
-    size: 'm',
-    categories: ['ai'],
-    projects: ['portfolio'],
-    sortingVelocity: velocity,
-    customColor: color,
+    projects: ['portfolio', 'tpp', 'kitchen'],
+    ...dataSetup,
   },
   {
     title: 'AI knowledge sharing',
     subtitle:
-      'Practical workshops and patterns for using AI coding agents in real development work.',
+      "I'm involved in AI adoption. I'm organizing workshops and sharing patterns for using AI coding agents in real development work.",
     cardFields: {
       Workshops:
         "Agents code while you're away: intro to ralph-loops; Context management for AI coding agents",
     },
-    family: 'ai',
     size: 'm',
     categories: ['ai'],
     projects: [],
-    sortingVelocity: velocity,
-    customColor: color,
+    ...dataSetup,
+  },
+  {
+    title: 'Openclaw',
+    subtitle:
+      'Agents specialized in turning requirements into long running loops',
+    size: 's',
+    categories: ['ai'],
+    projects: ['portfolio', 'kitchen'],
+    ...dataSetup,
+  },
+  {
+    title: 'Local models',
+    subtitle:
+      "I'm interested in local models, and I'm trying to identify the workflows in which they can support api inference",
+    size: 's',
+    categories: ['ai'],
+    projects: [],
+    ...dataSetup,
   },
 ];
