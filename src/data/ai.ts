@@ -5,7 +5,7 @@ const dataSetup: Pick<
   'family' | 'sortingVelocity' | 'customColor'
 > = {
   family: 'ai',
-  sortingVelocity: [2, -2, 5],
+  sortingVelocity: [-2, -2, 5],
   customColor: '#6b4d74',
 };
 
