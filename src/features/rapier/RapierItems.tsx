@@ -84,6 +84,11 @@ type FamilyVisualGeometry =
       kind: 'cylinder';
       args: [radiusTop: number, radiusBottom: number, height: number, radialSegments: number];
     };
+type FamilyColliderDimensions =
+  | { kind: 'cuboid'; args: [halfWidth: number, halfHeight: number, halfDepth: number] }
+  | { kind: 'cone'; args: [halfHeight: number, radius: number] }
+  | { kind: 'ball'; args: [radius: number] }
+  | { kind: 'cylinder'; args: [halfHeight: number, radius: number] };
 
 const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
   project: { kind: 'box', args: [1, 1, 1] },
@@ -91,6 +96,14 @@ const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> =
   stack: { kind: 'icosahedron', args: [0.8, 0] },
   creative: { kind: 'dodecahedron', args: [0.84, 0] },
   career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 5] },
+};
+
+const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
+  project: { kind: 'cuboid', args: [0.5, 0.5, 0.5] },
+  ai: { kind: 'cone', args: [0.62, 0.54] },
+  stack: { kind: 'ball', args: [0.78] },
+  creative: { kind: 'ball', args: [0.82] },
+  career: { kind: 'cylinder', args: [0.59, 0.62] },
 };
 
 function createFamilyBodiesRef(): FamilyBodiesRef {
@@ -168,23 +181,21 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 }
 
 function getFamilyColliderNodes(family: ItemFamily): ReactNode[] {
-  if (family === 'project') {
-    return [<CuboidCollider key="project-collider" args={[0.5, 0.5, 0.5]} />];
+  const dimensions = familyColliderDimensions[family];
+
+  if (dimensions.kind === 'cuboid') {
+    return [<CuboidCollider key={`${family}-collider`} args={dimensions.args} />];
   }
 
-  if (family === 'ai') {
-    return [<ConeCollider key="ai-collider" args={[0.62, 0.54]} />];
+  if (dimensions.kind === 'cone') {
+    return [<ConeCollider key={`${family}-collider`} args={dimensions.args} />];
   }
 
-  if (family === 'stack') {
-    return [<BallCollider key="stack-collider" args={[0.78]} />];
+  if (dimensions.kind === 'ball') {
+    return [<BallCollider key={`${family}-collider`} args={dimensions.args} />];
   }
 
-  if (family === 'creative') {
-    return [<BallCollider key="creative-collider" args={[0.82]} />];
-  }
-
-  return [<CylinderCollider key="career-collider" args={[0.59, 0.62]} />];
+  return [<CylinderCollider key={`${family}-collider`} args={dimensions.args} />];
 }
 
 export function RapierItems(): JSX.Element {
