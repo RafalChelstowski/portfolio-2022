@@ -59,9 +59,10 @@ const data: Array<{
   },
   {
     title: 'Dev/AI learning path',
-    subtitle: 'Industry grade ',
+    subtitle:
+      'Various front-end focused courses from community renowned experts',
     cardFields: {
-      Dev: 'Frontend Masters, Kent C. Dodds - Epic React, Epic Web, TanStack',
+      Dev: 'Frontend Masters, Kent C. Dodds - Epic React, Epic Web, TanStack Query courses',
       AI: 'Kent C. Dodds - Epic MCP',
     },
     size: 's',
