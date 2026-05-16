@@ -431,7 +431,7 @@ export function RapierItems(): JSX.Element {
             const targetSpeed = Math.min(
               rapierPhysicsConstants.steering.maxSortSpeed,
               distance * rapierPhysicsConstants.steering.sortPull
-            );
+            ) * gatherSteeringFactor;
 
             directionVector.normalize().multiplyScalar(targetSpeed);
           } else {
