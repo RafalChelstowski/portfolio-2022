@@ -326,7 +326,19 @@ export function RapierItems(): JSX.Element {
     });
 
     const storeState = useStore.getState();
-    const sortOption = storeState.activeGather?.option ?? storeState.sortOption;
+    const { activeGather } = storeState;
+    const hasExpiredGather =
+      activeGather !== null &&
+      Date.now() - activeGather.startedAt >= rapierPhysicsConstants.steering.gatherDurationMs;
+
+    if (hasExpiredGather) {
+      useStore.setState({
+        sortOption: null,
+        activeGather: null,
+      });
+    }
+
+    const sortOption = hasExpiredGather ? null : activeGather?.option ?? storeState.sortOption;
 
     const rigidBodies = bodyByItemIndexRef.current;
     let hasAnyBody = false;

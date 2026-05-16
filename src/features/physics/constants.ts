@@ -23,6 +23,7 @@ export interface ItemPhysicsConstants {
 }
 
 export interface RapierSteeringPhysicsConstants {
+  gatherDurationMs: number;
   sortPull: number;
   setMatchSeek: number;
   setMissRepel: number;
@@ -72,6 +73,7 @@ const CATCH_SURFACE_THICKNESS = 1;
 const MAX_SET_MATCH_SPEED = 16;
 const SET_MISS_REPEL_SPEED = MAX_SET_MATCH_SPEED + 1;
 const MAX_SET_MISS_SPEED = SET_MISS_REPEL_SPEED + 1;
+const GATHER_DURATION_MS = 4000;
 
 const WALL_Y = -1;
 const SIDE_WALL_X = 15.5;
@@ -138,6 +140,7 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
     friction: 2,
   },
   steering: {
+    gatherDurationMs: GATHER_DURATION_MS,
     sortPull: 11,
     setMatchSeek: 20,
     setMissRepel: SET_MISS_REPEL_SPEED,
