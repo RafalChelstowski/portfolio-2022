@@ -347,6 +347,7 @@ export function RapierItems(): JSX.Element {
     }
 
     const sortOption = hasExpiredGather ? null : activeGather?.option ?? storeState.sortOption;
+    const gatherSteeringFactor = activeGather === null ? 1 : gatherDecayFactor;
 
     const rigidBodies = bodyByItemIndexRef.current;
     let hasAnyBody = false;
@@ -480,7 +481,7 @@ export function RapierItems(): JSX.Element {
             const targetSpeed = Math.min(
               rapierPhysicsConstants.steering.maxSetMatchSpeed,
               distanceToTarget * rapierPhysicsConstants.steering.setMatchSeek
-            );
+            ) * gatherSteeringFactor;
             directionVector.normalize().multiplyScalar(targetSpeed);
           } else {
             directionVector.set(0, 0, 0);
