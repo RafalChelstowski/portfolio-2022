@@ -253,6 +253,7 @@ export function RapierItems(): JSX.Element {
           position: descriptor.spawnPosition,
           rotation: descriptor.initialRotationSeed,
           scale: descriptor.scale,
+          mass: rapierPhysicsConstants.items.massBySize[descriptor.scaleSource],
           onCollisionEnter: (payload) => {
             markFirstPoolContact(itemIndex, payload);
           },
@@ -515,7 +516,6 @@ export function RapierItems(): JSX.Element {
           colliders={false}
           colliderNodes={getFamilyColliderNodes(batch.family)}
           instances={batch.instances}
-          mass={rapierPhysicsConstants.items.mass}
           canSleep={rapierPhysicsConstants.items.canSleep}
           linearDamping={rapierPhysicsConstants.items.linearDamping}
           angularDamping={rapierPhysicsConstants.items.angularDamping}
