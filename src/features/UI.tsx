@@ -59,12 +59,6 @@ export function UI() {
               <button
                 key={control.value}
                 className="px-1 py-0.5 sm:px-0 sm:py-0"
-                onMouseEnter={() => {
-                  useStore.setState({ sortOption: control.value });
-                }}
-                onMouseLeave={() => {
-                  useStore.setState({ sortOption: null });
-                }}
                 type="button"
               >
                 {control.value}
