@@ -17,6 +17,7 @@ const cardTypographyClasses = {
   title: 'selected-card__title',
   subtitle: 'selected-card__subtitle',
   metadata: 'selected-card__metadata',
+  currentBadge: 'selected-card__current-badge',
   fieldKey: 'selected-card__field-key font-semibold',
   fieldValue: 'selected-card__field-value',
   link: 'selected-card__link underline',
@@ -51,7 +52,16 @@ export function Info(): JSX.Element | null {
       <div
         className="max-h-[min(70vh,34rem)] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border bg-white/95 p-4 text-black sm:p-6"
       >
-        <p className={`mb-2 uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
+        <div className="mb-2 flex flex-wrap items-center gap-2">
+          <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
+          {item.current && (
+            <span
+              className={`rounded-sm border px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wide ${familyStyles[item.family]} ${cardTypographyClasses.currentBadge}`}
+            >
+              CURRENT
+            </span>
+          )}
+        </div>
         {item.date && (
           <p className={`mb-2 text-black ${cardTypographyClasses.metadata}`}>
             {formatDisplayDate(item.date)}
