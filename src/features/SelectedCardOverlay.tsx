@@ -52,15 +52,6 @@ export function SelectedCardOverlay(): JSX.Element | null {
     <div className="pointer-events-none absolute inset-0 z-[1100] overflow-hidden">
       <div className="ml-auto flex h-full w-full items-end justify-center px-0 pb-3 pt-0 sm:pb-4 md:w-1/2 md:items-center md:justify-end md:px-6 md:py-12 lg:py-16">
         <div className="pointer-events-auto h-[30vh] max-h-[30vh] min-w-0 w-full max-w-none overflow-y-auto overscroll-contain rounded-t-lg border bg-white/95 p-4 text-black break-words [overflow-wrap:anywhere] sm:p-6 md:h-auto md:max-h-[calc(100vh-6rem)] md:max-w-96 md:rounded-lg lg:max-h-[calc(100vh-8rem)]">
-          <div className="pointer-events-none sticky top-0 z-10 mb-2 flex justify-end">
-            <button
-              className="pointer-events-auto rounded-sm border border-black/20 bg-white/90 px-2 py-1 text-black text-sm shadow-sm"
-              type="button"
-              onClick={closePresentation}
-            >
-              CLOSE
-            </button>
-          </div>
           <div className="mb-2 flex flex-wrap items-center gap-2">
             <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
             {showCurrentBadge && (
@@ -116,6 +107,15 @@ export function SelectedCardOverlay(): JSX.Element | null {
               </a>
             </p>
           )}
+          <div className="mt-4 flex justify-start">
+            <button
+              className="rounded-sm border border-black/20 bg-white/90 px-2 py-1 text-black text-sm shadow-sm"
+              type="button"
+              onClick={closePresentation}
+            >
+              CLOSE
+            </button>
+          </div>
         </div>
       </div>
     </div>
