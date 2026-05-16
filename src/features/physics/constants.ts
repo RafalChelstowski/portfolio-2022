@@ -1,3 +1,5 @@
+import type { ItemSize } from '../../types';
+
 export type PhysicsVector3 = [number, number, number];
 
 export interface BoxPhysicsBounds {
@@ -37,6 +39,7 @@ export interface RapierWorldPhysicsConstants {
 
 export interface RapierItemBodyPhysicsConstants {
   mass: number;
+  massBySize: Record<ItemSize, number>;
   canSleep: boolean;
   linearDamping: number;
   angularDamping: number;
@@ -119,6 +122,11 @@ export const rapierPhysicsConstants: RapierPhysicsConstants = {
   },
   items: {
     mass: 1,
+    massBySize: {
+      s: 1,
+      m: 1.5,
+      l: 2.25,
+    },
     canSleep: false,
     linearDamping: 0,
     angularDamping: 3,
