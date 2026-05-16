@@ -94,7 +94,7 @@ const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> =
   project: { kind: 'box', args: [1, 1, 1] },
   ai: { kind: 'cone', args: [0.72, 1.24, 3] },
   stack: { kind: 'icosahedron', args: [0.8, 0] },
-  creative: { kind: 'dodecahedron', args: [0.84, 0] },
+  creative: { kind: 'dodecahedron', args: [0.64, 0] },
   career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 5] },
 };
 
