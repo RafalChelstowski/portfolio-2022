@@ -46,6 +46,7 @@ export function Info(): JSX.Element | null {
   const cardFields = item.cardFields ? Object.entries(item.cardFields) : [];
   const learningCourses = item.learningCourses ?? [];
   const familyTitleClass = familyStyles[item.family].split(' ')[0];
+  const showCurrentBadge = item.current === true;
 
   return (
     <Html position={[4.5, 7, 1]}>
@@ -54,7 +55,7 @@ export function Info(): JSX.Element | null {
       >
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
-          {item.current && (
+          {showCurrentBadge && (
             <span
               className={`rounded-sm border px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wide ${familyStyles[item.family]} ${cardTypographyClasses.currentBadge}`}
             >
