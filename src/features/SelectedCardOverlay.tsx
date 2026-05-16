@@ -52,24 +52,26 @@ export function SelectedCardOverlay(): JSX.Element | null {
     <div className="pointer-events-none absolute inset-0 z-[1100] overflow-hidden">
       <div className="ml-auto flex h-full w-full items-end justify-center px-0 pb-3 pt-0 sm:pb-4 md:w-1/2 md:items-center md:justify-end md:px-6 md:py-12 lg:py-16">
         <div className="pointer-events-auto h-[30vh] max-h-[30vh] min-w-0 w-full max-w-none overflow-y-auto overscroll-contain rounded-t-lg border bg-white/95 p-4 text-black break-words [overflow-wrap:anywhere] sm:p-6 md:h-auto md:max-h-[calc(100vh-6rem)] md:max-w-96 md:rounded-lg lg:max-h-[calc(100vh-8rem)]">
-          <div className="mb-2 flex flex-wrap items-center gap-2">
+          <div className="mb-2">
             <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
-            {showCurrentBadge && (
-              <span
-                className={`rounded-sm border px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wide ${familyStyles[item.family]} ${cardTypographyClasses.currentBadge}`}
-              >
-                CURRENT
-              </span>
-            )}
           </div>
           {item.date && (
             <p className={`mb-2 text-black ${cardTypographyClasses.metadata}`}>
               {formatDisplayDate(item.date)}
             </p>
           )}
-          <p className={`mb-2 text-xl uppercase ${familyTitleClass} ${cardTypographyClasses.title}`}>
-            {item.title}
-          </p>
+          <div className="mb-2 flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
+            {showCurrentBadge && (
+              <span
+                className={`inline-flex items-center rounded-sm border px-2.5 py-1 text-[0.625rem] font-semibold uppercase leading-none tracking-wide ${familyStyles[item.family]} ${cardTypographyClasses.currentBadge}`}
+              >
+                CURRENT
+              </span>
+            )}
+            <p className={`min-w-0 flex-1 text-xl uppercase ${familyTitleClass} ${cardTypographyClasses.title}`}>
+              {item.title}
+            </p>
+          </div>
           {item.location && (
             <p className={`mb-2 ${cardTypographyClasses.metadata}`}>{item.location}</p>
           )}
