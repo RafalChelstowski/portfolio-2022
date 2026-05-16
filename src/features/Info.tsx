@@ -19,7 +19,7 @@ const cardTypographyClasses = {
   metadata: 'selected-card__metadata',
   fieldKey: 'selected-card__field-key font-semibold',
   fieldValue: 'selected-card__field-value',
-  link: 'selected-card__link',
+  link: 'selected-card__link underline',
 };
 
 function renderCardFieldValue(value: CardFieldValue): string {
