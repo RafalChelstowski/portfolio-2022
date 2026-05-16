@@ -325,7 +325,7 @@ export function RapierItems(): JSX.Element {
     });
 
     const storeState = useStore.getState();
-    const { sortOption } = storeState;
+    const sortOption = storeState.activeGather?.option ?? storeState.sortOption;
 
     const rigidBodies = bodyByItemIndexRef.current;
     let hasAnyBody = false;
@@ -561,6 +561,7 @@ export function RapierItems(): JSX.Element {
               useStore.setState({
                 isPresenting: batch.indexes[e.instanceId],
                 sortOption: null,
+                activeGather: null,
               });
             }}
           >

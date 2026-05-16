@@ -17,6 +17,15 @@ const filterControls: FilterControl[] = [
 export function UI() {
   const displayUi = useStore((state) => state.displayUi);
   const isPresenting = useStore((state) => state.isPresenting !== null);
+  const startGather = (sortOption: SortOption): void => {
+    useStore.setState({
+      sortOption,
+      activeGather: {
+        option: sortOption,
+        startedAt: Date.now(),
+      },
+    });
+  };
 
   return (
     <div className="absolute inset-x-0 top-0 z-10">
@@ -59,6 +68,9 @@ export function UI() {
               <button
                 key={control.value}
                 className="px-1 py-0.5 sm:px-0 sm:py-0"
+                onClick={() => {
+                  startGather(control.value);
+                }}
                 type="button"
               >
                 {control.value}

@@ -54,7 +54,9 @@ export function SelectedCardOverlay(): JSX.Element | null {
           <button
             className="text-black text-sm"
             type="button"
-            onClick={() => useStore.setState({ isPresenting: null, sortOption: null })}
+            onClick={() =>
+              useStore.setState({ isPresenting: null, sortOption: null, activeGather: null })
+            }
           >
             CLOSE
           </button>
