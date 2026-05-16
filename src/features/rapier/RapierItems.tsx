@@ -347,7 +347,7 @@ export function RapierItems(): JSX.Element {
     }
 
     const sortOption = hasExpiredGather ? null : activeGather?.option ?? storeState.sortOption;
-    const gatherSteeringFactor = activeGather === null ? 1 : gatherDecayFactor;
+    const gatherSteeringFactor = hasExpiredGather || activeGather === null ? 1 : gatherDecayFactor;
 
     const rigidBodies = bodyByItemIndexRef.current;
     let hasAnyBody = false;
