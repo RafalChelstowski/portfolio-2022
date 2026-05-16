@@ -7,6 +7,8 @@ import { useStore } from '../store/store';
 const defaultCameraPosition = [7, 25, -6] as const;
 const presentationCameraPosition = [11, 18, -8] as const;
 const presentationViewOffsetRatio = 0.22;
+const defaultCameraZoom = 1.2;
+const presentationCameraZoom = 1.35;
 
 export function Camera(): JSX.Element {
   const presentingItemIndex = useStore((state) => state.isPresenting);
@@ -24,6 +26,7 @@ export function Camera(): JSX.Element {
     const [x, y, z] = isPresenting ? presentationCameraPosition : defaultCameraPosition;
 
     camera.position.set(x, y, z);
+    camera.zoom = isPresenting ? presentationCameraZoom : defaultCameraZoom;
 
     if (isPresenting) {
       camera.setViewOffset(
@@ -46,7 +49,7 @@ export function Camera(): JSX.Element {
       ref={ref}
       fov={63}
       position={defaultCameraPosition}
-      zoom={1.2}
+      zoom={defaultCameraZoom}
       makeDefault
     />
   );
