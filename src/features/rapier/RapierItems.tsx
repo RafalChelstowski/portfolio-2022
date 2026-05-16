@@ -138,6 +138,13 @@ function blendVelocity(
   rigidBody.setLinvel(targetPositionVector, true);
 }
 
+function getGatherDecayFactor(startedAt: number, now: number): number {
+  const elapsedMs = now - startedAt;
+  const progress = elapsedMs / rapierPhysicsConstants.steering.gatherDurationMs;
+
+  return Math.max(0, Math.min(1, 1 - progress));
+}
+
 function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float32Array }): JSX.Element {
   const dimensions = familyVisualGeometryDimensions[family];
 
@@ -327,9 +334,10 @@ export function RapierItems(): JSX.Element {
 
     const storeState = useStore.getState();
     const { activeGather } = storeState;
-    const hasExpiredGather =
-      activeGather !== null &&
-      Date.now() - activeGather.startedAt >= rapierPhysicsConstants.steering.gatherDurationMs;
+    const now = Date.now();
+    const gatherDecayFactor =
+      activeGather === null ? 0 : getGatherDecayFactor(activeGather.startedAt, now);
+    const hasExpiredGather = activeGather !== null && gatherDecayFactor <= 0;
 
     if (hasExpiredGather) {
       useStore.setState({
