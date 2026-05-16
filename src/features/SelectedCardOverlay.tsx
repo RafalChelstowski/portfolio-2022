@@ -52,9 +52,9 @@ export function SelectedCardOverlay(): JSX.Element | null {
     <div className="pointer-events-none absolute inset-0 z-[1100] overflow-hidden">
       <div className="ml-auto flex h-full w-full items-stretch justify-center p-3 sm:items-start sm:px-6 sm:py-8 md:w-1/2 md:justify-end md:py-12 lg:py-16">
         <div className="pointer-events-auto max-h-full min-w-0 w-full max-w-96 overflow-y-auto overscroll-contain rounded-lg border bg-white/95 p-4 text-black break-words [overflow-wrap:anywhere] sm:max-h-[calc(100vh-4rem)] sm:p-6 md:max-h-[calc(100vh-6rem)] lg:max-h-[calc(100vh-8rem)]">
-          <div className="sticky top-0 z-10 -mx-1 mb-2 flex place-content-end bg-white/95 py-1">
+          <div className="pointer-events-none sticky top-0 z-10 mb-2 flex justify-end">
             <button
-              className="text-black text-sm"
+              className="pointer-events-auto rounded-sm border border-black/20 bg-white/90 px-2 py-1 text-black text-sm shadow-sm"
               type="button"
               onClick={closePresentation}
             >
