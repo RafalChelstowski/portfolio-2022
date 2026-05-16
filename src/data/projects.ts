@@ -6,38 +6,32 @@ const color = '#956062';
 export const projects: SourceItem[] = [
   {
     title: 'Kitchen',
-    subtitle: 'Interactive 3D cafeteria recreated from LiDAR scans in Blender.',
-    outcome:
-      'Shows spatial thinking, 3D asset preparation, and playful web presentation in one small scene.',
+    subtitle:
+      'Interactive 3D cafeteria recreated from a real location with LiDAR scans and Blender.',
     link: 'https://kitchen.vercel.app/',
     family: 'project',
     size: 'l',
-    categories: ['creative'],
+    categories: ['creative', 'dev'],
     projects: ['kitchen'],
     sortingVelocity: velocity,
     customColor: color,
   },
   {
-    title: 'Rafal Chelstowski 2026',
-    subtitle:
-      'An interactive portfolio where my engineering, 3D, creative, and AI workflow threads come together.',
-    outcome:
-      'Turns a portfolio page into a navigable constellation of projects, tools, learning paths, and career evidence.',
+    title: 'Portfolio 2026',
+    subtitle: 'Interactive portfolio where engineering, 3D, creative, and AI workflow threads come together.',
     family: 'project',
     size: 'm',
-    categories: ['creative'],
+    categories: ['creative', 'dev'],
     projects: ['portfolio'],
     sortingVelocity: velocity,
     customColor: color,
   },
   {
-    title: 'World-leading orthodontic software',
-    subtitle:
-      'Senior engineering work connected to ClinCheck and Invisalign treatment-planning experiences.',
-    outcome:
-      'Contributed to public product areas including Invisalign Smile Video and In-Face Visualization.',
+    title: 'Industry-leading orthodontic software',
+    subtitle: 'Senior front-end engineering for 3D and video features in the React ecosystem.',
     cardFields: {
-      Products: 'ClinCheck, Invisalign Smile Video, In-Face Visualization',
+      Contributions:
+        'Frontend contributions to Invisalign Smile Video and ClinCheck In-Face Visualization',
     },
     family: 'project',
     size: 'l',
