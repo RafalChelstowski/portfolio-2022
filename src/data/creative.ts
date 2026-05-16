@@ -1,7 +1,13 @@
 import type { SourceItem } from '../types';
 
-const velocity: [number, number, number] = [2, -2, -4];
-const color = '#5e7785';
+const dataSetup: Pick<
+  SourceItem,
+  'family' | 'sortingVelocity' | 'customColor'
+> = {
+  family: 'creative',
+  sortingVelocity: [2, -2, -4],
+  customColor: '#5e7785',
+};
 
 export const creative: SourceItem[] = [
   {
@@ -10,12 +16,10 @@ export const creative: SourceItem[] = [
     cardFields: {
       Tools: 'Adobe Creative Suite, Affinity Suite, Procreate',
     },
-    family: 'creative',
     size: 'm',
     categories: ['creative'],
     projects: ['kitchen'],
-    sortingVelocity: velocity,
-    customColor: color,
+    ...dataSetup,
   },
   {
     title: '3D asset workflow',
@@ -23,11 +27,9 @@ export const creative: SourceItem[] = [
     cardFields: {
       Tools: 'Blender, Substance Painter, Nomad Sculpt',
     },
-    family: 'creative',
     size: 'm',
     categories: ['creative'],
     projects: ['kitchen', 'portfolio'],
-    sortingVelocity: velocity,
-    customColor: color,
+    ...dataSetup,
   },
 ];
