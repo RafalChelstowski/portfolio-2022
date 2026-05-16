@@ -36,6 +36,11 @@
 - [x] Apply decaying steering to full sort mode | AC: clicking the sort control starts a decaying full-sort gather, full sort uses item `sortingVelocity` targets and weakens over the same four-second envelope, `npm run typecheck && npm run lint && npm run build` passes
 - [x] Clear expired gather state from frame loop | AC: expired gather state clears automatically without requiring another click or hover event, the frame loop returns to idle steering after expiry, `npm run typecheck && npm run lint && npm run build` passes
 - [x] Final combined verification sweep | AC: no task introduced committed tests or test infrastructure, no dev server is started, `npm run typecheck && npm run lint && npm run build` passes on the final combined state
+- [ ] Raise selected-card overlay above site chrome | AC: selected-card overlay stacking is higher than the header/menu/loader chrome, the close button remains clickable while a card is open, pointer-events still pass through only outside the interactive card panel, `npm run typecheck && npm run lint && npm run build` passes
+- [ ] Anchor selected-card panel to the right-side stage | AC: desktop selected-card panel opens on the right side of the viewport rather than at the top center, panel height is bounded by the viewport with internal scrolling for long content, mobile layout remains readable with the close button visible without horizontal overflow, `npm run typecheck && npm run lint && npm run build` passes
+- [ ] Keep header chrome from occluding card actions | AC: when a card is presenting, the header/menu layer does not overlap or intercept pointer events for the card panel or close button, the existing header appearance is preserved when no card is open, `npm run typecheck && npm run lint && npm run build` passes
+- [ ] Shift Three.js scene into a left-stage composition while presenting | AC: opening a card visibly composes the scene toward the left side of the viewport with the selected item cluster remaining visible beside the right-side card, closing the card restores the previous centered rotating view, camera/control state remains driven by selection state, `npm run typecheck && npm run lint && npm run build` passes
+- [ ] Final selected-card cleanup verification sweep | AC: no task introduced committed tests or test infrastructure, no dev server is started, selected-card close behavior is not blocked by overlay stacking, and `npm run typecheck && npm run lint && npm run build` passes on the final combined state
 
 ---
 
@@ -44,3 +49,5 @@
 (critical discoveries only)
 - Current Vite/esbuild setup rejects TypeScript `satisfies`; use explicit annotations compatible with the existing build toolchain.
 - Collider footprint comparisons must include per-item scale from `getSize`; creative medium uses the base family collider radius multiplied by medium scale.
+- The selected-card overlay currently uses `z-10` while the header wrapper also uses `z-10` and renders later in `App.tsx`; equal z-index plus DOM order can let the header sit above the card and block the close button.
+- The current presentation camera only changes position; for the desired right-card/left-scene layout, the cleanup pass should explicitly compose the scene for a left-stage presentation state instead of relying on the card overlay alone.
