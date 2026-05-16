@@ -44,10 +44,10 @@ const data: Array<{
   {
     title: 'Creative and marketing background',
     subtitle:
-      'Before I focused on software engineering I was a marketing/web/print specialist and creative team leader',
+      'Marketing, web, print, and creative leadership work before focusing on software engineering.',
     cardFields: {
-      'Getback S.A': '2014 - 2015, Creative Projects Lead, Marketing Lead',
-      Freelancer: '2007 - 2016, Various marketing/web/print projects',
+      'GetBack S.A.': '2014 - 2015, Creative Projects Lead, Marketing Lead',
+      Freelancer: '2007 - 2016, marketing, web, and print projects',
       Education:
         '2004 - 2011, MA in History, University of Wroclaw, Universite libre de Bruxelles',
     },
@@ -60,7 +60,7 @@ const data: Array<{
   {
     title: 'Dev/AI learning path',
     subtitle:
-      'Various front-end focused courses from community renowned experts',
+      'Front-end and AI engineering study from respected community experts.',
     cardFields: {
       Dev: 'Frontend Masters, Kent C. Dodds - Epic React, Epic Web, TanStack Query courses',
       AI: 'Kent C. Dodds - Epic MCP',
@@ -74,9 +74,9 @@ const data: Array<{
     subtitle:
       'Mastering visual tooling and asset workflows. Learning 3D programming, shaders, and browser graphics from strong industry sources.',
     cardFields: {
-      '3D': 'SimonDev - Math/3D game programming/shaders, Bruno Simon - three.js, Pikuma - 3D graphic workflows',
+      '3D': 'SimonDev - math, 3D game programming, and shaders; Bruno Simon - Three.js; Pikuma - 3D graphics workflows',
       Design:
-        'LinkedIn Learning/Lynda, Teachable - creating assets in Blender with focus on hard surface moddeling',
+        'LinkedIn Learning/Lynda, Teachable - Blender asset creation with a focus on hard-surface modeling',
     },
     size: 'm',
     categories: ['career', 'dev', 'creative'],

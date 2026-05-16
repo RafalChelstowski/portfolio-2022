@@ -13,27 +13,27 @@ export const ai: SourceItem[] = [
   {
     title: 'AI-assisted development',
     subtitle:
-      'Using Codex, Opencode, Claude Code with whole range of OpenAI, Anthropic and local models',
+      'Practical agent-assisted engineering with Codex, OpenCode, Claude Code, and OpenAI, Anthropic, and local models.',
     size: 'l',
     cardFields: {
       Skills:
-        'skills allow me to better steer agents when implementing/reviewing code',
+        'Custom skills for steering agents through implementation and code review',
       'Long running agents':
-        'transforming requirements into long running ralph loops/goals',
+        'Requirements translated into long-running Ralph loops and scoped goals',
       'Advanced context management':
-        'tools like qmd/rtk/context mode that allow me to maximize agents context window',
+        'qmd, rtk, and context-mode workflows for keeping agents grounded in the right material',
     },
     categories: ['ai'],
-    projects: ['portfolio', 'tpp', 'kitchen'],
+    projects: ['portfolio', 'kitchen'],
     ...dataSetup,
   },
   {
     title: 'AI knowledge sharing',
     subtitle:
-      "I'm involved in AI adoption. I'm organizing workshops and sharing patterns for using AI coding agents in real development work.",
+      'Workshops and adoption patterns for using AI coding agents in real development work.',
     cardFields: {
       Workshops:
-        "Agents code while you're away: intro to ralph-loops; Context management for AI coding agents",
+        "Agents code while you're away: intro to Ralph loops; context management for AI coding agents",
     },
     size: 'm',
     categories: ['ai'],
@@ -41,18 +41,18 @@ export const ai: SourceItem[] = [
     ...dataSetup,
   },
   {
-    title: 'Openclaw',
+    title: 'Personal agent workflows',
     subtitle:
-      'Array of specialized agents supporting my daily planning, hobbies/interests and coding with long running loops',
+      'Openclaw-style specialized agents for daily planning, personal projects, and long-running coding loops.',
     size: 's',
     categories: ['ai'],
-    projects: ['portfolio', 'kitchen'],
+    projects: ['portfolio'],
     ...dataSetup,
   },
   {
     title: 'Local models',
     subtitle:
-      "I'm interested in local models, identifying the workflows in which they can support API inference",
+      'Exploring where local inference can support API-based model workflows.',
     size: 's',
     categories: ['ai'],
     projects: [],

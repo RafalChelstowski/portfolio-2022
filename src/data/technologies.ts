@@ -7,7 +7,7 @@ export const technologies: SourceItem[] = [
   {
     title: 'React ecosystem',
     cardFields: {
-      Tools: 'React, TypeScript, zustand, React Query',
+      Tools: 'React, TypeScript, Zustand, React Query',
     },
     family: 'stack',
     size: 'l',
@@ -19,7 +19,7 @@ export const technologies: SourceItem[] = [
   {
     title: '3D web ecosystem',
     cardFields: {
-      Tools: 'three.js, react-three-fiber, rapier.js, basic shaders',
+      Tools: 'Three.js, React Three Fiber, Rapier, basic shaders',
     },
     family: 'stack',
     size: 'l',

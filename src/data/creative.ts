@@ -5,8 +5,8 @@ const color = '#5e7785';
 
 export const creative: SourceItem[] = [
   {
-    title: 'Design',
-    subtitle: "I'm profficient in creating digital/prited media",
+    title: 'Visual design and production',
+    subtitle: 'Digital and printed media production for visual communication.',
     cardFields: {
       Tools: 'Adobe Creative Suite, Affinity Suite, Procreate',
     },
@@ -19,6 +19,7 @@ export const creative: SourceItem[] = [
   },
   {
     title: '3D asset workflow',
+    subtitle: 'Modeling, texturing, and asset preparation for interactive 3D web work.',
     cardFields: {
       Tools: 'Blender, Substance Painter, Nomad Sculpt',
     },

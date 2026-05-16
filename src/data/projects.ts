@@ -7,31 +7,31 @@ export const projects: SourceItem[] = [
   {
     title: 'Kitchen',
     subtitle:
-      'Interactive 3D cafeteria recreated from real location using LiDAR scans and Blender.',
+      'Interactive 3D cafeteria recreated from a real location with LiDAR scans and Blender.',
     link: 'https://kitchen.vercel.app/',
     family: 'project',
     size: 'l',
-    categories: ['creative'],
+    categories: ['creative', 'dev'],
     projects: ['kitchen'],
     sortingVelocity: velocity,
     customColor: color,
   },
   {
-    title: 'Portfolio, Rafal Chelstowski 2026',
-    subtitle: 'This is where my experience/skills/interests come together.',
+    title: 'Portfolio 2026',
+    subtitle: 'Interactive portfolio where engineering, 3D, creative, and AI workflow threads come together.',
     family: 'project',
     size: 'm',
-    categories: ['creative'],
+    categories: ['creative', 'dev'],
     projects: ['portfolio'],
     sortingVelocity: velocity,
     customColor: color,
   },
   {
     title: 'Industry-leading orthodontic software',
-    subtitle: 'Working with 3D/Video features in React ecosystem',
+    subtitle: 'Senior front-end engineering for 3D and video features in the React ecosystem.',
     cardFields: {
       Contributions:
-        'Frontend part of Invisalign Smile Video, ClinCheck In-Face Visualization',
+        'Frontend contributions to Invisalign Smile Video and ClinCheck In-Face Visualization',
     },
     family: 'project',
     size: 'l',
