@@ -102,7 +102,7 @@ const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
   project: { kind: 'cuboid', args: [0.5, 0.5, 0.5] },
   ai: { kind: 'cone', args: [0.62, 0.54] },
   stack: { kind: 'ball', args: [0.78] },
-  creative: { kind: 'ball', args: [0.82] },
+  creative: { kind: 'ball', args: [0.64] },
   career: { kind: 'cylinder', args: [0.59, 0.62] },
 };
 

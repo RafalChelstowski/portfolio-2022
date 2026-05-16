@@ -23,7 +23,7 @@
 - [x] Centralize family visual geometry dimensions | AC: family geometry dimensions remain centralized in `RapierItems.tsx`, there is a clear local mapping or helper for family geometry values, rendered family shapes remain the same except where later tasks explicitly resize creative, `npm run typecheck && npm run lint && npm run build` passes
 - [x] Centralize family collider dimensions | AC: family collider dimensions remain centralized in `RapierItems.tsx`, there is a clear local mapping or helper for family collider values, collider component choices remain appropriate for each family, `npm run typecheck && npm run lint && npm run build` passes
 - [x] Normalize creative medium visual footprint | AC: creative medium geometry dimensions no longer exceed project large visual footprint, source data size labels remain unchanged, non-creative geometry dimensions are unchanged unless needed for centralization, `npm run typecheck && npm run lint && npm run build` passes
-- [ ] Normalize creative medium collider footprint | AC: creative medium collider dimensions no longer exceed project large collider footprint, source data size labels remain unchanged, collider dimensions stay centralized in `RapierItems.tsx`, `npm run typecheck && npm run lint && npm run build` passes
+- [x] Normalize creative medium collider footprint | AC: creative medium collider dimensions no longer exceed project large collider footprint, source data size labels remain unchanged, collider dimensions stay centralized in `RapierItems.tsx`, `npm run typecheck && npm run lint && npm run build` passes
 - [ ] Define size-based mass mapping | AC: physics code defines a size-to-mass mapping with `s < m < l`, `m` and `l` masses are both greater than current baseline `1`, source item data is not changed to store mass, `npm run typecheck && npm run lint && npm run build` passes
 - [ ] Assign mass per item instance | AC: rigid body instances derive mass from item size per instance, mass is assigned through instance/body props rather than a single family-wide baseline, `npm run typecheck && npm run lint && npm run build` passes
 - [ ] Remove hover-triggered gather state from menu controls | AC: category/project/sort controls no longer set sort or gather state on mouse enter, controls no longer clear sort or gather state on mouse leave, hover styling if any remains purely visual, `npm run typecheck && npm run lint && npm run build` passes
@@ -43,3 +43,4 @@
 
 (critical discoveries only)
 - Current Vite/esbuild setup rejects TypeScript `satisfies`; use explicit annotations compatible with the existing build toolchain.
+- Collider footprint comparisons must include per-item scale from `getSize`; creative medium uses the base family collider radius multiplied by medium scale.
