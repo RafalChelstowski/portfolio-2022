@@ -5,9 +5,9 @@ import { Suspense } from 'react';
 
 import { Camera } from './features/Camera';
 import { Controls } from './features/Controls';
-import { Info } from './features/Info';
 import { Lights } from './features/Lights';
 import Pool from './features/Pool';
+import { SelectedCardOverlay } from './features/SelectedCardOverlay';
 import { UI } from './features/UI';
 import { rapierPhysicsConstants } from './features/physics/constants';
 import { RapierBounds } from './features/rapier/RapierBounds';
@@ -15,7 +15,7 @@ import { RapierItems } from './features/rapier/RapierItems';
 
 export function App() {
   return (
-    <main className="w-screen h-screen">
+    <main className="relative w-screen h-screen overflow-hidden">
       <Canvas
         onCreated={({ gl }) => {
           if ('useLegacyLights' in gl) {
@@ -36,10 +36,10 @@ export function App() {
           <RapierItems />
           <RapierBounds />
         </Physics>
-        <Info />
         <AdaptiveDpr pixelated />
         <Preload all />
       </Canvas>
+      <SelectedCardOverlay />
       <Loader />
       <UI />
     </main>
