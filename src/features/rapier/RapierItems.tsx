@@ -75,6 +75,23 @@ interface FamilyBatchRuntime {
 }
 
 type FamilyBodiesRef = MutableRefObject<(RapierRigidBody | null)[] | null>;
+type FamilyVisualGeometry =
+  | { kind: 'box'; args: [width: number, height: number, depth: number] }
+  | { kind: 'cone'; args: [radius: number, height: number, radialSegments: number] }
+  | { kind: 'icosahedron'; args: [radius: number, detail: number] }
+  | { kind: 'dodecahedron'; args: [radius: number, detail: number] }
+  | {
+      kind: 'cylinder';
+      args: [radiusTop: number, radiusBottom: number, height: number, radialSegments: number];
+    };
+
+const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
+  project: { kind: 'box', args: [1, 1, 1] },
+  ai: { kind: 'cone', args: [0.72, 1.24, 3] },
+  stack: { kind: 'icosahedron', args: [0.8, 0] },
+  creative: { kind: 'dodecahedron', args: [0.84, 0] },
+  career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 5] },
+};
 
 function createFamilyBodiesRef(): FamilyBodiesRef {
   return { current: null };
@@ -109,40 +126,42 @@ function blendVelocity(
 }
 
 function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float32Array }): JSX.Element {
-  if (family === 'project') {
+  const dimensions = familyVisualGeometryDimensions[family];
+
+  if (dimensions.kind === 'box') {
     return (
-      <boxGeometry args={[1, 1, 1]}>
+      <boxGeometry args={dimensions.args}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </boxGeometry>
     );
   }
 
-  if (family === 'ai') {
+  if (dimensions.kind === 'cone') {
     return (
-      <coneGeometry args={[0.72, 1.24, 3]}>
+      <coneGeometry args={dimensions.args}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </coneGeometry>
     );
   }
 
-  if (family === 'stack') {
+  if (dimensions.kind === 'icosahedron') {
     return (
-      <icosahedronGeometry args={[0.8, 0]}>
+      <icosahedronGeometry args={dimensions.args}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </icosahedronGeometry>
     );
   }
 
-  if (family === 'creative') {
+  if (dimensions.kind === 'dodecahedron') {
     return (
-      <dodecahedronGeometry args={[0.84, 0]}>
+      <dodecahedronGeometry args={dimensions.args}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </dodecahedronGeometry>
     );
   }
 
   return (
-    <cylinderGeometry args={[0.65, 0.65, 1.18, 5]}>
+    <cylinderGeometry args={dimensions.args}>
       <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
     </cylinderGeometry>
   );
