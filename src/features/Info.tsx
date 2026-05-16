@@ -17,7 +17,7 @@ const cardTypographyClasses = {
   title: 'selected-card__title',
   subtitle: 'selected-card__subtitle',
   metadata: 'selected-card__metadata',
-  fieldKey: 'selected-card__field-key',
+  fieldKey: 'selected-card__field-key font-semibold',
   fieldValue: 'selected-card__field-value',
   link: 'selected-card__link',
 };
