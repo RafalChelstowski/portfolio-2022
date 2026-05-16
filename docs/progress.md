@@ -35,7 +35,7 @@
 - [x] Apply decaying repulsion to non-matching gather items | AC: non-matching category/project items are strongly repelled early and less strongly later using the same decay envelope, existing fallback direction handling remains safe when an item is at center, `npm run typecheck && npm run lint && npm run build` passes
 - [x] Apply decaying steering to full sort mode | AC: clicking the sort control starts a decaying full-sort gather, full sort uses item `sortingVelocity` targets and weakens over the same four-second envelope, `npm run typecheck && npm run lint && npm run build` passes
 - [x] Clear expired gather state from frame loop | AC: expired gather state clears automatically without requiring another click or hover event, the frame loop returns to idle steering after expiry, `npm run typecheck && npm run lint && npm run build` passes
-- [ ] Final combined verification sweep | AC: no task introduced committed tests or test infrastructure, no dev server is started, `npm run typecheck && npm run lint && npm run build` passes on the final combined state
+- [x] Final combined verification sweep | AC: no task introduced committed tests or test infrastructure, no dev server is started, `npm run typecheck && npm run lint && npm run build` passes on the final combined state
 
 ---
 
