@@ -51,7 +51,7 @@ export function Info(): JSX.Element | null {
       <div
         className="max-h-[min(70vh,34rem)] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border bg-white/95 p-4 text-black sm:p-6"
       >
-        <p className={`mb-2 ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
+        <p className={`mb-2 uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
         {item.date && (
           <p className={`mb-2 text-black ${cardTypographyClasses.metadata}`}>
             {formatDisplayDate(item.date)}
