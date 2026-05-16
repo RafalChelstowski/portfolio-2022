@@ -505,7 +505,7 @@ export function RapierItems(): JSX.Element {
           const targetMissSpeed = Math.min(
             rapierPhysicsConstants.steering.maxSetMissSpeed,
             rapierPhysicsConstants.steering.setMissRepel * nearCenterBoost
-          );
+          ) * gatherSteeringFactor;
 
           directionVector.set(
             repelDirectionX * targetMissSpeed,
