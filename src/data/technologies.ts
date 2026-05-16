@@ -6,10 +6,8 @@ const color = '#d89ea6';
 export const technologies: SourceItem[] = [
   {
     title: 'React ecosystem',
-    subtitle:
-      'Production UI engineering with React, TypeScript, state, server-state, and testing patterns.',
     cardFields: {
-      Tools: 'React, TypeScript, Zustand, React Query',
+      Tools: 'React, TypeScript, zustand, React Query',
     },
     family: 'stack',
     size: 'l',
@@ -20,10 +18,8 @@ export const technologies: SourceItem[] = [
   },
   {
     title: '3D web ecosystem',
-    subtitle:
-      'Interactive browser graphics, scene composition, physics-driven UI, and real-time rendering.',
     cardFields: {
-      Tools: 'Three.js, React Three Fiber, Rapier',
+      Tools: 'three.js, react-three-fiber, rapier.js, basic shaders',
     },
     family: 'stack',
     size: 'l',
@@ -34,8 +30,6 @@ export const technologies: SourceItem[] = [
   },
   {
     title: 'Terminal-first workflow',
-    subtitle:
-      'Keyboard-first development environment for focused code navigation, automation, and agent work.',
     cardFields: {
       Tools: 'Neovim, tmux, Ghostty',
     },

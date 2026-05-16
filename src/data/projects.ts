@@ -6,9 +6,8 @@ const color = '#956062';
 export const projects: SourceItem[] = [
   {
     title: 'Kitchen',
-    subtitle: 'Interactive 3D cafeteria recreated from LiDAR scans in Blender.',
-    outcome:
-      'Shows spatial thinking, 3D asset preparation, and playful web presentation in one small scene.',
+    subtitle:
+      'Interactive 3D cafeteria recreated from real location using LiDAR scans and Blender.',
     link: 'https://kitchen.vercel.app/',
     family: 'project',
     size: 'l',
@@ -18,11 +17,8 @@ export const projects: SourceItem[] = [
     customColor: color,
   },
   {
-    title: 'Rafal Chelstowski 2026',
-    subtitle:
-      'An interactive portfolio where my engineering, 3D, creative, and AI workflow threads come together.',
-    outcome:
-      'Turns a portfolio page into a navigable constellation of projects, tools, learning paths, and career evidence.',
+    title: 'Portfolio, Rafal Chelstowski 2026',
+    subtitle: 'This is where my experience/skills/interests come together.',
     family: 'project',
     size: 'm',
     categories: ['creative'],
@@ -31,13 +27,11 @@ export const projects: SourceItem[] = [
     customColor: color,
   },
   {
-    title: 'World-leading orthodontic software',
-    subtitle:
-      'Senior engineering work connected to ClinCheck and Invisalign treatment-planning experiences.',
-    outcome:
-      'Contributed to public product areas including Invisalign Smile Video and In-Face Visualization.',
+    title: 'Industry-leading orthodontic software',
+    subtitle: 'Working with 3D/Video features in React ecosystem',
     cardFields: {
-      Products: 'ClinCheck, Invisalign Smile Video, In-Face Visualization',
+      Contributions:
+        'Frontend part of Invisalign Smile Video, ClinCheck In-Face Visualization',
     },
     family: 'project',
     size: 'l',

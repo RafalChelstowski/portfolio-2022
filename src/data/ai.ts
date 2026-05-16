@@ -14,15 +14,15 @@ export const ai: SourceItem[] = [
     title: 'AI-assisted development',
     subtitle:
       'Using Codex, Opencode, Claude Code with whole range of OpenAI, Anthropic and local models',
+    size: 'l',
     cardFields: {
       Skills:
         'skills allow me to better steer agents when implementing/reviewing code',
-      'Long running agens':
+      'Long running agents':
         'transforming requirements into long running ralph loops/goals',
       'Advanced context management':
         'tools like qmd/rtk/context mode that allow me to maximize agents context window',
     },
-    size: 'l',
     categories: ['ai'],
     projects: ['portfolio', 'tpp', 'kitchen'],
     ...dataSetup,
@@ -43,7 +43,7 @@ export const ai: SourceItem[] = [
   {
     title: 'Openclaw',
     subtitle:
-      'Agents specialized in turning requirements into long running loops',
+      'Array of specialized agents supporting my daily planning, hobbies/interests and coding with long running loops',
     size: 's',
     categories: ['ai'],
     projects: ['portfolio', 'kitchen'],
@@ -52,7 +52,7 @@ export const ai: SourceItem[] = [
   {
     title: 'Local models',
     subtitle:
-      "I'm interested in local models, and I'm trying to identify the workflows in which they can support api inference",
+      "I'm interested in local models, identifying the workflows in which they can support API inference",
     size: 's',
     categories: ['ai'],
     projects: [],
