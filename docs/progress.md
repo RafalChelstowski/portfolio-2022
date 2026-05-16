@@ -18,7 +18,7 @@
 - [x] Consolidate creative item family defaults | AC: `src/data/creative.ts` uses a shared local spread pattern like `src/data/ai.ts` for repeated family/color/sortingVelocity defaults, exported creative item count and generated ids remain unchanged, `npm run typecheck && npm run lint && npm run build` passes
 - [x] Consolidate project item family defaults | AC: `src/data/projects.ts` uses a shared local spread pattern like `src/data/ai.ts` for repeated family/color/sortingVelocity defaults, exported project item count and generated ids remain unchanged, `npm run typecheck && npm run lint && npm run build` passes
 - [x] Consolidate stack item family defaults | AC: `src/data/technologies.ts` uses a shared local spread pattern like `src/data/ai.ts` for repeated family/color/sortingVelocity defaults, exported stack item count and generated ids remain unchanged, `npm run typecheck && npm run lint && npm run build` passes
-- [ ] Consolidate career item family defaults consistently | AC: `src/data/experience.ts` keeps or updates its shared default mapping so family/color/sortingVelocity boilerplate remains centralized, exported career item count and generated ids remain unchanged, `npm run typecheck && npm run lint && npm run build` passes
+- [x] Consolidate career item family defaults consistently | AC: `src/data/experience.ts` keeps or updates its shared default mapping so family/color/sortingVelocity boilerplate remains centralized, exported career item count and generated ids remain unchanged, `npm run typecheck && npm run lint && npm run build` passes
 - [ ] Move AI full-sort target to a distinct quadrant | AC: AI family `sortingVelocity` no longer shares the stack target quadrant, full sort mode keeps project/stack/creative/career existing family separation, item source ids and counts remain unchanged, `npm run typecheck && npm run lint && npm run build` passes
 - [ ] Centralize family visual geometry dimensions | AC: family geometry dimensions remain centralized in `RapierItems.tsx`, there is a clear local mapping or helper for family geometry values, rendered family shapes remain the same except where later tasks explicitly resize creative, `npm run typecheck && npm run lint && npm run build` passes
 - [ ] Centralize family collider dimensions | AC: family collider dimensions remain centralized in `RapierItems.tsx`, there is a clear local mapping or helper for family collider values, collider component choices remain appropriate for each family, `npm run typecheck && npm run lint && npm run build` passes
@@ -42,3 +42,4 @@
 ## Findings
 
 (critical discoveries only)
+- Current Vite/esbuild setup rejects TypeScript `satisfies`; use explicit annotations compatible with the existing build toolchain.

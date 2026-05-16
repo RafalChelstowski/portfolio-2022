@@ -1,21 +1,15 @@
-import type { MainCategory, SourceItem } from '../types';
+import type { SourceItem } from '../types';
 
-const velocity: [number, number, number] = [0, -2, 0];
-const color = '#426271';
+const dataSetup: Pick<
+  SourceItem,
+  'family' | 'sortingVelocity' | 'customColor'
+> = {
+  family: 'career',
+  sortingVelocity: [0, -2, 0],
+  customColor: '#426271',
+};
 
-const data: Array<{
-  title: string;
-  subtitle?: string;
-  description?: string;
-  cardFields?: SourceItem['cardFields'];
-  learningCourses?: SourceItem['learningCourses'];
-  date?: string;
-  location?: string;
-  current?: boolean;
-  size: SourceItem['size'];
-  categories: MainCategory[];
-  projects: SourceItem['projects'];
-}> = [
+export const experience: SourceItem[] = [
   {
     title: 'Align Technology, Senior Software Engineer',
     date: 'Nov 2022',
@@ -24,6 +18,7 @@ const data: Array<{
     size: 'l',
     categories: ['dev', 'career'],
     projects: ['tpp'],
+    ...dataSetup,
   },
   {
     title: 'TouK, Front-end Developer',
@@ -32,6 +27,7 @@ const data: Array<{
     size: 'm',
     categories: ['career'],
     projects: ['kitchen'],
+    ...dataSetup,
   },
   {
     title: 'Credit Suisse, Multimedia Designer -> Senior Front-end Developer',
@@ -40,6 +36,7 @@ const data: Array<{
     size: 's',
     categories: ['career'],
     projects: [],
+    ...dataSetup,
   },
   {
     title: 'Creative and marketing background',
@@ -56,6 +53,7 @@ const data: Array<{
     size: 's',
     categories: ['career', 'creative'],
     projects: [],
+    ...dataSetup,
   },
   {
     title: 'Dev/AI learning path',
@@ -68,6 +66,7 @@ const data: Array<{
     size: 's',
     categories: ['career', 'dev', 'ai'],
     projects: [],
+    ...dataSetup,
   },
   {
     title: '3D/Design learning path',
@@ -81,12 +80,6 @@ const data: Array<{
     size: 'm',
     categories: ['career', 'dev', 'creative'],
     projects: [],
+    ...dataSetup,
   },
 ];
-
-export const experience: SourceItem[] = data.map((item) => ({
-  ...item,
-  family: 'career',
-  sortingVelocity: velocity,
-  customColor: color,
-}));
