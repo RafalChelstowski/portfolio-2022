@@ -48,8 +48,17 @@ export function SelectedCardOverlay(): JSX.Element | null {
   const showCurrentBadge = item.current === true;
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-10 flex justify-end overflow-hidden p-4 sm:p-6">
-      <div className="pointer-events-auto max-h-full w-[min(24rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-lg border bg-white/95 p-4 text-black sm:p-6">
+    <div className="pointer-events-none absolute inset-0 z-10 flex items-stretch justify-center overflow-hidden p-3 sm:items-start sm:justify-end sm:p-6">
+      <div className="pointer-events-auto max-h-full min-w-0 w-full max-w-96 overflow-y-auto overscroll-contain rounded-lg border bg-white/95 p-4 text-black break-words [overflow-wrap:anywhere] sm:p-6">
+        <div className="sticky top-0 z-10 -mx-1 mb-2 flex place-content-end bg-white/95 py-1">
+          <button
+            className="text-black text-sm"
+            type="button"
+            onClick={() => useStore.setState({ isPresenting: null })}
+          >
+            CLOSE
+          </button>
+        </div>
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
           {showCurrentBadge && (
@@ -98,7 +107,7 @@ export function SelectedCardOverlay(): JSX.Element | null {
         {item.link && (
           <p className="mb-2">
             <a
-              className={`text-black ${cardTypographyClasses.link}`}
+              className={`text-black break-words ${cardTypographyClasses.link}`}
               href={item.link}
               target="_blank"
               rel="noreferrer"
@@ -107,15 +116,6 @@ export function SelectedCardOverlay(): JSX.Element | null {
             </a>
           </p>
         )}
-        <div className="flex place-content-end ">
-          <button
-            className="text-black text-sm"
-            type="button"
-            onClick={() => useStore.setState({ isPresenting: null })}
-          >
-            CLOSE
-          </button>
-        </div>
       </div>
     </div>
   );
