@@ -22,7 +22,7 @@ export const projects: SourceItem[] = [
   },
   {
     title: 'Portfolio 2026',
-    subtitle: 'Interactive portfolio where engineering, 3D, creative, and AI workflow threads come together.',
+    subtitle: 'Engineering, 3D, creative, and AI skills come together.',
     size: 'm',
     categories: ['creative', 'dev'],
     projects: ['portfolio'],
@@ -30,7 +30,7 @@ export const projects: SourceItem[] = [
   },
   {
     title: 'Industry-leading orthodontic software',
-    subtitle: 'Senior front-end engineering for 3D and video features in the React ecosystem.',
+    subtitle: '3D and video features in the React ecosystem.',
     cardFields: {
       Contributions:
         'Frontend contributions to Invisalign Smile Video and ClinCheck In-Face Visualization',

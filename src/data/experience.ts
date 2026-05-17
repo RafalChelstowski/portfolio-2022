@@ -41,7 +41,7 @@ export const experience: SourceItem[] = [
   {
     title: 'Creative and marketing background',
     subtitle:
-      'Marketing, web, print, and creative leadership work before focusing on software engineering.',
+      'Marketing, web, print, and creative work before focusing on software engineering.',
     cardFields: {
       'GetBack S.A.': '2014 - 2015, Creative Projects Lead, Marketing Lead',
       Freelancer: '2007 - 2016, marketing, web, and print projects',
@@ -57,11 +57,10 @@ export const experience: SourceItem[] = [
   },
   {
     title: 'Dev/AI learning path',
-    subtitle:
-      'Front-end and AI engineering study from respected community experts.',
+    subtitle: 'Front-end and AI engineering study from community experts.',
     cardFields: {
       Dev: 'Frontend Masters, Kent C. Dodds - Epic React, Epic Web, TanStack Query courses',
-      AI: 'Kent C. Dodds - Epic MCP',
+      AI: 'Kent C. Dodds - Epic MCP, Frontend Masters',
     },
     size: 's',
     categories: ['career', 'dev', 'ai'],
@@ -71,7 +70,7 @@ export const experience: SourceItem[] = [
   {
     title: '3D/Design learning path',
     subtitle:
-      'Mastering visual tooling and asset workflows. Learning 3D programming, shaders, and browser graphics from strong industry sources.',
+      'Learning 3D programming, shaders, and browser graphics from leading industry sources.',
     cardFields: {
       '3D': 'SimonDev - math, 3D game programming, and shaders; Bruno Simon - Three.js; Pikuma - 3D graphics workflows',
       Design:
