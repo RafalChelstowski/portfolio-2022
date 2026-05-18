@@ -256,13 +256,16 @@ export function RapierItems(): JSX.Element {
     (itemIndex: number): void => {
       const { activeGather, selectedGroup } = useStore.getState();
 
-      if (selectedGroup && !isGatherInProgress(activeGather, Date.now())) {
-        const groupedIndexes = getGroupItemIndexes(selectedGroup);
+      if (!selectedGroup || isGatherInProgress(activeGather, Date.now())) {
+        presentItem(itemIndex);
+        return;
+      }
 
-        if (groupedIndexes.includes(itemIndex)) {
-          presentGroup(selectedGroup);
-          return;
-        }
+      const groupedIndexes = getGroupItemIndexes(selectedGroup);
+
+      if (groupedIndexes.includes(itemIndex)) {
+        presentGroup(selectedGroup);
+        return;
       }
 
       presentItem(itemIndex);
