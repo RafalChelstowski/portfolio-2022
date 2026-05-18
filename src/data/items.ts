@@ -74,3 +74,11 @@ function createProjectConstellationGroups(): Record<ProjectConstellation, number
 }
 
 export const projectConstellationGroups = createProjectConstellationGroups();
+
+export const focusGroup = items.reduce<number[]>((matches, item, index) => {
+  if (item.focus === true) {
+    matches.push(index);
+  }
+
+  return matches;
+}, []);

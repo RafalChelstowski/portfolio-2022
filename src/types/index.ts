@@ -11,7 +11,7 @@ export type ItemSize = 's' | 'm' | 'l';
 export type MainCategory = 'dev' | 'creative' | 'ai' | 'career';
 export type ProjectConstellation = 'kitchen' | 'portfolio' | 'tpp';
 
-export type SortOption = MainCategory | ProjectConstellation | 'sort';
+export type SortOption = MainCategory | ProjectConstellation | 'focus' | 'sort';
 
 export type CardFieldValue = string | string[];
 export interface LearningCourseRow {
@@ -26,6 +26,7 @@ export interface PortfolioItem {
   size: ItemSize;
   categories: MainCategory[];
   projects: ProjectConstellation[];
+  focus?: boolean;
   sortingVelocity: [number, number, number];
   customColor: string;
   subtitle?: string;
