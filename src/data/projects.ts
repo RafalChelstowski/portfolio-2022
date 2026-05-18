@@ -37,7 +37,7 @@ export const projects: SourceItem[] = [
         'Frontend contributions to Invisalign Smile Video and ClinCheck In-Face Visualization',
     },
     size: 'l',
-    categories: ['dev', 'career'],
+    categories: ['dev'],
     projects: ['tpp'],
     ...dataSetup,
   },
