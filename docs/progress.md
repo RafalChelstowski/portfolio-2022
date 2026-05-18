@@ -6,7 +6,19 @@
 - [x] Mark the curated focus evidence items | AC: exactly these five titles are marked `focus: true`: `Professional profile`, `Align Technology, Senior Software Engineer`, `AI-assisted development`, `AI knowledge sharing`, `Industry-leading orthodontic software`; no other item is marked `focus: true`
 - [x] Verify the feature without adding test files | AC: `npm run typecheck` passes, `npm run lint` passes, no new test files are added, no dev server is started
 
+## PR Review Follow-up Pass
+
+- [ ] Move focus to the first filter-bar control | AC: the filter/sort control row renders `focus` first, ahead of the existing category/project/sort controls; selecting focus still gathers the same focus group and no other control behavior regresses
+- [ ] Add a dedicated learning category and visual shape | AC: learning-oriented portfolio items use a new `learning` category/family with a distinct shape/category mapping; existing learning course rendering still works; current non-learning category mappings remain unchanged
+- [ ] Apply group-card presentation immediately when sorting changes | AC: choosing any group/sort option that should show the combined affected-items card makes that card content available immediately from the selected group, without waiting for physics movement or gather expiry; physics movement can continue independently
+- [ ] Normalize combined-card ordering and category headers | AC: combined affected-item cards always order sections as career first, with `Professional profile` first when included, then projects, AI, stack, and learning last; repeated items from the same category render one category header only, not one header per item
+- [ ] Protect the close-button area and scrollbar behavior in group cards | AC: content never renders underneath the close-button hit area; if a group card is scrollable its scrollbar is always visible; non-scrollable cards do not show broken or misleading scroll affordances
+- [ ] Resolve the outstanding PR #14 Codex inline review comment | AC: the single Codex inline review comment on PR #14 is addressed if review context is available locally; if the comment cannot be fetched from this sandbox, leave a clear Findings note with the exact blocker and do not fabricate a fix
+
 ## Findings
+
+- Rafal PR #14 review follow-up priorities: `focus` must be first in the filter bar; learning items need a new category/shape; combined affected-item cards should appear immediately when sort/group is applied rather than waiting for physics movement to finish; combined cards must use order career (`Professional profile` first when present), projects, AI, stack, learning; category headers in combined cards should render once per category; close-button space must not overlap text; scrollbars should always be visible when content is scrollable.
+- GitHub PR feedback helper could not fetch PR #14 inline comments from this sandbox because `/Users/rafalchelstowski/.openclaw/credentials/data-github.env` and host `/usr/local/bin/gh` are not mounted here; do not guess the Codex inline comment content.
 
 - Approved Professional profile summary: 8+ years of experience delivering enterprise web applications in regulated and international environments. Experienced in translating stakeholder needs into technical requirements, contributing across the full product lifecycle, and building complex React and 2D/3D browser-based systems. Currently leading team-level AI adoption through workshops, workflow integration and practical GenAI use cases. Interested in scalable, governed AI adoption, reusable solution patterns and the impact of AI on business processes.
 - Rapier steering is driven only by `activeGather`; `selectedGroup` remains stored for presentation after gather expiry and is not a physics signal.
