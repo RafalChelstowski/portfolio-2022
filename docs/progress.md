@@ -8,7 +8,7 @@
 
 ## PR Review Follow-up Pass
 
-- [ ] Move focus to the first filter-bar control | AC: the filter/sort control row renders `focus` first, ahead of the existing category/project/sort controls; selecting focus still gathers the same focus group and no other control behavior regresses
+- [x] Move focus to the first filter-bar control | AC: the filter/sort control row renders `focus` first, ahead of the existing category/project/sort controls; selecting focus still gathers the same focus group and no other control behavior regresses
 - [ ] Add a dedicated learning category and visual shape | AC: learning-oriented portfolio items use a new `learning` category/family with a distinct shape/category mapping; existing learning course rendering still works; current non-learning category mappings remain unchanged
 - [ ] Apply group-card presentation immediately when sorting changes | AC: choosing any group/sort option that should show the combined affected-items card makes that card content available immediately from the selected group, without waiting for physics movement or gather expiry; physics movement can continue independently
 - [ ] Normalize combined-card ordering and category headers | AC: combined affected-item cards always order sections as career first, with `Professional profile` first when included, then projects, AI, stack, and learning last; repeated items from the same category render one category header only, not one header per item

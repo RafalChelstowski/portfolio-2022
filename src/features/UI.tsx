@@ -7,9 +7,9 @@ type FilterControl =
   | { type: 'divider'; key: string };
 
 const filterControls: FilterControl[] = [
-  ...mainCategoryOrder.map((value) => ({ type: 'button' as const, value })),
-  { type: 'divider', key: 'focus-divider' },
   { type: 'button', value: 'focus' },
+  { type: 'divider', key: 'categories-divider' },
+  ...mainCategoryOrder.map((value) => ({ type: 'button' as const, value })),
   { type: 'divider', key: 'projects-divider' },
   ...projectConstellationOrder.map((value) => ({ type: 'button' as const, value })),
   { type: 'divider', key: 'sort-divider' },
