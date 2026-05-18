@@ -25,7 +25,7 @@
 
 ## PR Review Follow-up Pass 3
 
-- [ ] Allow cross-item clicks while an individual card is open | AC: item hover/click blocking applies only while a combined/group summary card is open; when an individual item card is open, hovering and clicking other scene items remains enabled; clicking another item replaces the individual card with that item's card instead of being ignored
+- [x] Allow cross-item clicks while an individual card is open | AC: item hover/click blocking applies only while a combined/group summary card is open; when an individual item card is open, hovering and clicking other scene items remains enabled; clicking another item replaces the individual card with that item's card instead of being ignored
 - [ ] Center presentation camera on the selected individual item | AC: opening or switching an individual item card targets/zooms the camera toward that item's scene position rather than the generic scene center; group/summary card camera behavior remains appropriate for the group overview and does not regress
 
 ## Findings

@@ -245,14 +245,14 @@ export function RapierItems(): JSX.Element {
   const presentGroup = useStore((state) => state.presentGroup);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
   const presentedItemIndex = presentation.type === 'item' ? presentation.itemIndex : null;
-  const isPresenting = presentation.type !== 'none';
-  const canInteractWithItems = presentation.type === 'none';
+  const isPresentingGroup = presentation.type === 'group';
+  const canInteractWithItems = !isPresentingGroup;
 
   useEffect(() => {
-    if (isPresenting) {
+    if (isPresentingGroup) {
       setHovered(undefined);
     }
-  }, [isPresenting]);
+  }, [isPresentingGroup]);
 
   const markFirstPoolContact = useCallback((index: number, payload: CollisionEnterPayload): void => {
     if (firstPoolContactByIndexRef.current[index]) {
@@ -268,7 +268,16 @@ export function RapierItems(): JSX.Element {
 
   const presentClickedItem = useCallback(
     (itemIndex: number): void => {
-      const { activeGather, selectedGroup } = useStore.getState();
+      const {
+        activeGather,
+        presentation: currentPresentation,
+        selectedGroup,
+      } = useStore.getState();
+
+      if (currentPresentation.type === 'item') {
+        presentItem(itemIndex);
+        return;
+      }
 
       if (!selectedGroup || isGatherInProgress(activeGather, Date.now())) {
         presentItem(itemIndex);
