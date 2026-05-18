@@ -273,14 +273,18 @@ export function RapierItems(): JSX.Element {
         presentation: currentPresentation,
         selectedGroup,
       } = useStore.getState();
+      const itemBodyPosition = bodyByItemIndexRef.current[itemIndex]?.translation();
+      const targetPosition: [number, number, number] = itemBodyPosition
+        ? [itemBodyPosition.x, itemBodyPosition.y, itemBodyPosition.z]
+        : itemInstanceDescriptors[itemIndex].spawnPosition;
 
       if (currentPresentation.type === 'item') {
-        presentItem(itemIndex);
+        presentItem(itemIndex, targetPosition);
         return;
       }
 
       if (!selectedGroup || isGatherInProgress(activeGather, Date.now())) {
-        presentItem(itemIndex);
+        presentItem(itemIndex, targetPosition);
         return;
       }
 
@@ -291,7 +295,7 @@ export function RapierItems(): JSX.Element {
         return;
       }
 
-      presentItem(itemIndex);
+      presentItem(itemIndex, targetPosition);
     },
     [presentGroup, presentItem]
   );
