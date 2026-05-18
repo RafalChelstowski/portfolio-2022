@@ -11,7 +11,7 @@
 - [x] Move focus to the first filter-bar control | AC: the filter/sort control row renders `focus` first, ahead of the existing category/project/sort controls; selecting focus still gathers the same focus group and no other control behavior regresses
 - [x] Add a dedicated learning category and visual shape | AC: learning-oriented portfolio items use a new `learning` category/family with a distinct shape/category mapping; existing learning course rendering still works; current non-learning category mappings remain unchanged
 - [x] Apply group-card presentation immediately when sorting changes | AC: choosing any group/sort option that should show the combined affected-items card makes that card content available immediately from the selected group, without waiting for physics movement or gather expiry; physics movement can continue independently
-- [ ] Normalize combined-card ordering and category headers | AC: combined affected-item cards always order sections as career first, with `Professional profile` first when included, then projects, AI, stack, and learning last; repeated items from the same category render one category header only, not one header per item
+- [x] Normalize combined-card ordering and category headers | AC: combined affected-item cards always order sections as career first, with `Professional profile` first when included, then projects, AI, stack, and learning last; repeated items from the same category render one category header only, not one header per item
 - [ ] Protect the close-button area and scrollbar behavior in group cards | AC: content never renders underneath the close-button hit area; if a group card is scrollable its scrollbar is always visible; non-scrollable cards do not show broken or misleading scroll affordances
 - [ ] Resolve the outstanding PR #14 Codex inline review comment | AC: the single Codex inline review comment on PR #14 is addressed if review context is available locally; if the comment cannot be fetched from this sandbox, leave a clear Findings note with the exact blocker and do not fabricate a fix
 
@@ -26,6 +26,7 @@
 - Group presentation headings should use `getGroupDisplayLabel` from `src/data/items.ts`; controls intentionally keep rendering raw lowercase sort values.
 - `presentClickedItem` in `src/features/rapier/RapierItems.tsx` preserves unmatched-click behavior by falling through to `presentItem(itemIndex)` when the clicked item is not in the selected group; `presentItem` does not clear `selectedGroup`.
 - The learning category is intentionally appended after the existing main categories and learning-path items retain their existing category tags so `dev`, `creative`, `ai`, and `career` control ordering and group mappings stay stable.
+- Combined group-card ordering and one-header-per-family grouping is centralized in `getGroupDisplayItemSections` in `src/data/items.ts`; the overlay hides per-item family labels for grouped cards and renders the family header once per section.
 
 ## Group Presentation Continuation
 

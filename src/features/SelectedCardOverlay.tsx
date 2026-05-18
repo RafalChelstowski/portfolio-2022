@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { getGroupDisplayItemIndexes, getGroupDisplayLabel, items } from '../data/items';
+import { getGroupDisplayItemSections, getGroupDisplayLabel, items } from '../data/items';
 import { useStore } from '../store/store';
 import type { CardFieldValue, Item3d } from '../types';
 
@@ -14,6 +14,7 @@ const familyStyles: Record<Item3d['family'], string> = {
 
 const cardTypographyClasses = {
   familyLabel: 'selected-card__family-label',
+  sectionLabel: 'selected-card__section-label',
   title: 'selected-card__title',
   groupTitle: 'selected-card__group-title',
   subtitle: 'selected-card__subtitle',
@@ -44,9 +45,10 @@ function formatDisplayDate(value: string): string {
 
 interface ItemCardContentProps {
   item: Item3d;
+  hideFamilyLabel: boolean;
 }
 
-export function ItemCardContent({ item }: ItemCardContentProps): JSX.Element {
+export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps): JSX.Element {
   const familyLabel = item.family;
   const cardFields = item.cardFields ? Object.entries(item.cardFields) : [];
   const learningCourses = item.learningCourses ?? [];
@@ -55,9 +57,11 @@ export function ItemCardContent({ item }: ItemCardContentProps): JSX.Element {
 
   return (
     <>
-      <div className="mb-2">
-        <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
-      </div>
+      {!hideFamilyLabel && (
+        <div className="mb-2">
+          <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
+        </div>
+      )}
       {item.date && (
         <p className={`mb-2 text-black ${cardTypographyClasses.metadata}`}>
           {formatDisplayDate(item.date)}
@@ -144,9 +148,7 @@ export function SelectedCardOverlay(): JSX.Element | null {
 
   if (presentation.type === 'group') {
     const groupLabel = getGroupDisplayLabel(presentation.sortOption) ?? 'Group';
-    const groupItems = getGroupDisplayItemIndexes(presentation.sortOption).map(
-      (itemIndex) => items[itemIndex],
-    );
+    const groupItemSections = getGroupDisplayItemSections(presentation.sortOption);
 
     return (
       <div className={overlayContainerClasses}>
@@ -157,14 +159,23 @@ export function SelectedCardOverlay(): JSX.Element | null {
             >
               {groupLabel}
             </h2>
-            {groupItems.length > 0 ? (
-              <div className="space-y-4">
-                {groupItems.map((item) => (
-                  <section
-                    key={item.id}
-                    className="border-t border-black/15 pt-4 first:border-t-0 first:pt-0"
-                  >
-                    <ItemCardContent item={item} />
+            {groupItemSections.length > 0 ? (
+              <div className="space-y-5">
+                {groupItemSections.map(({ family, itemIndexes }) => (
+                  <section key={family} className="border-t border-black/15 pt-4 first:border-t-0 first:pt-0">
+                    <div className="mb-2">
+                      <p className={`uppercase ${cardTypographyClasses.sectionLabel}`}>{family}</p>
+                    </div>
+                    <div className="space-y-4">
+                      {itemIndexes.map((itemIndex) => (
+                        <article
+                          key={items[itemIndex].id}
+                          className="border-t border-black/10 pt-4 first:border-t-0 first:pt-0"
+                        >
+                          <ItemCardContent item={items[itemIndex]} hideFamilyLabel />
+                        </article>
+                      ))}
+                    </div>
                   </section>
                 ))}
               </div>
@@ -182,7 +193,7 @@ export function SelectedCardOverlay(): JSX.Element | null {
     <div className={overlayContainerClasses}>
       <div className={overlayPlacementClasses}>
         <div className={cardShellClasses}>
-          <ItemCardContent item={items[presentation.itemIndex]} />
+          <ItemCardContent item={items[presentation.itemIndex]} hideFamilyLabel={false} />
           <StickyCloseControl onClose={closePresentation} />
         </div>
       </div>

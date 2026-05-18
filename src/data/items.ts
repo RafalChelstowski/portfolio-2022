@@ -1,5 +1,6 @@
 import type {
   Item3d,
+  ItemFamily,
   MainCategory,
   ProjectConstellation,
   SelectedGroupOption,
@@ -113,6 +114,14 @@ const customGroupDisplayTitleOrder: Partial<Record<SelectedGroupOption, string[]
   ],
 };
 
+const groupCardFamilyOrder: ItemFamily[] = ['career', 'project', 'ai', 'stack', 'creative', 'learning'];
+const professionalProfileTitle = 'Professional profile';
+
+export interface GroupDisplayItemSection {
+  family: ItemFamily;
+  itemIndexes: number[];
+}
+
 export function getGroupItemIndexes(sortOption: unknown): number[] {
   if (typeof sortOption !== 'string' || sortOption === 'sort') {
     return [];
@@ -165,4 +174,46 @@ export function getGroupDisplayItemIndexes(sortOption: unknown): number[] {
   }, []);
 
   return [...orderedIndexes, ...itemIndexByTitle.values()];
+}
+
+export function getGroupDisplayItemSections(sortOption: unknown): GroupDisplayItemSection[] {
+  const groupedIndexes = getGroupDisplayItemIndexes(sortOption);
+  const indexesByFamily = new Map<ItemFamily, number[]>();
+
+  groupedIndexes.forEach((itemIndex) => {
+    const { family } = items[itemIndex];
+    const familyIndexes = indexesByFamily.get(family) ?? [];
+
+    familyIndexes.push(itemIndex);
+    indexesByFamily.set(family, familyIndexes);
+  });
+
+  return groupCardFamilyOrder.reduce<GroupDisplayItemSection[]>((sections, family) => {
+    const familyIndexes = indexesByFamily.get(family);
+
+    if (!familyIndexes || familyIndexes.length === 0) {
+      return sections;
+    }
+
+    const orderedFamilyIndexes =
+      family === 'career'
+        ? [...familyIndexes].sort((leftIndex, rightIndex) => {
+            const leftIsProfile = items[leftIndex].title === professionalProfileTitle;
+            const rightIsProfile = items[rightIndex].title === professionalProfileTitle;
+
+            if (leftIsProfile === rightIsProfile) {
+              return 0;
+            }
+
+            return leftIsProfile ? -1 : 1;
+          })
+        : familyIndexes;
+
+    sections.push({
+      family,
+      itemIndexes: orderedFamilyIndexes,
+    });
+
+    return sections;
+  }, []);
 }
