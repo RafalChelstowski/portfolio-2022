@@ -141,10 +141,11 @@ export function SelectedCardOverlay(): JSX.Element | null {
             {groupItems.length > 0 ? (
               <div className="space-y-4">
                 {groupItems.map((item) => (
-                  <section key={item.id} className="border-t border-black/15 pt-3 first:border-t-0 first:pt-0">
-                    <p className={`text-lg uppercase ${familyStyles[item.family].split(' ')[0]}`}>
-                      {item.title}
-                    </p>
+                  <section
+                    key={item.id}
+                    className="border-t border-black/15 pt-4 first:border-t-0 first:pt-0"
+                  >
+                    <ItemCardContent item={item} />
                   </section>
                 ))}
               </div>
