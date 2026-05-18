@@ -30,7 +30,11 @@ const overlayContainerClasses =
 const overlayPlacementClasses =
   'ml-auto flex h-full w-full items-end justify-center px-0 pb-3 pt-0 sm:pb-4 md:w-1/2 md:items-center md:justify-end md:px-6 md:py-12 lg:py-16';
 const cardShellClasses =
-  'pointer-events-auto relative h-[30vh] max-h-[30vh] min-w-0 w-full max-w-none overflow-y-auto overscroll-contain rounded-t-lg border bg-white/95 p-4 text-black break-words [overflow-wrap:anywhere] sm:p-6 md:h-auto md:max-h-[calc(100vh-6rem)] md:max-w-96 md:rounded-lg lg:max-h-[calc(100vh-8rem)]';
+  'pointer-events-auto flex h-[30vh] max-h-[30vh] min-w-0 w-full max-w-none flex-col overflow-hidden rounded-t-lg border bg-white/95 text-black break-words [overflow-wrap:anywhere] md:h-auto md:max-h-[calc(100vh-6rem)] md:max-w-96 md:rounded-lg lg:max-h-[calc(100vh-8rem)]';
+const cardBodyClasses =
+  'min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6';
+const groupCardBodyClasses =
+  `${cardBodyClasses} selected-card__scrollable pr-3 sm:pr-5`;
 
 function renderCardFieldValue(value: CardFieldValue): string {
   return Array.isArray(value) ? value.join(', ') : value;
@@ -126,7 +130,7 @@ interface StickyCloseControlProps {
 
 function StickyCloseControl({ onClose }: StickyCloseControlProps): JSX.Element {
   return (
-    <div className="sticky bottom-0 z-10 -mx-4 -mb-4 mt-4 flex justify-start bg-gradient-to-t from-white/95 via-white/95 to-white/0 px-4 pb-4 pt-3 sm:-mx-6 sm:-mb-6 sm:px-6 sm:pb-6">
+    <div className="shrink-0 border-t border-black/10 bg-white/95 px-4 py-3 sm:px-6 sm:py-4">
       <button
         className="rounded-sm border border-black/20 bg-white/90 px-2 py-1 text-sm text-black shadow-sm"
         type="button"
@@ -154,34 +158,36 @@ export function SelectedCardOverlay(): JSX.Element | null {
       <div className={overlayContainerClasses}>
         <div className={overlayPlacementClasses}>
           <div className={cardShellClasses}>
-            <h2
-              className={`mb-4 text-2xl uppercase text-black ${cardTypographyClasses.groupTitle}`}
-            >
-              {groupLabel}
-            </h2>
-            {groupItemSections.length > 0 ? (
-              <div className="space-y-5">
-                {groupItemSections.map(({ family, itemIndexes }) => (
-                  <section key={family} className="border-t border-black/15 pt-4 first:border-t-0 first:pt-0">
-                    <div className="mb-2">
-                      <p className={`uppercase ${cardTypographyClasses.sectionLabel}`}>{family}</p>
-                    </div>
-                    <div className="space-y-4">
-                      {itemIndexes.map((itemIndex) => (
-                        <article
-                          key={items[itemIndex].id}
-                          className="border-t border-black/10 pt-4 first:border-t-0 first:pt-0"
-                        >
-                          <ItemCardContent item={items[itemIndex]} hideFamilyLabel />
-                        </article>
-                      ))}
-                    </div>
-                  </section>
-                ))}
-              </div>
-            ) : (
-              <p className="mb-2">No items available.</p>
-            )}
+            <div className={groupCardBodyClasses}>
+              <h2
+                className={`mb-4 text-2xl uppercase text-black ${cardTypographyClasses.groupTitle}`}
+              >
+                {groupLabel}
+              </h2>
+              {groupItemSections.length > 0 ? (
+                <div className="space-y-5">
+                  {groupItemSections.map(({ family, itemIndexes }) => (
+                    <section key={family} className="border-t border-black/15 pt-4 first:border-t-0 first:pt-0">
+                      <div className="mb-2">
+                        <p className={`uppercase ${cardTypographyClasses.sectionLabel}`}>{family}</p>
+                      </div>
+                      <div className="space-y-4">
+                        {itemIndexes.map((itemIndex) => (
+                          <article
+                            key={items[itemIndex].id}
+                            className="border-t border-black/10 pt-4 first:border-t-0 first:pt-0"
+                          >
+                            <ItemCardContent item={items[itemIndex]} hideFamilyLabel />
+                          </article>
+                        ))}
+                      </div>
+                    </section>
+                  ))}
+                </div>
+              ) : (
+                <p className="mb-2">No items available.</p>
+              )}
+            </div>
             <StickyCloseControl onClose={closePresentation} />
           </div>
         </div>
@@ -193,7 +199,9 @@ export function SelectedCardOverlay(): JSX.Element | null {
     <div className={overlayContainerClasses}>
       <div className={overlayPlacementClasses}>
         <div className={cardShellClasses}>
-          <ItemCardContent item={items[presentation.itemIndex]} hideFamilyLabel={false} />
+          <div className={cardBodyClasses}>
+            <ItemCardContent item={items[presentation.itemIndex]} hideFamilyLabel={false} />
+          </div>
           <StickyCloseControl onClose={closePresentation} />
         </div>
       </div>
