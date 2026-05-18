@@ -1,6 +1,6 @@
 import { mainCategoryOrder, projectConstellationOrder } from '../data/items';
 import { useStore } from '../store/store';
-import type { SortOption } from '../types';
+import type { SelectedGroupOption, SortOption } from '../types';
 
 type FilterControl =
   | { type: 'button'; value: SortOption }
@@ -20,9 +20,12 @@ export function UI() {
   const displayUi = useStore((state) => state.displayUi);
   const isPresenting = useStore((state) => state.presentation.type !== 'none');
   const chromeInteractivityClass = isPresenting ? 'pointer-events-none' : '';
+  const isSelectedGroupOption = (sortOption: SortOption): sortOption is SelectedGroupOption =>
+    sortOption !== 'sort';
   const startGather = (sortOption: SortOption): void => {
     useStore.setState({
       sortOption,
+      selectedGroup: isSelectedGroupOption(sortOption) ? sortOption : null,
       activeGather: {
         option: sortOption,
         startedAt: Date.now(),
