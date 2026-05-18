@@ -8,4 +8,4 @@
 
 ## Findings
 
-- Approved Professional profile summary: not supplied in the setup request. Do not invent this text; ask Rafal for the approved single-paragraph summary before implementing the Professional profile card.
+- Approved Professional profile summary: 8+ years of experience delivering enterprise web applications in regulated and international environments. Experienced in translating stakeholder needs into technical requirements, contributing across the full product lifecycle, and building complex React and 2D/3D browser-based systems. Currently leading team-level AI adoption through workshops, workflow integration and practical GenAI use cases. Interested in scalable, governed AI adoption, reusable solution patterns and the impact of AI on business processes.
