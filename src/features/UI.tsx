@@ -18,7 +18,7 @@ const filterControls: FilterControl[] = [
 
 export function UI() {
   const displayUi = useStore((state) => state.displayUi);
-  const isPresenting = useStore((state) => state.isPresenting !== null);
+  const isPresenting = useStore((state) => state.presentation.type !== 'none');
   const chromeInteractivityClass = isPresenting ? 'pointer-events-none' : '';
   const startGather = (sortOption: SortOption): void => {
     useStore.setState({

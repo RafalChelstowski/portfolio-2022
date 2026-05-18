@@ -223,12 +223,14 @@ export function RapierItems(): JSX.Element {
   const bodyByItemIndexRef = useRef<(RapierRigidBody | null)[]>(Array(instanceCount).fill(null));
   const firstPoolContactByIndexRef = useRef<boolean[]>(Array(instanceCount).fill(false));
   const hasRevealedUiRef = useRef<boolean>(false);
-  const isPresenting = useStore((state) => state.isPresenting);
+  const presentation = useStore((state) => state.presentation);
   const presentItem = useStore((state) => state.presentItem);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
+  const presentedItemIndex = presentation.type === 'item' ? presentation.itemIndex : null;
+  const isPresenting = presentation.type !== 'none';
 
   useEffect(() => {
-    if (isPresenting !== null) {
+    if (isPresenting) {
       setHovered(undefined);
     }
   }, [isPresenting]);
@@ -306,7 +308,7 @@ export function RapierItems(): JSX.Element {
         const itemIndex = batch.indexes[localIndex];
         const descriptor = itemInstanceDescriptors[itemIndex];
 
-        if (itemIndex === hovered || itemIndex === isPresenting) {
+        if (itemIndex === hovered || itemIndex === presentedItemIndex) {
           color.setRGB(1, 1, 1);
         } else {
           color.set(descriptor.color);
@@ -324,7 +326,7 @@ export function RapierItems(): JSX.Element {
         colorAttribute.needsUpdate = true;
       }
     });
-  }, [familyBatches, hovered, isPresenting]);
+  }, [familyBatches, hovered, presentedItemIndex]);
 
   useFrame(() => {
     // Keep interaction bounds aligned with physics-driven instance transforms.

@@ -11,10 +11,9 @@ const defaultCameraZoom = 1.2;
 const presentationCameraZoom = 1.35;
 
 export function Camera(): JSX.Element {
-  const presentingItemIndex = useStore((state) => state.isPresenting);
+  const isPresenting = useStore((state) => state.presentation.type !== 'none');
   const { size } = useThree();
   const ref = useRef<PerspectiveCameraImpl>(null);
-  const isPresenting = presentingItemIndex !== null;
 
   useEffect(() => {
     const camera = ref.current;
@@ -42,7 +41,7 @@ export function Camera(): JSX.Element {
     }
 
     camera.updateProjectionMatrix();
-  }, [isPresenting, presentingItemIndex, size.height, size.width]);
+  }, [isPresenting, size.height, size.width]);
 
   return (
     <PerspectiveCamera

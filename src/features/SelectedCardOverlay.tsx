@@ -34,14 +34,14 @@ function formatDisplayDate(value: string): string {
 }
 
 export function SelectedCardOverlay(): JSX.Element | null {
-  const isPresenting = useStore((state) => state.isPresenting);
+  const presentation = useStore((state) => state.presentation);
   const closePresentation = useStore((state) => state.closePresentation);
 
-  if (isPresenting === null) {
+  if (presentation.type !== 'item') {
     return null;
   }
 
-  const item = items[isPresenting];
+  const item = items[presentation.itemIndex];
   const familyLabel = item.family;
   const cardFields = item.cardFields ? Object.entries(item.cardFields) : [];
   const learningCourses = item.learningCourses ?? [];

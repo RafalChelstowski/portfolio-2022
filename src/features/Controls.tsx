@@ -12,7 +12,7 @@ const presentationControlsMode = {
 } as const;
 
 export function Controls() {
-  const isPresenting = useStore((state) => state.isPresenting !== null);
+  const isPresenting = useStore((state) => state.presentation.type !== 'none');
   const controlsMode = isPresenting ? presentationControlsMode : defaultControlsMode;
 
   return (

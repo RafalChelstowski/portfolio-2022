@@ -6,30 +6,43 @@ export interface ActiveGatherState {
   startedAt: number;
 }
 
+export type PresentationState =
+  | { type: 'none' }
+  | { type: 'item'; itemIndex: number }
+  | { type: 'group'; sortOption: SortOption };
+
 export type Store = {
   displayUi: boolean;
-  isPresenting: number | null;
+  presentation: PresentationState;
   sortOption: SortOption | null;
   activeGather: ActiveGatherState | null;
   presentItem: (itemIndex: number) => void;
+  presentGroup: (sortOption: SortOption) => void;
   closePresentation: () => void;
 };
 
 const useStore = create<Store>()((set) => ({
   displayUi: false,
-  isPresenting: null,
+  presentation: { type: 'none' },
   sortOption: null,
   activeGather: null,
   presentItem: (itemIndex) => {
     set({
-      isPresenting: itemIndex,
+      presentation: { type: 'item', itemIndex },
+      sortOption: null,
+      activeGather: null,
+    });
+  },
+  presentGroup: (sortOption) => {
+    set({
+      presentation: { type: 'group', sortOption },
       sortOption: null,
       activeGather: null,
     });
   },
   closePresentation: () => {
     set({
-      isPresenting: null,
+      presentation: { type: 'none' },
       sortOption: null,
       activeGather: null,
     });

@@ -12,7 +12,7 @@
 
 ## Group Presentation Continuation
 
-- [ ] Introduce presentation state types | AC: store state can represent no overlay, individual item overlay, and group overlay; individual overlay still stores one item index; group overlay stores one sort option; TypeScript has no nullable ambiguity between item and group presentation
+- [x] Introduce presentation state types | AC: store state can represent no overlay, individual item overlay, and group overlay; individual overlay still stores one item index; group overlay stores one sort option; TypeScript has no nullable ambiguity between item and group presentation
 - [ ] Add persistent selected group state | AC: store has a selected group value separate from `sortOption` and `activeGather`; selected group accepts all sort options except `sort`; selected group can be cleared independently from overlay state
 - [ ] Update sorting control behavior | AC: clicking `dev`, `creative`, `ai`, `career`, project groups, or `focus` sets selected group and starts gather; clicking `sort` clears selected group and starts normal sort behavior; existing controls still render in the same order
 - [ ] Preserve selected group after gather expires | AC: expired gather clears only motion state needed by physics; selected group remains available after gather duration; physics no longer treats selected group as active steering after gather expires
