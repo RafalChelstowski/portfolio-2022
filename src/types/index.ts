@@ -12,6 +12,7 @@ export type MainCategory = 'dev' | 'creative' | 'ai' | 'career';
 export type ProjectConstellation = 'kitchen' | 'portfolio' | 'tpp';
 
 export type SortOption = MainCategory | ProjectConstellation | 'focus' | 'sort';
+export type SelectedGroupOption = Exclude<SortOption, 'sort'>;
 
 export type CardFieldValue = string | string[];
 export interface LearningCourseRow {

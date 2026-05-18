@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { SortOption } from '../types';
+import type { SelectedGroupOption, SortOption } from '../types';
 
 export interface ActiveGatherState {
   option: SortOption;
@@ -9,15 +9,18 @@ export interface ActiveGatherState {
 export type PresentationState =
   | { type: 'none' }
   | { type: 'item'; itemIndex: number }
-  | { type: 'group'; sortOption: SortOption };
+  | { type: 'group'; sortOption: SelectedGroupOption };
 
 export type Store = {
   displayUi: boolean;
   presentation: PresentationState;
   sortOption: SortOption | null;
+  selectedGroup: SelectedGroupOption | null;
   activeGather: ActiveGatherState | null;
   presentItem: (itemIndex: number) => void;
-  presentGroup: (sortOption: SortOption) => void;
+  presentGroup: (sortOption: SelectedGroupOption) => void;
+  setSelectedGroup: (selectedGroup: SelectedGroupOption) => void;
+  clearSelectedGroup: () => void;
   closePresentation: () => void;
 };
 
@@ -25,6 +28,7 @@ const useStore = create<Store>()((set) => ({
   displayUi: false,
   presentation: { type: 'none' },
   sortOption: null,
+  selectedGroup: null,
   activeGather: null,
   presentItem: (itemIndex) => {
     set({
@@ -39,6 +43,12 @@ const useStore = create<Store>()((set) => ({
       sortOption: null,
       activeGather: null,
     });
+  },
+  setSelectedGroup: (selectedGroup) => {
+    set({ selectedGroup });
+  },
+  clearSelectedGroup: () => {
+    set({ selectedGroup: null });
   },
   closePresentation: () => {
     set({
