@@ -11,6 +11,16 @@ const dataSetup: Pick<
 
 export const experience: SourceItem[] = [
   {
+    title: 'Professional profile',
+    description:
+      '8+ years of experience delivering enterprise web applications in regulated and international environments. Experienced in translating stakeholder needs into technical requirements, contributing across the full product lifecycle, and building complex React and 2D/3D browser-based systems. Currently leading team-level AI adoption through workshops, workflow integration and practical GenAI use cases. Interested in scalable, governed AI adoption, reusable solution patterns and the impact of AI on business processes.',
+    focus: true,
+    size: 'l',
+    categories: ['career'],
+    projects: [],
+    ...dataSetup,
+  },
+  {
     title: 'Align Technology, Senior Software Engineer',
     date: 'Nov 2022',
     location: 'Frankfurt am Main',
