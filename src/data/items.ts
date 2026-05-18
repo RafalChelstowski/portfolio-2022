@@ -90,6 +90,17 @@ export const groupMembershipIndexes: Record<SelectedGroupOption, number[]> = {
   focus: focusGroup,
 };
 
+export const groupDisplayLabels: Record<SelectedGroupOption, string> = {
+  dev: 'Development',
+  creative: 'Creative',
+  ai: 'AI',
+  career: 'Career',
+  kitchen: 'Kitchen',
+  portfolio: 'Portfolio 2026',
+  tpp: 'Orthodontic software',
+  focus: 'Current focus',
+};
+
 const customGroupDisplayTitleOrder: Partial<Record<SelectedGroupOption, string[]>> = {
   focus: [
     'Professional profile',
@@ -110,6 +121,18 @@ export function getGroupItemIndexes(sortOption: unknown): number[] {
   }
 
   return [];
+}
+
+export function getGroupDisplayLabel(sortOption: unknown): string | null {
+  if (typeof sortOption !== 'string' || sortOption === 'sort') {
+    return null;
+  }
+
+  if (sortOption in groupDisplayLabels) {
+    return groupDisplayLabels[sortOption as SelectedGroupOption];
+  }
+
+  return null;
 }
 
 export function getGroupDisplayItemIndexes(sortOption: unknown): number[] {
