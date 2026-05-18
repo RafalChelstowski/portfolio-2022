@@ -23,9 +23,17 @@ export function UI() {
   const isSelectedGroupOption = (sortOption: SortOption): sortOption is SelectedGroupOption =>
     sortOption !== 'sort';
   const startGather = (sortOption: SortOption): void => {
+    const selectedGroup = isSelectedGroupOption(sortOption) ? sortOption : null;
+
     useStore.setState({
       sortOption,
-      selectedGroup: isSelectedGroupOption(sortOption) ? sortOption : null,
+      selectedGroup,
+      presentation: selectedGroup
+        ? {
+            type: 'group',
+            sortOption: selectedGroup,
+          }
+        : { type: 'none' },
       activeGather: {
         option: sortOption,
         startedAt: Date.now(),
