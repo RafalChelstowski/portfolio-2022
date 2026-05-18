@@ -23,7 +23,14 @@
 - [x] Render learning courses expanded by default | AC: remove the accordion/collapsible behavior for `Learning courses`; course text/details are always visible in item and group cards, with no disclosure control
 - [x] Remove Industry-leading orthodontic software from career grouping | AC: `Industry-leading orthodontic software` no longer appears in the career group/card; if it remains elsewhere, its other intended categories/groups still work; focus and career group membership stay explicit and deterministic
 
+## PR Review Follow-up Pass 3
+
+- [ ] Allow cross-item clicks while an individual card is open | AC: item hover/click blocking applies only while a combined/group summary card is open; when an individual item card is open, hovering and clicking other scene items remains enabled; clicking another item replaces the individual card with that item's card instead of being ignored
+- [ ] Center presentation camera on the selected individual item | AC: opening or switching an individual item card targets/zooms the camera toward that item's scene position rather than the generic scene center; group/summary card camera behavior remains appropriate for the group overview and does not regress
+
 ## Findings
+
+- Rafal PR #14 third feedback pass: scene item clicks should be blocked only for combined/group summary cards. Individual item cards should allow clicking another item, replacing the open card with that item. Individual-card presentation should center/zoom the camera on the selected item rather than targeting the generic scene center.
 
 - Rafal PR #14 second feedback pass: replace the unattractive `current` badge with date range text such as `Nov 2022 -> current`; learning items should keep their new shape but use no green, preferring pool-tile/lighter-career blue and matching focus/group-card color; while a summary/group card is open, disable scene hover and item clicks, and close should clear the summary option so later item clicks open individual cards; Learning courses should be full text with no accordion; remove `Industry-leading orthodontic software` from the career grouping.
 
