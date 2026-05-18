@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { items } from '../data/items';
+import { getGroupDisplayItemIndexes, getGroupDisplayLabel, items } from '../data/items';
 import { useStore } from '../store/store';
 import type { CardFieldValue, Item3d } from '../types';
 
@@ -14,6 +14,7 @@ const familyStyles: Record<Item3d['family'], string> = {
 const cardTypographyClasses = {
   familyLabel: 'selected-card__family-label',
   title: 'selected-card__title',
+  groupTitle: 'selected-card__group-title',
   subtitle: 'selected-card__subtitle',
   metadata: 'selected-card__metadata',
   currentBadge: 'selected-card__current-badge',
@@ -21,6 +22,13 @@ const cardTypographyClasses = {
   fieldValue: 'selected-card__field-value',
   link: 'selected-card__link underline',
 };
+
+const overlayContainerClasses =
+  'pointer-events-none absolute inset-0 z-[1100] overflow-hidden';
+const overlayPlacementClasses =
+  'ml-auto flex h-full w-full items-end justify-center px-0 pb-3 pt-0 sm:pb-4 md:w-1/2 md:items-center md:justify-end md:px-6 md:py-12 lg:py-16';
+const cardShellClasses =
+  'pointer-events-auto h-[30vh] max-h-[30vh] min-w-0 w-full max-w-none overflow-y-auto overscroll-contain rounded-t-lg border bg-white/95 p-4 text-black break-words [overflow-wrap:anywhere] sm:p-6 md:h-auto md:max-h-[calc(100vh-6rem)] md:max-w-96 md:rounded-lg lg:max-h-[calc(100vh-8rem)]';
 
 function renderCardFieldValue(value: CardFieldValue): string {
   return Array.isArray(value) ? value.join(', ') : value;
@@ -111,17 +119,58 @@ export function SelectedCardOverlay(): JSX.Element | null {
   const presentation = useStore((state) => state.presentation);
   const closePresentation = useStore((state) => state.closePresentation);
 
-  if (presentation.type !== 'item') {
+  if (presentation.type === 'none') {
     return null;
   }
 
-  const item = items[presentation.itemIndex];
+  if (presentation.type === 'group') {
+    const groupLabel = getGroupDisplayLabel(presentation.sortOption) ?? 'Group';
+    const groupItems = getGroupDisplayItemIndexes(presentation.sortOption).map(
+      (itemIndex) => items[itemIndex],
+    );
+
+    return (
+      <div className={overlayContainerClasses}>
+        <div className={overlayPlacementClasses}>
+          <div className={cardShellClasses}>
+            <h2
+              className={`mb-4 text-2xl uppercase text-black ${cardTypographyClasses.groupTitle}`}
+            >
+              {groupLabel}
+            </h2>
+            {groupItems.length > 0 ? (
+              <div className="space-y-4">
+                {groupItems.map((item) => (
+                  <section key={item.id} className="border-t border-black/15 pt-3 first:border-t-0 first:pt-0">
+                    <p className={`text-lg uppercase ${familyStyles[item.family].split(' ')[0]}`}>
+                      {item.title}
+                    </p>
+                  </section>
+                ))}
+              </div>
+            ) : (
+              <p className="mb-2">No items available.</p>
+            )}
+            <div className="mt-4 flex justify-start">
+              <button
+                className="rounded-sm border border-black/20 bg-white/90 px-2 py-1 text-black text-sm shadow-sm"
+                type="button"
+                onClick={closePresentation}
+              >
+                CLOSE
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-[1100] overflow-hidden">
-      <div className="ml-auto flex h-full w-full items-end justify-center px-0 pb-3 pt-0 sm:pb-4 md:w-1/2 md:items-center md:justify-end md:px-6 md:py-12 lg:py-16">
-        <div className="pointer-events-auto h-[30vh] max-h-[30vh] min-w-0 w-full max-w-none overflow-y-auto overscroll-contain rounded-t-lg border bg-white/95 p-4 text-black break-words [overflow-wrap:anywhere] sm:p-6 md:h-auto md:max-h-[calc(100vh-6rem)] md:max-w-96 md:rounded-lg lg:max-h-[calc(100vh-8rem)]">
-          <ItemCardContent item={item} />
+    <div className={overlayContainerClasses}>
+      <div className={overlayPlacementClasses}>
+        <div className={cardShellClasses}>
+          <ItemCardContent item={items[presentation.itemIndex]} />
           <div className="mt-4 flex justify-start">
             <button
               className="rounded-sm border border-black/20 bg-white/90 px-2 py-1 text-black text-sm shadow-sm"
