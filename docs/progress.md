@@ -17,7 +17,7 @@
 
 ## PR Review Follow-up Pass 2
 
-- [ ] Replace current badge with date range text | AC: portfolio item cards no longer render the separate `current` badge for active roles/items; affected date display reads `Nov 2022 -> current` using the existing date style, without adding a new badge element
+- [x] Replace current badge with date range text | AC: portfolio item cards no longer render the separate `current` badge for active roles/items; affected date display reads `Nov 2022 -> current` using the existing date style, without adding a new badge element
 - [ ] Recolor learning category consistently | AC: learning item shape color is not green; it uses a lighter blue / pool-tile-like color close to the career palette; the same learning color is used consistently in normal items and focus/group cards
 - [ ] Disable item interactions while a summary card is open | AC: when an immediately-opened group/summary card is visible, hover state and item clicks in the 3D scene are disabled; closing the summary card clears the summary/group selection; after close, item clicks open individual item cards rather than reopening a summary card
 - [ ] Render learning courses expanded by default | AC: remove the accordion/collapsible behavior for `Learning courses`; course text/details are always visible in item and group cards, with no disclosure control

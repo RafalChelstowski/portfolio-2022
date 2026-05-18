@@ -19,7 +19,6 @@ const cardTypographyClasses = {
   groupTitle: 'selected-card__group-title',
   subtitle: 'selected-card__subtitle',
   metadata: 'selected-card__metadata',
-  currentBadge: 'selected-card__current-badge',
   fieldKey: 'selected-card__field-key font-semibold',
   fieldValue: 'selected-card__field-value',
   link: 'selected-card__link underline',
@@ -47,6 +46,16 @@ function formatDisplayDate(value: string): string {
   );
 }
 
+function getDisplayDate(item: Item3d): string | null {
+  if (!item.date) {
+    return null;
+  }
+
+  const dateRange = item.current === true ? `${item.date} -> current` : item.date;
+
+  return formatDisplayDate(dateRange);
+}
+
 interface ItemCardContentProps {
   item: Item3d;
   hideFamilyLabel: boolean;
@@ -57,7 +66,7 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
   const cardFields = item.cardFields ? Object.entries(item.cardFields) : [];
   const learningCourses = item.learningCourses ?? [];
   const familyTitleClass = familyStyles[item.family].split(' ')[0];
-  const showCurrentBadge = item.current === true;
+  const displayDate = getDisplayDate(item);
 
   return (
     <>
@@ -66,19 +75,12 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
           <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
         </div>
       )}
-      {item.date && (
+      {displayDate && (
         <p className={`mb-2 text-black ${cardTypographyClasses.metadata}`}>
-          {formatDisplayDate(item.date)}
+          {displayDate}
         </p>
       )}
       <div className="mb-2 flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
-        {showCurrentBadge && (
-          <span
-            className={`inline-flex items-center rounded-sm border px-2.5 py-1 text-[0.625rem] font-semibold uppercase leading-none tracking-wide ${familyStyles[item.family]} ${cardTypographyClasses.currentBadge}`}
-          >
-            CURRENT
-          </span>
-        )}
         <p className={`min-w-0 flex-1 text-xl uppercase ${familyTitleClass} ${cardTypographyClasses.title}`}>
           {item.title}
         </p>
