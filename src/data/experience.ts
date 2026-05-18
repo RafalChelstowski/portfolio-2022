@@ -25,6 +25,7 @@ export const experience: SourceItem[] = [
     date: 'Nov 2022',
     location: 'Frankfurt am Main',
     current: true,
+    focus: true,
     size: 'l',
     categories: ['dev', 'career'],
     projects: ['tpp'],

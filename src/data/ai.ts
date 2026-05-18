@@ -14,6 +14,7 @@ export const ai: SourceItem[] = [
     title: 'AI-assisted development',
     subtitle:
       'Agent-assisted engineering with Codex, OpenCode, Claude Code, using GPT, Claude, and local models.',
+    focus: true,
     size: 'l',
     cardFields: {
       Skills:
@@ -30,6 +31,7 @@ export const ai: SourceItem[] = [
     title: 'AI knowledge sharing',
     subtitle:
       'Workshops and adoption patterns for using AI coding agents in real development work.',
+    focus: true,
     cardFields: {
       Workshops:
         "Agents code while you're away: intro to Ralph loops; context management for AI coding agents",
