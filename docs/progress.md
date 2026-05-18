@@ -10,6 +10,7 @@
 
 - Approved Professional profile summary: 8+ years of experience delivering enterprise web applications in regulated and international environments. Experienced in translating stakeholder needs into technical requirements, contributing across the full product lifecycle, and building complex React and 2D/3D browser-based systems. Currently leading team-level AI adoption through workshops, workflow integration and practical GenAI use cases. Interested in scalable, governed AI adoption, reusable solution patterns and the impact of AI on business processes.
 - Rapier steering is driven only by `activeGather`; `selectedGroup` remains stored for presentation after gather expiry and is not a physics signal.
+- Group presentation membership should use `getGroupItemIndexes` from `src/data/items.ts`; it shares the category, project constellation, and focus arrays used by Rapier gather steering and returns an empty array for `sort` or unknown values.
 
 ## Group Presentation Continuation
 
@@ -17,7 +18,7 @@
 - [x] Add persistent selected group state | AC: store has a selected group value separate from `sortOption` and `activeGather`; selected group accepts all sort options except `sort`; selected group can be cleared independently from overlay state
 - [x] Update sorting control behavior | AC: clicking `dev`, `creative`, `ai`, `career`, project groups, or `focus` sets selected group and starts gather; clicking `sort` clears selected group and starts normal sort behavior; existing controls still render in the same order
 - [x] Preserve selected group after gather expires | AC: expired gather clears only motion state needed by physics; selected group remains available after gather duration; physics no longer treats selected group as active steering after gather expires
-- [ ] Add group membership lookup for presentation | AC: every non-sort option resolves to an array of item indexes; category groups, project groups, and focus use the same source of truth as sorting; unknown options resolve safely without crashing
+- [x] Add group membership lookup for presentation | AC: every non-sort option resolves to an array of item indexes; category groups, project groups, and focus use the same source of truth as sorting; unknown options resolve safely without crashing
 - [ ] Add curated display ordering for group cards | AC: group presentation indexes are ordered through an explicit display-order helper; focus uses the intended narrative order; groups without custom ordering fall back to their existing group order
 - [ ] Route matched item clicks to group presentation | AC: after gather expires, clicking an item inside the selected group opens the group overlay; the clicked item itself does not become the individual overlay; matched-click behavior does not run while active gather is still in progress
 - [ ] Preserve individual cards for unmatched clicks | AC: with a selected group active, clicking an item outside that group opens the individual item overlay; individual card content matches existing behavior; selected group remains stored

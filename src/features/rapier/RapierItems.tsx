@@ -29,8 +29,8 @@ import {
   Vector3,
 } from 'three';
 
-import { focusGroup, items, mainCategoryGroups, projectConstellationGroups } from '../../data/items';
-import type { ItemFamily, MainCategory, ProjectConstellation } from '../../types';
+import { getGroupItemIndexes, items } from '../../data/items';
+import type { ItemFamily } from '../../types';
 import { useStore } from '../../store/store';
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
 import {
@@ -453,15 +453,7 @@ export function RapierItems(): JSX.Element {
       return;
     }
 
-    let groupedIndexes: number[];
-
-    if (sortOption === 'focus') {
-      groupedIndexes = focusGroup;
-    } else if (sortOption in mainCategoryGroups) {
-      groupedIndexes = mainCategoryGroups[sortOption as MainCategory];
-    } else {
-      groupedIndexes = projectConstellationGroups[sortOption as ProjectConstellation];
-    }
+    const groupedIndexes = getGroupItemIndexes(sortOption);
     const itemSet = new Set(groupedIndexes);
 
     for (let index = 0; index < instanceCount; index += 1) {

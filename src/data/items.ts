@@ -2,6 +2,7 @@ import type {
   Item3d,
   MainCategory,
   ProjectConstellation,
+  SelectedGroupOption,
   SourceItem,
 } from '../types';
 import { ai } from './ai';
@@ -82,3 +83,21 @@ export const focusGroup = items.reduce<number[]>((matches, item, index) => {
 
   return matches;
 }, []);
+
+export const groupMembershipIndexes: Record<SelectedGroupOption, number[]> = {
+  ...mainCategoryGroups,
+  ...projectConstellationGroups,
+  focus: focusGroup,
+};
+
+export function getGroupItemIndexes(sortOption: unknown): number[] {
+  if (typeof sortOption !== 'string' || sortOption === 'sort') {
+    return [];
+  }
+
+  if (sortOption in groupMembershipIndexes) {
+    return groupMembershipIndexes[sortOption as SelectedGroupOption];
+  }
+
+  return [];
+}
