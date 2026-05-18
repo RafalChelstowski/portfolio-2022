@@ -8,6 +8,8 @@ type FilterControl =
 
 const filterControls: FilterControl[] = [
   ...mainCategoryOrder.map((value) => ({ type: 'button' as const, value })),
+  { type: 'divider', key: 'focus-divider' },
+  { type: 'button', value: 'focus' },
   { type: 'divider', key: 'projects-divider' },
   ...projectConstellationOrder.map((value) => ({ type: 'button' as const, value })),
   { type: 'divider', key: 'sort-divider' },
