@@ -53,8 +53,6 @@ const useStore = create<Store>()((set) => ({
   closePresentation: () => {
     set({
       presentation: { type: 'none' },
-      sortOption: null,
-      activeGather: null,
     });
   },
 }));
