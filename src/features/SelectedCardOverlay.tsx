@@ -28,7 +28,7 @@ const overlayContainerClasses =
 const overlayPlacementClasses =
   'ml-auto flex h-full w-full items-end justify-center px-0 pb-3 pt-0 sm:pb-4 md:w-1/2 md:items-center md:justify-end md:px-6 md:py-12 lg:py-16';
 const cardShellClasses =
-  'pointer-events-auto h-[30vh] max-h-[30vh] min-w-0 w-full max-w-none overflow-y-auto overscroll-contain rounded-t-lg border bg-white/95 p-4 text-black break-words [overflow-wrap:anywhere] sm:p-6 md:h-auto md:max-h-[calc(100vh-6rem)] md:max-w-96 md:rounded-lg lg:max-h-[calc(100vh-8rem)]';
+  'pointer-events-auto relative h-[30vh] max-h-[30vh] min-w-0 w-full max-w-none overflow-y-auto overscroll-contain rounded-t-lg border bg-white/95 p-4 text-black break-words [overflow-wrap:anywhere] sm:p-6 md:h-auto md:max-h-[calc(100vh-6rem)] md:max-w-96 md:rounded-lg lg:max-h-[calc(100vh-8rem)]';
 
 function renderCardFieldValue(value: CardFieldValue): string {
   return Array.isArray(value) ? value.join(', ') : value;
@@ -115,6 +115,24 @@ export function ItemCardContent({ item }: ItemCardContentProps): JSX.Element {
   );
 }
 
+interface StickyCloseControlProps {
+  onClose: () => void;
+}
+
+function StickyCloseControl({ onClose }: StickyCloseControlProps): JSX.Element {
+  return (
+    <div className="sticky bottom-0 z-10 -mx-4 -mb-4 mt-4 flex justify-start bg-gradient-to-t from-white/95 via-white/95 to-white/0 px-4 pb-4 pt-3 sm:-mx-6 sm:-mb-6 sm:px-6 sm:pb-6">
+      <button
+        className="rounded-sm border border-black/20 bg-white/90 px-2 py-1 text-sm text-black shadow-sm"
+        type="button"
+        onClick={onClose}
+      >
+        CLOSE
+      </button>
+    </div>
+  );
+}
+
 export function SelectedCardOverlay(): JSX.Element | null {
   const presentation = useStore((state) => state.presentation);
   const closePresentation = useStore((state) => state.closePresentation);
@@ -152,15 +170,7 @@ export function SelectedCardOverlay(): JSX.Element | null {
             ) : (
               <p className="mb-2">No items available.</p>
             )}
-            <div className="mt-4 flex justify-start">
-              <button
-                className="rounded-sm border border-black/20 bg-white/90 px-2 py-1 text-black text-sm shadow-sm"
-                type="button"
-                onClick={closePresentation}
-              >
-                CLOSE
-              </button>
-            </div>
+            <StickyCloseControl onClose={closePresentation} />
           </div>
         </div>
       </div>
@@ -172,15 +182,7 @@ export function SelectedCardOverlay(): JSX.Element | null {
       <div className={overlayPlacementClasses}>
         <div className={cardShellClasses}>
           <ItemCardContent item={items[presentation.itemIndex]} />
-          <div className="mt-4 flex justify-start">
-            <button
-              className="rounded-sm border border-black/20 bg-white/90 px-2 py-1 text-black text-sm shadow-sm"
-              type="button"
-              onClick={closePresentation}
-            >
-              CLOSE
-            </button>
-          </div>
+          <StickyCloseControl onClose={closePresentation} />
         </div>
       </div>
     </div>
