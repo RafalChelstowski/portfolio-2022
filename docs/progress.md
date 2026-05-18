@@ -15,7 +15,17 @@
 - [x] Protect the close-button area and scrollbar behavior in group cards | AC: content never renders underneath the close-button hit area; if a group card is scrollable its scrollbar is always visible; non-scrollable cards do not show broken or misleading scroll affordances
 - [x] Resolve the outstanding PR #14 Codex inline review comment | AC: the single Codex inline review comment on PR #14 is addressed if review context is available locally; if the comment cannot be fetched from this sandbox, leave a clear Findings note with the exact blocker and do not fabricate a fix
 
+## PR Review Follow-up Pass 2
+
+- [ ] Replace current badge with date range text | AC: portfolio item cards no longer render the separate `current` badge for active roles/items; affected date display reads `Nov 2022 -> current` using the existing date style, without adding a new badge element
+- [ ] Recolor learning category consistently | AC: learning item shape color is not green; it uses a lighter blue / pool-tile-like color close to the career palette; the same learning color is used consistently in normal items and focus/group cards
+- [ ] Disable item interactions while a summary card is open | AC: when an immediately-opened group/summary card is visible, hover state and item clicks in the 3D scene are disabled; closing the summary card clears the summary/group selection; after close, item clicks open individual item cards rather than reopening a summary card
+- [ ] Render learning courses expanded by default | AC: remove the accordion/collapsible behavior for `Learning courses`; course text/details are always visible in item and group cards, with no disclosure control
+- [ ] Remove Industry-leading orthodontic software from career grouping | AC: `Industry-leading orthodontic software` no longer appears in the career group/card; if it remains elsewhere, its other intended categories/groups still work; focus and career group membership stay explicit and deterministic
+
 ## Findings
+
+- Rafal PR #14 second feedback pass: replace the unattractive `current` badge with date range text such as `Nov 2022 -> current`; learning items should keep their new shape but use no green, preferring pool-tile/lighter-career blue and matching focus/group-card color; while a summary/group card is open, disable scene hover and item clicks, and close should clear the summary option so later item clicks open individual cards; Learning courses should be full text with no accordion; remove `Industry-leading orthodontic software` from the career grouping.
 
 - Rafal PR #14 review follow-up priorities: `focus` must be first in the filter bar; learning items need a new category/shape; combined affected-item cards should appear immediately when sort/group is applied rather than waiting for physics movement to finish; combined cards must use order career (`Professional profile` first when present), projects, AI, stack, learning; category headers in combined cards should render once per category; close-button space must not overlap text; scrollbars should always be visible when content is scrollable.
 - GitHub PR feedback helper could not fetch PR #14 inline comments from this sandbox because `/Users/rafalchelstowski/.openclaw/credentials/data-github.env` and host `/usr/local/bin/gh` are not mounted here; do not guess the Codex inline comment content.
