@@ -31,7 +31,7 @@ import {
 
 import { getGroupItemIndexes, items } from '../../data/items';
 import type { ItemFamily } from '../../types';
-import { useStore } from '../../store/store';
+import { type ActiveGatherState, useStore } from '../../store/store';
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
 import {
   itemPhysicsConstants,
@@ -145,6 +145,10 @@ function getGatherDecayFactor(startedAt: number, now: number): number {
   return Math.max(0, Math.min(1, 1 - progress));
 }
 
+function isGatherInProgress(activeGather: ActiveGatherState | null, now: number): boolean {
+  return activeGather !== null && getGatherDecayFactor(activeGather.startedAt, now) > 0;
+}
+
 function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float32Array }): JSX.Element {
   const dimensions = familyVisualGeometryDimensions[family];
 
@@ -225,6 +229,7 @@ export function RapierItems(): JSX.Element {
   const hasRevealedUiRef = useRef<boolean>(false);
   const presentation = useStore((state) => state.presentation);
   const presentItem = useStore((state) => state.presentItem);
+  const presentGroup = useStore((state) => state.presentGroup);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
   const presentedItemIndex = presentation.type === 'item' ? presentation.itemIndex : null;
   const isPresenting = presentation.type !== 'none';
@@ -246,6 +251,24 @@ export function RapierItems(): JSX.Element {
       firstPoolContactByIndexRef.current[index] = true;
     }
   }, []);
+
+  const presentClickedItem = useCallback(
+    (itemIndex: number): void => {
+      const { activeGather, selectedGroup } = useStore.getState();
+
+      if (selectedGroup && !isGatherInProgress(activeGather, Date.now())) {
+        const groupedIndexes = getGroupItemIndexes(selectedGroup);
+
+        if (groupedIndexes.includes(itemIndex)) {
+          presentGroup(selectedGroup);
+          return;
+        }
+      }
+
+      presentItem(itemIndex);
+    },
+    [presentGroup, presentItem]
+  );
 
   const familyBatches = useMemo<FamilyBatch[]>(() => {
     const batches = familyOrder.map((family) => {
@@ -579,7 +602,7 @@ export function RapierItems(): JSX.Element {
                 return;
               }
 
-              presentItem(batch.indexes[e.instanceId]);
+              presentClickedItem(batch.indexes[e.instanceId]);
             }}
           >
             <FamilyGeometry family={batch.family} colors={batch.colors} />
