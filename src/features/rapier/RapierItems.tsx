@@ -29,9 +29,9 @@ import {
   Vector3,
 } from 'three';
 
-import { items, mainCategoryGroups, projectConstellationGroups } from '../../data/items';
-import type { ItemFamily, MainCategory, ProjectConstellation } from '../../types';
-import { useStore } from '../../store/store';
+import { getGroupItemIndexes, items } from '../../data/items';
+import type { ItemFamily } from '../../types';
+import { type ActiveGatherState, useStore } from '../../store/store';
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
 import {
   itemPhysicsConstants,
@@ -59,7 +59,7 @@ const poolInnerMaxZ =
 const poolFloorY = poolPhysicsBounds.floor.position[1] + poolPhysicsBounds.floor.size[1] / 2;
 const poolTopY = poolPhysicsBounds.leftWall.position[1] + poolPhysicsBounds.leftWall.size[1] / 2;
 const centerAreaRadiusSquared = rapierPhysicsConstants.steering.centerAreaRadius ** 2;
-const familyOrder: ItemFamily[] = ['project', 'ai', 'stack', 'creative', 'career'];
+const familyOrder: ItemFamily[] = ['project', 'ai', 'stack', 'creative', 'career', 'learning'];
 
 interface FamilyBatch {
   family: ItemFamily;
@@ -79,6 +79,7 @@ type FamilyVisualGeometry =
   | { kind: 'box'; args: [width: number, height: number, depth: number] }
   | { kind: 'cone'; args: [radius: number, height: number, radialSegments: number] }
   | { kind: 'icosahedron'; args: [radius: number, detail: number] }
+  | { kind: 'octahedron'; args: [radius: number, detail: number] }
   | { kind: 'dodecahedron'; args: [radius: number, detail: number] }
   | {
       kind: 'cylinder';
@@ -96,6 +97,7 @@ const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> =
   stack: { kind: 'icosahedron', args: [0.8, 0] },
   creative: { kind: 'dodecahedron', args: [0.64, 0] },
   career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 5] },
+  learning: { kind: 'octahedron', args: [0.74, 0] },
 };
 
 const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
@@ -104,6 +106,7 @@ const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
   stack: { kind: 'ball', args: [0.78] },
   creative: { kind: 'ball', args: [0.64] },
   career: { kind: 'cylinder', args: [0.59, 0.62] },
+  learning: { kind: 'ball', args: [0.72] },
 };
 
 function createFamilyBodiesRef(): FamilyBodiesRef {
@@ -145,6 +148,10 @@ function getGatherDecayFactor(startedAt: number, now: number): number {
   return Math.max(0, Math.min(1, 1 - progress));
 }
 
+function isGatherInProgress(activeGather: ActiveGatherState | null, now: number): boolean {
+  return activeGather !== null && getGatherDecayFactor(activeGather.startedAt, now) > 0;
+}
+
 function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float32Array }): JSX.Element {
   const dimensions = familyVisualGeometryDimensions[family];
 
@@ -169,6 +176,14 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
       <icosahedronGeometry args={dimensions.args}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </icosahedronGeometry>
+    );
+  }
+
+  if (dimensions.kind === 'octahedron') {
+    return (
+      <octahedronGeometry args={dimensions.args}>
+        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
+      </octahedronGeometry>
     );
   }
 
@@ -212,6 +227,7 @@ export function RapierItems(): JSX.Element {
     stack: createFamilyBodiesRef(),
     creative: createFamilyBodiesRef(),
     career: createFamilyBodiesRef(),
+    learning: createFamilyBodiesRef(),
   });
   const familyRuntimeRef = useRef<Record<ItemFamily, FamilyBatchRuntime>>({
     project: { bodies: null, mesh: null },
@@ -219,19 +235,24 @@ export function RapierItems(): JSX.Element {
     stack: { bodies: null, mesh: null },
     creative: { bodies: null, mesh: null },
     career: { bodies: null, mesh: null },
+    learning: { bodies: null, mesh: null },
   });
   const bodyByItemIndexRef = useRef<(RapierRigidBody | null)[]>(Array(instanceCount).fill(null));
   const firstPoolContactByIndexRef = useRef<boolean[]>(Array(instanceCount).fill(false));
   const hasRevealedUiRef = useRef<boolean>(false);
-  const isPresenting = useStore((state) => state.isPresenting);
+  const presentation = useStore((state) => state.presentation);
   const presentItem = useStore((state) => state.presentItem);
+  const presentGroup = useStore((state) => state.presentGroup);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
+  const presentedItemIndex = presentation.type === 'item' ? presentation.itemIndex : null;
+  const isPresentingGroup = presentation.type === 'group';
+  const canInteractWithItems = !isPresentingGroup;
 
   useEffect(() => {
-    if (isPresenting !== null) {
+    if (isPresentingGroup) {
       setHovered(undefined);
     }
-  }, [isPresenting]);
+  }, [isPresentingGroup]);
 
   const markFirstPoolContact = useCallback((index: number, payload: CollisionEnterPayload): void => {
     if (firstPoolContactByIndexRef.current[index]) {
@@ -244,6 +265,40 @@ export function RapierItems(): JSX.Element {
       firstPoolContactByIndexRef.current[index] = true;
     }
   }, []);
+
+  const presentClickedItem = useCallback(
+    (itemIndex: number): void => {
+      const {
+        activeGather,
+        presentation: currentPresentation,
+        selectedGroup,
+      } = useStore.getState();
+      const itemBodyPosition = bodyByItemIndexRef.current[itemIndex]?.translation();
+      const targetPosition: [number, number, number] = itemBodyPosition
+        ? [itemBodyPosition.x, itemBodyPosition.y, itemBodyPosition.z]
+        : itemInstanceDescriptors[itemIndex].spawnPosition;
+
+      if (currentPresentation.type === 'item') {
+        presentItem(itemIndex, targetPosition);
+        return;
+      }
+
+      if (!selectedGroup || isGatherInProgress(activeGather, Date.now())) {
+        presentItem(itemIndex, targetPosition);
+        return;
+      }
+
+      const groupedIndexes = getGroupItemIndexes(selectedGroup);
+
+      if (groupedIndexes.includes(itemIndex)) {
+        presentGroup(selectedGroup);
+        return;
+      }
+
+      presentItem(itemIndex, targetPosition);
+    },
+    [presentGroup, presentItem]
+  );
 
   const familyBatches = useMemo<FamilyBatch[]>(() => {
     const batches = familyOrder.map((family) => {
@@ -306,7 +361,7 @@ export function RapierItems(): JSX.Element {
         const itemIndex = batch.indexes[localIndex];
         const descriptor = itemInstanceDescriptors[itemIndex];
 
-        if (itemIndex === hovered || itemIndex === isPresenting) {
+        if (itemIndex === hovered || itemIndex === presentedItemIndex) {
           color.setRGB(1, 1, 1);
         } else {
           color.set(descriptor.color);
@@ -324,7 +379,7 @@ export function RapierItems(): JSX.Element {
         colorAttribute.needsUpdate = true;
       }
     });
-  }, [familyBatches, hovered, isPresenting]);
+  }, [familyBatches, hovered, presentedItemIndex]);
 
   useFrame(() => {
     // Keep interaction bounds aligned with physics-driven instance transforms.
@@ -346,7 +401,7 @@ export function RapierItems(): JSX.Element {
       });
     }
 
-    const sortOption = hasExpiredGather ? null : activeGather?.option ?? storeState.sortOption;
+    const sortOption = hasExpiredGather ? null : activeGather?.option ?? null;
     const gatherSteeringFactor = hasExpiredGather || activeGather === null ? 1 : gatherDecayFactor;
 
     const rigidBodies = bodyByItemIndexRef.current;
@@ -451,10 +506,7 @@ export function RapierItems(): JSX.Element {
       return;
     }
 
-    const groupedIndexes =
-      sortOption in mainCategoryGroups
-        ? mainCategoryGroups[sortOption as MainCategory]
-        : projectConstellationGroups[sortOption as ProjectConstellation];
+    const groupedIndexes = getGroupItemIndexes(sortOption);
     const itemSet = new Set(groupedIndexes);
 
     for (let index = 0; index < instanceCount; index += 1) {
@@ -556,7 +608,7 @@ export function RapierItems(): JSX.Element {
             onPointerMove={(e) => {
               e.stopPropagation();
 
-              if (e.instanceId === undefined) {
+              if (!canInteractWithItems || e.instanceId === undefined) {
                 return;
               }
 
@@ -576,11 +628,11 @@ export function RapierItems(): JSX.Element {
             onClick={(e) => {
               e.stopPropagation();
 
-              if (e.instanceId === undefined) {
+              if (!canInteractWithItems || e.instanceId === undefined) {
                 return;
               }
 
-              presentItem(batch.indexes[e.instanceId]);
+              presentClickedItem(batch.indexes[e.instanceId]);
             }}
           >
             <FamilyGeometry family={batch.family} colors={batch.colors} />

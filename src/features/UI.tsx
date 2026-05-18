@@ -1,12 +1,14 @@
 import { mainCategoryOrder, projectConstellationOrder } from '../data/items';
 import { useStore } from '../store/store';
-import type { SortOption } from '../types';
+import type { SelectedGroupOption, SortOption } from '../types';
 
 type FilterControl =
   | { type: 'button'; value: SortOption }
   | { type: 'divider'; key: string };
 
 const filterControls: FilterControl[] = [
+  { type: 'button', value: 'focus' },
+  { type: 'divider', key: 'categories-divider' },
   ...mainCategoryOrder.map((value) => ({ type: 'button' as const, value })),
   { type: 'divider', key: 'projects-divider' },
   ...projectConstellationOrder.map((value) => ({ type: 'button' as const, value })),
@@ -16,11 +18,22 @@ const filterControls: FilterControl[] = [
 
 export function UI() {
   const displayUi = useStore((state) => state.displayUi);
-  const isPresenting = useStore((state) => state.isPresenting !== null);
+  const isPresenting = useStore((state) => state.presentation.type !== 'none');
   const chromeInteractivityClass = isPresenting ? 'pointer-events-none' : '';
+  const isSelectedGroupOption = (sortOption: SortOption): sortOption is SelectedGroupOption =>
+    sortOption !== 'sort';
   const startGather = (sortOption: SortOption): void => {
+    const selectedGroup = isSelectedGroupOption(sortOption) ? sortOption : null;
+
     useStore.setState({
       sortOption,
+      selectedGroup,
+      presentation: selectedGroup
+        ? {
+            type: 'group',
+            sortOption: selectedGroup,
+          }
+        : { type: 'none' },
       activeGather: {
         option: sortOption,
         startedAt: Date.now(),

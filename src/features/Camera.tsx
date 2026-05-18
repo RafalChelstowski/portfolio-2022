@@ -6,15 +6,18 @@ import { useStore } from '../store/store';
 
 const defaultCameraPosition = [7, 25, -6] as const;
 const presentationCameraPosition = [11, 18, -8] as const;
+const defaultCameraTarget = [0, 0, 0] as const;
 const presentationViewOffsetRatio = 0.22;
 const defaultCameraZoom = 1.2;
 const presentationCameraZoom = 1.35;
 
 export function Camera(): JSX.Element {
-  const presentingItemIndex = useStore((state) => state.isPresenting);
+  const isPresenting = useStore((state) => state.presentation.type !== 'none');
+  const itemPresentationTarget = useStore((state) =>
+    state.presentation.type === 'item' ? state.presentation.targetPosition : null
+  );
   const { size } = useThree();
   const ref = useRef<PerspectiveCameraImpl>(null);
-  const isPresenting = presentingItemIndex !== null;
 
   useEffect(() => {
     const camera = ref.current;
@@ -23,9 +26,14 @@ export function Camera(): JSX.Element {
       return;
     }
 
-    const [x, y, z] = isPresenting ? presentationCameraPosition : defaultCameraPosition;
+    const cameraTarget = itemPresentationTarget ?? defaultCameraTarget;
+    const [offsetX, offsetY, offsetZ] = isPresenting
+      ? presentationCameraPosition
+      : defaultCameraPosition;
+    const [targetX, targetY, targetZ] = cameraTarget;
 
-    camera.position.set(x, y, z);
+    camera.position.set(targetX + offsetX, targetY + offsetY, targetZ + offsetZ);
+    camera.lookAt(targetX, targetY, targetZ);
     camera.zoom = isPresenting ? presentationCameraZoom : defaultCameraZoom;
 
     if (isPresenting) {
@@ -42,7 +50,7 @@ export function Camera(): JSX.Element {
     }
 
     camera.updateProjectionMatrix();
-  }, [isPresenting, presentingItemIndex, size.height, size.width]);
+  }, [isPresenting, itemPresentationTarget, size.height, size.width]);
 
   return (
     <PerspectiveCamera

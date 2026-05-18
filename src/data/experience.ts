@@ -9,12 +9,32 @@ const dataSetup: Pick<
   customColor: '#426271',
 };
 
+const learningDataSetup: Pick<
+  SourceItem,
+  'family' | 'sortingVelocity' | 'customColor'
+> = {
+  family: 'learning',
+  sortingVelocity: [3, -2, 1],
+  customColor: '#7fc7d9',
+};
+
 export const experience: SourceItem[] = [
+  {
+    title: 'Professional profile',
+    description:
+      '8+ years of experience delivering enterprise web applications in regulated and international environments. Experienced in translating stakeholder needs into technical requirements, contributing across the full product lifecycle, and building complex React and 2D/3D browser-based systems. Currently leading team-level AI adoption through workshops, workflow integration and practical GenAI use cases. Interested in scalable, governed AI adoption, reusable solution patterns and the impact of AI on business processes.',
+    focus: true,
+    size: 'l',
+    categories: ['career'],
+    projects: [],
+    ...dataSetup,
+  },
   {
     title: 'Align Technology, Senior Software Engineer',
     date: 'Nov 2022',
     location: 'Frankfurt am Main',
     current: true,
+    focus: true,
     size: 'l',
     categories: ['dev', 'career'],
     projects: ['tpp'],
@@ -58,27 +78,46 @@ export const experience: SourceItem[] = [
   {
     title: 'Dev/AI learning path',
     subtitle: 'Front-end and AI engineering study from community experts.',
-    cardFields: {
-      Dev: 'Frontend Masters, Kent C. Dodds - Epic React, Epic Web, TanStack Query courses',
-      AI: 'Kent C. Dodds - Epic MCP, Frontend Masters',
-    },
+    learningCourses: [
+      {
+        provider: 'Frontend Masters',
+        course: 'Front-end and AI engineering courses',
+      },
+      {
+        provider: 'Kent C. Dodds',
+        course: 'Epic React, Epic Web, TanStack Query, Epic MCP',
+      },
+    ],
     size: 's',
-    categories: ['career', 'dev', 'ai'],
+    categories: ['career', 'dev', 'ai', 'learning'],
     projects: [],
-    ...dataSetup,
+    ...learningDataSetup,
   },
   {
     title: '3D/Design learning path',
     subtitle:
       'Learning 3D programming, shaders, and browser graphics from leading industry sources.',
-    cardFields: {
-      '3D': 'SimonDev - math, 3D game programming, and shaders; Bruno Simon - Three.js; Pikuma - 3D graphics workflows',
-      Design:
-        'LinkedIn Learning/Lynda, Teachable - Blender asset creation with a focus on hard-surface modeling',
-    },
+    learningCourses: [
+      {
+        provider: 'SimonDev',
+        course: 'Math, 3D game programming, and shaders',
+      },
+      {
+        provider: 'Bruno Simon',
+        course: 'Three.js',
+      },
+      {
+        provider: 'Pikuma',
+        course: '3D graphics workflows',
+      },
+      {
+        provider: 'LinkedIn Learning/Lynda, Teachable',
+        course: 'Blender asset creation with a focus on hard-surface modeling',
+      },
+    ],
     size: 'm',
-    categories: ['career', 'dev', 'creative'],
+    categories: ['career', 'dev', 'creative', 'learning'],
     projects: [],
-    ...dataSetup,
+    ...learningDataSetup,
   },
 ];
