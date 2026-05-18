@@ -246,6 +246,7 @@ export function RapierItems(): JSX.Element {
   const [hovered, setHovered] = useState<number | undefined>(undefined);
   const presentedItemIndex = presentation.type === 'item' ? presentation.itemIndex : null;
   const isPresenting = presentation.type !== 'none';
+  const canInteractWithItems = presentation.type === 'none';
 
   useEffect(() => {
     if (isPresenting) {
@@ -594,7 +595,7 @@ export function RapierItems(): JSX.Element {
             onPointerMove={(e) => {
               e.stopPropagation();
 
-              if (e.instanceId === undefined) {
+              if (!canInteractWithItems || e.instanceId === undefined) {
                 return;
               }
 
@@ -614,7 +615,7 @@ export function RapierItems(): JSX.Element {
             onClick={(e) => {
               e.stopPropagation();
 
-              if (e.instanceId === undefined) {
+              if (!canInteractWithItems || e.instanceId === undefined) {
                 return;
               }
 
