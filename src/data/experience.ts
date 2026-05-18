@@ -15,7 +15,7 @@ const learningDataSetup: Pick<
 > = {
   family: 'learning',
   sortingVelocity: [3, -2, 1],
-  customColor: '#b4a35c',
+  customColor: '#7fc7d9',
 };
 
 export const experience: SourceItem[] = [
