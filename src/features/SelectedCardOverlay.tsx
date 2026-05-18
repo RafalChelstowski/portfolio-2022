@@ -99,8 +99,8 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
         </p>
       ))}
       {learningCourses.length > 0 && (
-        <details className="mb-2">
-          <summary className="cursor-pointer">Learning courses</summary>
+        <div className="mb-2">
+          <p className="font-semibold">Learning courses</p>
           <div className="mt-2">
             {learningCourses.map(({ provider, course }) => (
               <p key={`${provider}-${course}`} className="mb-1">
@@ -108,7 +108,7 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
               </p>
             ))}
           </div>
-        </details>
+        </div>
       )}
       {item.link && (
         <p className="mb-2">
