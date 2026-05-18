@@ -117,6 +117,13 @@ const customGroupDisplayTitleOrder: Partial<Record<SelectedGroupOption, string[]
 const groupCardFamilyOrder: ItemFamily[] = ['career', 'project', 'ai', 'stack', 'creative', 'learning'];
 const professionalProfileTitle = 'Professional profile';
 
+function hasOwnKey<ObjectShape extends object>(
+  object: ObjectShape,
+  key: PropertyKey
+): key is keyof ObjectShape {
+  return Object.prototype.hasOwnProperty.call(object, key);
+}
+
 export interface GroupDisplayItemSection {
   family: ItemFamily;
   itemIndexes: number[];
@@ -127,8 +134,8 @@ export function getGroupItemIndexes(sortOption: unknown): number[] {
     return [];
   }
 
-  if (sortOption in groupMembershipIndexes) {
-    return groupMembershipIndexes[sortOption as SelectedGroupOption];
+  if (hasOwnKey(groupMembershipIndexes, sortOption)) {
+    return groupMembershipIndexes[sortOption];
   }
 
   return [];
@@ -139,8 +146,8 @@ export function getGroupDisplayLabel(sortOption: unknown): string | null {
     return null;
   }
 
-  if (sortOption in groupDisplayLabels) {
-    return groupDisplayLabels[sortOption as SelectedGroupOption];
+  if (hasOwnKey(groupDisplayLabels, sortOption)) {
+    return groupDisplayLabels[sortOption];
   }
 
   return null;
@@ -149,11 +156,11 @@ export function getGroupDisplayLabel(sortOption: unknown): string | null {
 export function getGroupDisplayItemIndexes(sortOption: unknown): number[] {
   const groupIndexes = getGroupItemIndexes(sortOption);
 
-  if (typeof sortOption !== 'string' || !(sortOption in customGroupDisplayTitleOrder)) {
+  if (typeof sortOption !== 'string' || !hasOwnKey(customGroupDisplayTitleOrder, sortOption)) {
     return groupIndexes;
   }
 
-  const titleOrder = customGroupDisplayTitleOrder[sortOption as SelectedGroupOption];
+  const titleOrder = customGroupDisplayTitleOrder[sortOption];
 
   if (!titleOrder) {
     return groupIndexes;
