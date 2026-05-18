@@ -32,4 +32,4 @@
 - [x] Add sticky bottom-left close control | AC: close button is placed at the bottom-left of the card content area; it remains reachable while the card body scrolls; it closes the overlay without clearing selected group
 - [x] Update close behavior | AC: closing group overlay clears only presentation state; closing individual overlay also clears only presentation state; selected group remains active until another group or sort is selected
 - [x] Ensure presentation camera/control behavior still works | AC: camera and controls enter presentation mode for both individual and group overlays; closing either overlay restores non-presentation camera/control behavior; TypeScript selectors compile
-- [ ] Verify implementation without adding tests | AC: `npm run typecheck` passes; `npm run lint` passes; no new test files are added; no dev server is started
+- [x] Verify implementation without adding tests | AC: `npm run typecheck` passes; `npm run lint` passes; no new test files are added; no dev server is started
