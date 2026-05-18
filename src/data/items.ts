@@ -90,6 +90,16 @@ export const groupMembershipIndexes: Record<SelectedGroupOption, number[]> = {
   focus: focusGroup,
 };
 
+const customGroupDisplayTitleOrder: Partial<Record<SelectedGroupOption, string[]>> = {
+  focus: [
+    'Professional profile',
+    'Align Technology, Senior Software Engineer',
+    'AI-assisted development',
+    'AI knowledge sharing',
+    'Industry-leading orthodontic software',
+  ],
+};
+
 export function getGroupItemIndexes(sortOption: unknown): number[] {
   if (typeof sortOption !== 'string' || sortOption === 'sort') {
     return [];
@@ -100,4 +110,34 @@ export function getGroupItemIndexes(sortOption: unknown): number[] {
   }
 
   return [];
+}
+
+export function getGroupDisplayItemIndexes(sortOption: unknown): number[] {
+  const groupIndexes = getGroupItemIndexes(sortOption);
+
+  if (typeof sortOption !== 'string' || !(sortOption in customGroupDisplayTitleOrder)) {
+    return groupIndexes;
+  }
+
+  const titleOrder = customGroupDisplayTitleOrder[sortOption as SelectedGroupOption];
+
+  if (!titleOrder) {
+    return groupIndexes;
+  }
+
+  const itemIndexByTitle = new Map(
+    groupIndexes.map((itemIndex) => [items[itemIndex].title, itemIndex])
+  );
+  const orderedIndexes = titleOrder.reduce<number[]>((matches, title) => {
+    const itemIndex = itemIndexByTitle.get(title);
+
+    if (itemIndex !== undefined) {
+      matches.push(itemIndex);
+      itemIndexByTitle.delete(title);
+    }
+
+    return matches;
+  }, []);
+
+  return [...orderedIndexes, ...itemIndexByTitle.values()];
 }
