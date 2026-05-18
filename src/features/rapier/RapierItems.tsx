@@ -348,7 +348,7 @@ export function RapierItems(): JSX.Element {
       });
     }
 
-    const sortOption = hasExpiredGather ? null : activeGather?.option ?? storeState.sortOption;
+    const sortOption = hasExpiredGather ? null : activeGather?.option ?? null;
     const gatherSteeringFactor = hasExpiredGather || activeGather === null ? 1 : gatherDecayFactor;
 
     const rigidBodies = bodyByItemIndexRef.current;
