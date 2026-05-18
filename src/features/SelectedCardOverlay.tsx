@@ -9,6 +9,7 @@ const familyStyles: Record<Item3d['family'], string> = {
   stack: 'text-vMediumPink border-vMediumPink',
   creative: 'text-vDarkPink border-vDarkPink',
   career: 'text-vDarkBlue border-vDarkBlue',
+  learning: 'text-vMediumPink border-vMediumPink',
 };
 
 const cardTypographyClasses = {

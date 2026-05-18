@@ -59,7 +59,7 @@ const poolInnerMaxZ =
 const poolFloorY = poolPhysicsBounds.floor.position[1] + poolPhysicsBounds.floor.size[1] / 2;
 const poolTopY = poolPhysicsBounds.leftWall.position[1] + poolPhysicsBounds.leftWall.size[1] / 2;
 const centerAreaRadiusSquared = rapierPhysicsConstants.steering.centerAreaRadius ** 2;
-const familyOrder: ItemFamily[] = ['project', 'ai', 'stack', 'creative', 'career'];
+const familyOrder: ItemFamily[] = ['project', 'ai', 'stack', 'creative', 'career', 'learning'];
 
 interface FamilyBatch {
   family: ItemFamily;
@@ -79,6 +79,7 @@ type FamilyVisualGeometry =
   | { kind: 'box'; args: [width: number, height: number, depth: number] }
   | { kind: 'cone'; args: [radius: number, height: number, radialSegments: number] }
   | { kind: 'icosahedron'; args: [radius: number, detail: number] }
+  | { kind: 'octahedron'; args: [radius: number, detail: number] }
   | { kind: 'dodecahedron'; args: [radius: number, detail: number] }
   | {
       kind: 'cylinder';
@@ -96,6 +97,7 @@ const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> =
   stack: { kind: 'icosahedron', args: [0.8, 0] },
   creative: { kind: 'dodecahedron', args: [0.64, 0] },
   career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 5] },
+  learning: { kind: 'octahedron', args: [0.74, 0] },
 };
 
 const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
@@ -104,6 +106,7 @@ const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
   stack: { kind: 'ball', args: [0.78] },
   creative: { kind: 'ball', args: [0.64] },
   career: { kind: 'cylinder', args: [0.59, 0.62] },
+  learning: { kind: 'ball', args: [0.72] },
 };
 
 function createFamilyBodiesRef(): FamilyBodiesRef {
@@ -176,6 +179,14 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
     );
   }
 
+  if (dimensions.kind === 'octahedron') {
+    return (
+      <octahedronGeometry args={dimensions.args}>
+        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
+      </octahedronGeometry>
+    );
+  }
+
   if (dimensions.kind === 'dodecahedron') {
     return (
       <dodecahedronGeometry args={dimensions.args}>
@@ -216,6 +227,7 @@ export function RapierItems(): JSX.Element {
     stack: createFamilyBodiesRef(),
     creative: createFamilyBodiesRef(),
     career: createFamilyBodiesRef(),
+    learning: createFamilyBodiesRef(),
   });
   const familyRuntimeRef = useRef<Record<ItemFamily, FamilyBatchRuntime>>({
     project: { bodies: null, mesh: null },
@@ -223,6 +235,7 @@ export function RapierItems(): JSX.Element {
     stack: { bodies: null, mesh: null },
     creative: { bodies: null, mesh: null },
     career: { bodies: null, mesh: null },
+    learning: { bodies: null, mesh: null },
   });
   const bodyByItemIndexRef = useRef<(RapierRigidBody | null)[]>(Array(instanceCount).fill(null));
   const firstPoolContactByIndexRef = useRef<boolean[]>(Array(instanceCount).fill(false));

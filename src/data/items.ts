@@ -24,7 +24,7 @@ export const items: Item3d[] = sourceItems.map((item, index) => ({
   id: `${item.family}-${index}`,
 }));
 
-export const mainCategoryOrder: MainCategory[] = ['dev', 'creative', 'ai', 'career'];
+export const mainCategoryOrder: MainCategory[] = ['dev', 'creative', 'ai', 'career', 'learning'];
 export const projectConstellationOrder: ProjectConstellation[] = [
   'tpp',
   'kitchen',
@@ -48,6 +48,7 @@ function createMainCategoryGroups(): Record<MainCategory, number[]> {
       creative: [],
       ai: [],
       career: [],
+      learning: [],
     }
   );
 }
@@ -95,6 +96,7 @@ export const groupDisplayLabels: Record<SelectedGroupOption, string> = {
   creative: 'Creative',
   ai: 'AI',
   career: 'Career',
+  learning: 'Learning',
   kitchen: 'Kitchen',
   portfolio: 'Portfolio 2026',
   tpp: 'Orthodontic software',

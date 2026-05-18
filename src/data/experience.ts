@@ -9,6 +9,15 @@ const dataSetup: Pick<
   customColor: '#426271',
 };
 
+const learningDataSetup: Pick<
+  SourceItem,
+  'family' | 'sortingVelocity' | 'customColor'
+> = {
+  family: 'learning',
+  sortingVelocity: [3, -2, 1],
+  customColor: '#b4a35c',
+};
+
 export const experience: SourceItem[] = [
   {
     title: 'Professional profile',
@@ -69,27 +78,46 @@ export const experience: SourceItem[] = [
   {
     title: 'Dev/AI learning path',
     subtitle: 'Front-end and AI engineering study from community experts.',
-    cardFields: {
-      Dev: 'Frontend Masters, Kent C. Dodds - Epic React, Epic Web, TanStack Query courses',
-      AI: 'Kent C. Dodds - Epic MCP, Frontend Masters',
-    },
+    learningCourses: [
+      {
+        provider: 'Frontend Masters',
+        course: 'Front-end and AI engineering courses',
+      },
+      {
+        provider: 'Kent C. Dodds',
+        course: 'Epic React, Epic Web, TanStack Query, Epic MCP',
+      },
+    ],
     size: 's',
-    categories: ['career', 'dev', 'ai'],
+    categories: ['career', 'dev', 'ai', 'learning'],
     projects: [],
-    ...dataSetup,
+    ...learningDataSetup,
   },
   {
     title: '3D/Design learning path',
     subtitle:
       'Learning 3D programming, shaders, and browser graphics from leading industry sources.',
-    cardFields: {
-      '3D': 'SimonDev - math, 3D game programming, and shaders; Bruno Simon - Three.js; Pikuma - 3D graphics workflows',
-      Design:
-        'LinkedIn Learning/Lynda, Teachable - Blender asset creation with a focus on hard-surface modeling',
-    },
+    learningCourses: [
+      {
+        provider: 'SimonDev',
+        course: 'Math, 3D game programming, and shaders',
+      },
+      {
+        provider: 'Bruno Simon',
+        course: 'Three.js',
+      },
+      {
+        provider: 'Pikuma',
+        course: '3D graphics workflows',
+      },
+      {
+        provider: 'LinkedIn Learning/Lynda, Teachable',
+        course: 'Blender asset creation with a focus on hard-surface modeling',
+      },
+    ],
     size: 'm',
-    categories: ['career', 'dev', 'creative'],
+    categories: ['career', 'dev', 'creative', 'learning'],
     projects: [],
-    ...dataSetup,
+    ...learningDataSetup,
   },
 ];
