@@ -6,7 +6,7 @@ module.exports = {
       colors: {
         vDarkBlue: '#426271',
         vMediumBlue: '#17829b',
-        vLearningBlue: '#7fc7d9',
+        vLearningBlue: '#5fb8cc',
         vDarkPink: '#bb787b',
         vMediumPink: '#d89ea6',
       },
