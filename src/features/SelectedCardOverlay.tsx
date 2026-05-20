@@ -65,6 +65,7 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
   const familyLabel = item.family;
   const cardFields = item.cardFields ? Object.entries(item.cardFields) : [];
   const learningCourses = item.learningCourses ?? [];
+  const listItems = item.listItems ?? [];
   const familyTitleClass = familyStyles[item.family].split(' ')[0];
   const displayDate = getDisplayDate(item);
 
@@ -91,6 +92,15 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
       {item.subtitle && <p className={`mb-2 ${cardTypographyClasses.subtitle}`}>{item.subtitle}</p>}
       {item.description && <p className="mb-2">{item.description}</p>}
       {item.outcome && <p className="mb-2">{item.outcome}</p>}
+      {listItems.length > 0 && (
+        <ul className="mb-2 list-outside list-disc space-y-2 pl-5">
+          {listItems.map((listItem) => (
+            <li key={listItem} className="pl-1">
+              {listItem}
+            </li>
+          ))}
+        </ul>
+      )}
       {cardFields.map(([key, value]) => (
         <p key={key} className="mb-2">
           <span className={cardTypographyClasses.fieldKey}>{key}</span>
