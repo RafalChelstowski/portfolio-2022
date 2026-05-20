@@ -1,36 +1,28 @@
-Implement ONE feature task from docs/progress.md.
+# Repository Guidelines
 
-IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <promise>RALPH_DOCS_PROGRESS_COMPLETE</promise> and stop. Do not do anything else.
+## Project Structure & Module Organization
 
-## THIS ITERATION
+This is a Vite React portfolio app with Three.js, React Three Fiber, Rapier physics, Tailwind CSS, and Zustand. App entrypoints live in `src/main.tsx` and `src/App.tsx`. UI, camera, lighting, pool, and Rapier scene modules live in `src/features/`, with physics constants and item descriptors under `src/features/physics/`. Portfolio data is in `src/data/`, shared types in `src/types/`, state in `src/store/`, and helper functions in `src/utils/`. Static public assets, including GLTF and texture files, live in `public/`; bundled font assets live in `src/assets/`.
 
-1. Read `docs/progress.md`
-2. If no `- [ ]` or `- [/]` items remain, output `<promise>RALPH_DOCS_PROGRESS_COMPLETE</promise>` and stop immediately
-3. Pick the first `- [ ]` or `- [/]` item
-4. Read `## Findings` in `docs/progress.md` and reuse relevant discoveries
-5. Parse the item:
-   - Task description: everything before `|`
-   - Acceptance criteria: everything after `AC:`
-6. Determine mode:
-   - `[ ]` -> CREATE: implement from scratch
-   - `[/]` -> IMPROVE: read existing code, read Findings for this item, fix or enhance
-7. Implement only that item. If you uncover adjacent work, add a new `[ ]` item instead of widening scope. When removing or refactoring code, preserve existing safety checks unless the AC explicitly asks to remove them.
-8. This repo is a no-tests repo for this loop. Do not add tests, do not add test infrastructure, and do not run `npm run test`
-9. Run `npm run typecheck && npm run lint && npm run build`
-10. If required commands fail, fix the task and rerun step 9 until the acceptance criteria and required checks pass
-11. Generated caches, build noise, and tool artifacts do not count as task progress. Do not mark `[x]` or commit if only unrelated/generated files changed.
-12. Mark the item `[x]` only when its acceptance criteria are satisfied
-13. Add brief notes to `## Findings` only when they reduce future loop risk
-14. Commit all changed files for the item together:
-    `git add -A && git commit -m "chore: <item-name>"`
-15. End the iteration. Output `<promise>RALPH_DOCS_PROGRESS_COMPLETE</promise>` only when step 2 triggered
+## Build, Test, and Development Commands
 
-## SUCCESS = REQUIRED GATES PASS
+Use Node `24` and npm `11+`; run `nvm use` before installing or verifying.
 
-- `npm run typecheck`
-- `npm run lint`
-- `npm run build`
+- `npm ci` installs dependencies from `package-lock.json`.
+- `npm run dev` starts the Vite dev server; `npm start` is an alias. Do not start a dev server unless the user explicitly asks for it.
+- `npm run typecheck` runs TypeScript with `--noEmit`.
+- `npm run lint` runs the custom ESLint wrapper in `scripts/lint.mjs`.
+- `npm run build` creates the production `dist/` build.
+- `npm run format:check` checks Prettier formatting; `npm run format` rewrites supported files.
 
-## Project Context
+## Coding Style & Naming Conventions
 
-Vite React portfolio app using TypeScript, React Three Fiber, Rapier physics, Tailwind CSS, and Zustand. Portfolio content lives in src/data, shared item types live in src/types, grouped card rendering is in src/features/SelectedCardOverlay.tsx and grouping helpers are in src/data/items.ts. Feature delivery must preserve existing project style, keep browser/runtime smoke checks manual, and avoid adding tests or test infrastructure.
+Write TypeScript with strict compiler settings and React JSX runtime. Follow the existing component style: PascalCase components and files for React features, camelCase helpers and data exports, named exports unless an existing module uses default export. Keep Tailwind classes inline for local layout and visual styling. Let ESLint and Prettier settle formatting; avoid broad unrelated rewrites.
+
+## Testing Guidelines
+
+There are no committed test files yet, never add new tests unless user asks for it.
+
+## Commit & Pull Request Guidelines
+
+Do not create commits unless the user explicitly asks for a commit.
