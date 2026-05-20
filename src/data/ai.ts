@@ -35,7 +35,7 @@ export const ai: SourceItem[] = [
       'Context management for AI coding agents.',
     ],
     size: 'm',
-    categories: ['ai', 'career'],
+    categories: ['ai'],
     projects: [],
     ...dataSetup,
   },

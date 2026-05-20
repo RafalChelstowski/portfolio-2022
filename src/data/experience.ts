@@ -53,7 +53,7 @@ export const experience: SourceItem[] = [
     location: 'Warsaw',
     size: 'm',
     categories: ['dev', 'career'],
-    projects: [],
+    projects: ['kitchen'],
     listItems: [
       'Developed an internal CMS for a major global media company, supporting complex editorial workflows.',
       'Worked in an international, cross-functional environment with product, engineering and business stakeholders.',
@@ -68,8 +68,8 @@ export const experience: SourceItem[] = [
     date: 'Jan 2020 - May 2020',
     location: 'Warsaw',
     size: 's',
-    categories: ['dev', 'career'],
-    projects: ['kitchen'],
+    categories: ['career'],
+    projects: [],
     listItems: [
       'Developed a browser-based 2D/3D kitchen planner for a major UK retailer using React, TypeScript and an in-house 2D/3D framework.',
     ],
@@ -80,7 +80,7 @@ export const experience: SourceItem[] = [
     date: 'May 2016 - Dec 2019',
     location: 'Wroclaw',
     size: 'm',
-    categories: ['dev', 'career'],
+    categories: ['career'],
     projects: [],
     listItems: [
       'Built internal SPA for global stakeholders in Switzerland, Poland, the USA and Singapore.',
@@ -123,7 +123,7 @@ export const experience: SourceItem[] = [
     date: '2004 - 2011',
     location: 'Wroclaw',
     size: 's',
-    categories: ['career', 'learning'],
+    categories: ['career'],
     projects: [],
     listItems: [
       'Studied archives and document management, with a focus on information organisation and institutional records.',
@@ -136,7 +136,7 @@ export const experience: SourceItem[] = [
     date: '2007 - 2012',
     location: 'Wroclaw, Brussels',
     size: 's',
-    categories: ['career', 'learning'],
+    categories: ['career'],
     projects: [],
     listItems: [
       'Studied political science at the University of Wroclaw and Universite Libre de Bruxelles.',
@@ -155,11 +155,15 @@ export const experience: SourceItem[] = [
       },
       {
         provider: 'Kent C. Dodds',
-        course: 'Epic React, Epic Web, TanStack Query, Epic MCP',
+        course: 'Epic React, Epic Web, Epic MCP',
+      },
+      {
+        provider: 'TanStack',
+        course: 'TansStack Query',
       },
     ],
     size: 's',
-    categories: ['career', 'dev', 'ai', 'learning'],
+    categories: ['dev', 'ai', 'learning'],
     projects: [],
     ...learningDataSetup,
   },
@@ -186,7 +190,7 @@ export const experience: SourceItem[] = [
       },
     ],
     size: 'm',
-    categories: ['career', 'dev', 'creative', 'learning'],
+    categories: ['dev', 'creative', 'learning'],
     projects: [],
     ...learningDataSetup,
   },
