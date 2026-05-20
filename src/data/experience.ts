@@ -38,6 +38,11 @@ export const experience: SourceItem[] = [
     size: 'l',
     categories: ['dev', 'career'],
     projects: ['tpp'],
+    listItems: [
+      'Placeholder ownership and delivery highlight for enterprise orthodontic workflows.',
+      'Placeholder collaboration highlight across product, design, QA, and engineering.',
+      'Placeholder AI adoption highlight through workshops and practical team workflows.',
+    ],
     ...dataSetup,
   },
   {

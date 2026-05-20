@@ -32,6 +32,7 @@ export interface PortfolioItem {
   customColor: string;
   subtitle?: string;
   description?: string;
+  listItems?: string[];
   link?: string;
   date?: string;
   location?: string;
