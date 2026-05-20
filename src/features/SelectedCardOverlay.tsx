@@ -68,6 +68,10 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
   const listItems = item.listItems ?? [];
   const familyTitleClass = familyStyles[item.family].split(' ')[0];
   const displayDate = getDisplayDate(item);
+  const itemLinks = [
+    item.link ? { label: 'Link', url: item.link } : null,
+    item.githubUrl ? { label: 'Github', url: item.githubUrl } : null,
+  ].filter((itemLink): itemLink is { label: string; url: string } => itemLink !== null);
 
   return (
     <>
@@ -120,16 +124,21 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
           </div>
         </div>
       )}
-      {item.link && (
+      {itemLinks.length > 0 && (
         <p className="mb-2">
-          <a
-            className={`text-black break-words ${cardTypographyClasses.link}`}
-            href={item.link}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Link
-          </a>
+          {itemLinks.map(({ label, url }, index) => (
+            <span key={label}>
+              {index > 0 && ', '}
+              <a
+                className={`text-black break-words ${cardTypographyClasses.link}`}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {label}
+              </a>
+            </span>
+          ))}
         </p>
       )}
     </>

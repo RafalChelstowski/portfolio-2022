@@ -34,6 +34,7 @@ export interface PortfolioItem {
   description?: string;
   listItems?: string[];
   link?: string;
+  githubUrl?: string;
   date?: string;
   location?: string;
   current?: boolean;
