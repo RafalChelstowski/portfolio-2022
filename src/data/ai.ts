@@ -16,13 +16,11 @@ export const ai: SourceItem[] = [
       'Agent-assisted engineering with Codex, OpenCode, Claude Code, using GPT, Claude, and local models.',
     focus: true,
     size: 'l',
-    cardFields: {
-      Skills:
-        'Custom skills for steering agents through implementation and code review',
-      'Long running agents':
-        'Requirements translated into ralph-loops and goals',
-      'Advanced context management': 'qmd, rtk, and context-mode',
-    },
+    listItems: [
+      'Custom skills for steering agents through implementation and code review.',
+      'Long running agents: requirements translated into ralph-loops and goals.',
+      'Advanced context management: using qmd, rtk, and context-mode.',
+    ],
     categories: ['ai'],
     projects: ['portfolio', 'kitchen'],
     ...dataSetup,
@@ -32,10 +30,10 @@ export const ai: SourceItem[] = [
     subtitle:
       'Workshops and adoption patterns for using AI coding agents in real development work.',
     focus: true,
-    cardFields: {
-      Workshops:
-        "Agents code while you're away: intro to Ralph loops; context management for AI coding agents",
-    },
+    listItems: [
+      "Agents code while you're away: intro to Ralph loops.",
+      'Context management for AI coding agents.',
+    ],
     size: 'm',
     categories: ['ai', 'career'],
     projects: [],

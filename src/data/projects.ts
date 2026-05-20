@@ -34,10 +34,9 @@ export const projects: SourceItem[] = [
     title: 'Industry-leading orthodontic software',
     subtitle: '3D and video features in the React ecosystem.',
     focus: true,
-    cardFields: {
-      Contributions:
-        'Frontend contributions to Invisalign Smile Video and ClinCheck In-Face Visualization',
-    },
+    listItems: [
+      'Frontend contributions to Invisalign Smile Video and ClinCheck In-Face Visualization.',
+    ],
     size: 'l',
     categories: ['dev'],
     projects: ['tpp'],
