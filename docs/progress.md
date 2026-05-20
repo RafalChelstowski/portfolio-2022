@@ -5,6 +5,6 @@
 - [x] Darken learning light blue | AC: The existing light blue `#7fc7d9` is replaced consistently with a slightly darker blue in the source color and Tailwind theme.
 - [x] Add optional project GitHub links | AC: Project items can define an optional GitHub URL, and project cards render `Link, Github` when both URLs exist while preserving single-link rendering when only one URL exists.
 - [x] Pluralize combined-card project section | AC: A grouped/combined card section containing multiple project items displays the section heading `projects` instead of `project`.
-- [ ] Verify production checks | AC: `npm run typecheck && npm run lint && npm run build` passes.
+- [x] Verify production checks | AC: `npm run typecheck && npm run lint && npm run build` passes.
 
 ## Findings
