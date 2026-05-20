@@ -15,6 +15,7 @@ export const projects: SourceItem[] = [
     subtitle:
       'Interactive 3D cafeteria recreated from a real location with LiDAR scans and Blender.',
     link: 'https://kitchen.vercel.app/',
+    githubUrl: 'https://github.com/RafalChelstowski/kitchen',
     size: 'l',
     categories: ['creative', 'dev'],
     projects: ['kitchen'],
@@ -23,6 +24,7 @@ export const projects: SourceItem[] = [
   {
     title: 'Portfolio 2026',
     subtitle: 'Engineering, 3D, creative, and AI skills come together.',
+    githubUrl: 'https://github.com/RafalChelstowski/portfolio-2022',
     size: 'm',
     categories: ['creative', 'dev'],
     projects: ['portfolio'],

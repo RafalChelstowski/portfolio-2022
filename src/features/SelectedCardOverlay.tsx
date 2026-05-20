@@ -56,6 +56,14 @@ function getDisplayDate(item: Item3d): string | null {
   return formatDisplayDate(dateRange);
 }
 
+function getGroupSectionLabel(family: Item3d['family'], itemCount: number): string {
+  if (family === 'project' && itemCount > 1) {
+    return 'projects';
+  }
+
+  return family;
+}
+
 interface ItemCardContentProps {
   item: Item3d;
   hideFamilyLabel: boolean;
@@ -65,8 +73,13 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
   const familyLabel = item.family;
   const cardFields = item.cardFields ? Object.entries(item.cardFields) : [];
   const learningCourses = item.learningCourses ?? [];
+  const listItems = item.listItems ?? [];
   const familyTitleClass = familyStyles[item.family].split(' ')[0];
   const displayDate = getDisplayDate(item);
+  const itemLinks = [
+    item.link ? { label: 'Link', url: item.link } : null,
+    item.githubUrl ? { label: 'Github', url: item.githubUrl } : null,
+  ].filter((itemLink): itemLink is { label: string; url: string } => itemLink !== null);
 
   return (
     <>
@@ -91,6 +104,15 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
       {item.subtitle && <p className={`mb-2 ${cardTypographyClasses.subtitle}`}>{item.subtitle}</p>}
       {item.description && <p className="mb-2">{item.description}</p>}
       {item.outcome && <p className="mb-2">{item.outcome}</p>}
+      {listItems.length > 0 && (
+        <ul className="mb-2 list-outside list-disc space-y-2 pl-5">
+          {listItems.map((listItem) => (
+            <li key={listItem} className="pl-1">
+              {listItem}
+            </li>
+          ))}
+        </ul>
+      )}
       {cardFields.map(([key, value]) => (
         <p key={key} className="mb-2">
           <span className={cardTypographyClasses.fieldKey}>{key}</span>
@@ -110,16 +132,21 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
           </div>
         </div>
       )}
-      {item.link && (
+      {itemLinks.length > 0 && (
         <p className="mb-2">
-          <a
-            className={`text-black break-words ${cardTypographyClasses.link}`}
-            href={item.link}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Link
-          </a>
+          {itemLinks.map(({ label, url }, index) => (
+            <span key={label}>
+              {index > 0 && ', '}
+              <a
+                className={`text-black break-words ${cardTypographyClasses.link}`}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {label}
+              </a>
+            </span>
+          ))}
         </p>
       )}
     </>
@@ -171,7 +198,9 @@ export function SelectedCardOverlay(): JSX.Element | null {
                   {groupItemSections.map(({ family, itemIndexes }) => (
                     <section key={family} className="border-t border-black/15 pt-4 first:border-t-0 first:pt-0">
                       <div className="mb-2">
-                        <p className={`uppercase ${cardTypographyClasses.sectionLabel}`}>{family}</p>
+                        <p className={`uppercase ${cardTypographyClasses.sectionLabel}`}>
+                          {getGroupSectionLabel(family, itemIndexes.length)}
+                        </p>
                       </div>
                       <div className="space-y-4">
                         {itemIndexes.map((itemIndex) => (
