@@ -56,6 +56,14 @@ function getDisplayDate(item: Item3d): string | null {
   return formatDisplayDate(dateRange);
 }
 
+function getGroupSectionLabel(family: Item3d['family'], itemCount: number): string {
+  if (family === 'project' && itemCount > 1) {
+    return 'projects';
+  }
+
+  return family;
+}
+
 interface ItemCardContentProps {
   item: Item3d;
   hideFamilyLabel: boolean;
@@ -190,7 +198,9 @@ export function SelectedCardOverlay(): JSX.Element | null {
                   {groupItemSections.map(({ family, itemIndexes }) => (
                     <section key={family} className="border-t border-black/15 pt-4 first:border-t-0 first:pt-0">
                       <div className="mb-2">
-                        <p className={`uppercase ${cardTypographyClasses.sectionLabel}`}>{family}</p>
+                        <p className={`uppercase ${cardTypographyClasses.sectionLabel}`}>
+                          {getGroupSectionLabel(family, itemIndexes.length)}
+                        </p>
                       </div>
                       <div className="space-y-4">
                         {itemIndexes.map((itemIndex) => (
