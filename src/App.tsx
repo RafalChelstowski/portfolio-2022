@@ -13,6 +13,15 @@ import { rapierPhysicsConstants } from './features/physics/constants';
 import { RapierBounds } from './features/rapier/RapierBounds';
 import { RapierItems } from './features/rapier/RapierItems';
 
+function SceneAtmosphere() {
+  return (
+    <>
+      <color attach="background" args={['#111822']} />
+      <fogExp2 attach="fog" args={['#111822', 0.022]} />
+    </>
+  );
+}
+
 export function App() {
   return (
     <main className="relative w-screen h-screen overflow-hidden">
@@ -26,6 +35,7 @@ export function App() {
         }}
         shadows
       >
+        <SceneAtmosphere />
         <Camera />
         <Lights />
         <Controls />
