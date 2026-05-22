@@ -5,7 +5,7 @@
 - [x] Tune pool material response using existing pool assets | AC: `src/features/Pool.tsx` keeps the existing GLTF and texture maps but adjusts material properties so the pool, rim, inside, and plane have clearer roughness/reflection/color separation.
 - [x] Create falling-item material hierarchy without textures | AC: `src/features/rapier/RapierItems.tsx` uses existing geometry, vertex colors, and `meshPhysicalMaterial` settings to distinguish hero/secondary/quiet floating forms without new marble textures or object assets.
 - [x] Keep the visual pass performance-safe | AC: the implementation avoids new postprocessing packages, avoids runtime-expensive effects, keeps static shadow/contact-shadow behavior bounded, and does not start or require a browser smoke test.
-- [ ] Verify production checks | AC: `npm run typecheck && npm run lint && npm run build` passes.
+- [x] Verify production checks | AC: `npm run typecheck && npm run lint && npm run build` passes.
 
 ## Findings
 
