@@ -90,6 +90,19 @@ type FamilyColliderDimensions =
   | { kind: 'cone'; args: [halfHeight: number, radius: number] }
   | { kind: 'ball'; args: [radius: number] }
   | { kind: 'cylinder'; args: [halfHeight: number, radius: number] };
+interface FamilyMaterialSettings {
+  color: string;
+  roughness: number;
+  metalness: number;
+  transmission: number;
+  thickness: number;
+  ior: number;
+  clearcoat: number;
+  clearcoatRoughness: number;
+  envMapIntensity: number;
+  opacity: number;
+  transparent: boolean;
+}
 
 const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
   project: { kind: 'box', args: [1, 1, 1] },
@@ -107,6 +120,57 @@ const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
   creative: { kind: 'ball', args: [0.64] },
   career: { kind: 'cylinder', args: [0.59, 0.62] },
   learning: { kind: 'ball', args: [0.72] },
+};
+
+const heroMaterialSettings: FamilyMaterialSettings = {
+  color: '#fff4df',
+  roughness: 0.18,
+  metalness: 0,
+  transmission: 0.28,
+  thickness: 0.74,
+  ior: 1.44,
+  clearcoat: 0.92,
+  clearcoatRoughness: 0.18,
+  envMapIntensity: 1.05,
+  opacity: 0.92,
+  transparent: true,
+};
+
+const secondaryMaterialSettings: FamilyMaterialSettings = {
+  color: '#e8fbff',
+  roughness: 0.34,
+  metalness: 0,
+  transmission: 0.18,
+  thickness: 0.52,
+  ior: 1.38,
+  clearcoat: 0.54,
+  clearcoatRoughness: 0.32,
+  envMapIntensity: 0.82,
+  opacity: 0.88,
+  transparent: true,
+};
+
+const quietMaterialSettings: FamilyMaterialSettings = {
+  color: '#d7d9dc',
+  roughness: 0.64,
+  metalness: 0,
+  transmission: 0.08,
+  thickness: 0.24,
+  ior: 1.32,
+  clearcoat: 0.18,
+  clearcoatRoughness: 0.62,
+  envMapIntensity: 0.52,
+  opacity: 0.82,
+  transparent: true,
+};
+
+const familyMaterialSettings: Record<ItemFamily, FamilyMaterialSettings> = {
+  project: heroMaterialSettings,
+  career: heroMaterialSettings,
+  ai: secondaryMaterialSettings,
+  creative: secondaryMaterialSettings,
+  stack: secondaryMaterialSettings,
+  learning: quietMaterialSettings,
 };
 
 function createFamilyBodiesRef(): FamilyBodiesRef {
@@ -199,6 +263,27 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
     <cylinderGeometry args={dimensions.args}>
       <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
     </cylinderGeometry>
+  );
+}
+
+function FamilyMaterial({ family }: { family: ItemFamily }): JSX.Element {
+  const settings = familyMaterialSettings[family];
+
+  return (
+    <meshPhysicalMaterial
+      vertexColors
+      color={settings.color}
+      roughness={settings.roughness}
+      metalness={settings.metalness}
+      transmission={settings.transmission}
+      thickness={settings.thickness}
+      ior={settings.ior}
+      clearcoat={settings.clearcoat}
+      clearcoatRoughness={settings.clearcoatRoughness}
+      envMapIntensity={settings.envMapIntensity}
+      opacity={settings.opacity}
+      transparent={settings.transparent}
+    />
   );
 }
 
@@ -636,7 +721,7 @@ export function RapierItems(): JSX.Element {
             }}
           >
             <FamilyGeometry family={batch.family} colors={batch.colors} />
-            <meshPhysicalMaterial vertexColors roughness={0.1} metalness={0} transmission={0.6} />
+            <FamilyMaterial family={batch.family} />
           </instancedMesh>
         </InstancedRigidBodies>
       ))}
