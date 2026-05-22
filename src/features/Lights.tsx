@@ -11,6 +11,8 @@ const shadowBounds = {
   top: 18,
   bottom: -18,
 };
+const directionalShadowMapSize = 1024;
+const contactShadowResolution = 512;
 
 export function Lights() {
   const scene = useThree((state) => state.scene);
@@ -45,8 +47,8 @@ export function Lights() {
         position={[9, 7, 4]}
         intensity={2.2}
         target={targetObject}
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
+        shadow-mapSize-width={directionalShadowMapSize}
+        shadow-mapSize-height={directionalShadowMapSize}
         shadow-camera-near={shadowBounds.near}
         shadow-camera-far={shadowBounds.far}
         shadow-camera-left={shadowBounds.left}
@@ -70,7 +72,7 @@ export function Lights() {
         scale={36}
         blur={2.8}
         far={24}
-        resolution={1024}
+        resolution={contactShadowResolution}
         frames={1}
       />
     </>

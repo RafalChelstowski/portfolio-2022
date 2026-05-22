@@ -26,6 +26,7 @@ export function App() {
   return (
     <main className="relative w-screen h-screen overflow-hidden">
       <Canvas
+        dpr={[1, 1.5]}
         onCreated={({ gl }) => {
           if ('useLegacyLights' in gl) {
             Reflect.set(gl, 'useLegacyLights', false);
