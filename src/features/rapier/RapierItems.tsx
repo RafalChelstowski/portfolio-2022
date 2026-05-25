@@ -502,6 +502,12 @@ export function RapierItems(): JSX.Element {
   const marbleTextures = useMarbleTextures(marbleSettings.textureRepeat);
 
   useEffect(() => {
+    setHovered(undefined);
+    bodyByItemIndexRef.current.fill(null);
+    firstPoolContactByIndexRef.current.fill(false);
+  }, [marbleSettings.shapeScale]);
+
+  useEffect(() => {
     if (isPresentingGroup) {
       setHovered(undefined);
     }
@@ -844,7 +850,7 @@ export function RapierItems(): JSX.Element {
     <>
       {familyBatches.map((batch) => (
         <InstancedRigidBodies
-          key={batch.family}
+          key={`${batch.family}-${marbleSettings.shapeScale}`}
           ref={familyBodiesRef.current[batch.family]}
           colliders={false}
           colliderNodes={getFamilyColliderNodes(batch.family)}
