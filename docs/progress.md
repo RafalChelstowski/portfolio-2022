@@ -21,9 +21,12 @@
 - [x] Apply Rafal-approved RetroPass defaults and scanline tuning | AC: RetroPass/Leva defaults use grain opacity `0.03`, grain scale `20`, scanline intensity `0.05` or a slightly more prominent scanline if visually appropriate, with ranges still useful for dev tuning and no obstructive overlay.
 - [x] Tone down current scene brightness slightly | AC: adjust the current light/environment/exposure/fog constants so the scene is a little less bright than the latest PR screenshot while remaining brighter than the original dark PR state; keep stable shadows and no new HDR asset.
 - [x] Stabilize RetroPass and marble visuals after direct review | AC: RetroPass uses CSS-pixel-stable `vUv` shader math with output color-space conversion and no diagonal grain drift, Canvas no longer emits the PCFSoftShadowMap warning, sortable marble textures read clearly after sort/fall interaction, and `npm run typecheck && npm run lint && npm run build` passes.
+- [x] Add focused Leva tuning for washed-out scene and colored marble | AC: dev Leva exposes scene tone controls and marble item controls, default scene brightness is less washed out than the previous pass, sortable shapes keep their unique colors while showing the uploaded marble maps, and `npm run typecheck && npm run lint && npm run build` passes.
 
 ## Findings
 
+- The previous marble pass overcorrected by tinting all item vertex colors from white, which made shapes read as uniformly pale and hid the original custom colors.
+- The focused tuning pass restores original item custom colors with a small Leva-controlled lift, and exposes scene tone plus marble material controls without adding new assets or changing physics.
 - Live Chrome inspection on 2026-05-25 confirmed the app canvas was CSS `1044x828` with draw buffer `1566x1242` on browser DPR 2, so RetroPass `gl_FragCoord` math was tied to render DPR rather than CSS-pixel controls.
 - The RetroPass shader must include Three's output color-space conversion because it writes its own `gl_FragColor` in a custom transparent overlay pass.
 - The direct visual follow-up moved RetroPass animation to in-place `vUv`/CSS-pixel math, switched Canvas shadows to explicit PCF mode, and made sortable marble more readable with object-space UV projection plus less glossy, less tinted material settings.

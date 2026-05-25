@@ -10,6 +10,7 @@ import {
 } from '@react-three/rapier';
 import { useTexture } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import { useControls } from 'leva';
 import {
   useCallback,
   useMemo,
@@ -52,6 +53,7 @@ import {
 const instanceCount = itemInstanceDescriptors.length;
 const majorityInPoolCount = Math.floor(instanceCount / 2) + 1;
 const color = new Color();
+const colorLiftTarget = new Color('#ffffff');
 const directionVector = new Vector3();
 const currentPositionVector = new Vector3();
 const targetPositionVector = new Vector3();
@@ -121,6 +123,15 @@ interface MarbleTextures {
   roughnessMap: Texture;
 }
 
+interface MarbleItemSettings {
+  clearcoat: number;
+  colorLift: number;
+  envMapIntensity: number;
+  normalStrength: number;
+  roughness: number;
+  textureRepeat: number;
+}
+
 const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
   project: { kind: 'box', args: [1, 1, 1] },
   ai: { kind: 'cone', args: [0.72, 1.24, 3] },
@@ -144,77 +155,66 @@ const marbleTexturePaths = {
   normalMap: '/marble/Poliigon_StoneQuartzite_8060_Normal.png',
   roughnessMap: '/marble/Poliigon_StoneQuartzite_8060_Roughness.jpg',
 };
-const marbleTextureRepeat = new Vector2(0.58, 0.58);
-const heroMarbleNormalScale = new Vector2(0.5, 0.5);
-const secondaryMarbleNormalScale = new Vector2(0.4, 0.4);
-const quietMarbleNormalScale = new Vector2(0.3, 0.3);
-const readableVertexColorTargets: Record<ItemFamily, string> = {
-  project: '#ffe1d5',
-  career: '#d7eff8',
-  ai: '#e4d7f0',
-  stack: '#ffe1e6',
-  creative: '#ddf4fb',
-  learning: '#d5f7fb',
+const marbleTextureRepeat = new Vector2(0.55, 0.55);
+const marbleNormalScale = new Vector2(0.45, 0.45);
+const marbleItemDefaults: MarbleItemSettings = {
+  clearcoat: 0.35,
+  colorLift: 0.18,
+  envMapIntensity: 0.9,
+  normalStrength: 0.45,
+  roughness: 0.36,
+  textureRepeat: 0.55,
 };
-const readableVertexColorMix: Record<ItemFamily, number> = {
-  project: 0.2,
-  career: 0.22,
-  ai: 0.24,
-  stack: 0.18,
-  creative: 0.2,
-  learning: 0.16,
-};
-const readableVertexColorTarget = new Color();
 
 const heroMaterialSettings: FamilyMaterialSettings = {
   color: '#ffffff',
   emissive: '#160c08',
   emissiveIntensity: 0.02,
-  roughness: 0.28,
+  roughness: marbleItemDefaults.roughness,
   metalness: 0,
   transmission: 0.02,
   thickness: 0.16,
   ior: 1.44,
-  clearcoat: 0.55,
+  clearcoat: marbleItemDefaults.clearcoat,
   clearcoatRoughness: 0.26,
-  envMapIntensity: 1.08,
+  envMapIntensity: marbleItemDefaults.envMapIntensity,
   opacity: 1,
   transparent: false,
-  normalScale: heroMarbleNormalScale,
+  normalScale: marbleNormalScale,
 };
 
 const secondaryMaterialSettings: FamilyMaterialSettings = {
   color: '#ffffff',
   emissive: '#07141d',
   emissiveIntensity: 0.02,
-  roughness: 0.34,
+  roughness: marbleItemDefaults.roughness,
   metalness: 0,
   transmission: 0.01,
   thickness: 0.12,
   ior: 1.38,
-  clearcoat: 0.42,
+  clearcoat: marbleItemDefaults.clearcoat,
   clearcoatRoughness: 0.3,
-  envMapIntensity: 0.92,
+  envMapIntensity: marbleItemDefaults.envMapIntensity,
   opacity: 1,
   transparent: false,
-  normalScale: secondaryMarbleNormalScale,
+  normalScale: marbleNormalScale,
 };
 
 const quietMaterialSettings: FamilyMaterialSettings = {
   color: '#ffffff',
   emissive: '#071018',
   emissiveIntensity: 0.015,
-  roughness: 0.52,
+  roughness: marbleItemDefaults.roughness,
   metalness: 0,
   transmission: 0,
   thickness: 0.08,
   ior: 1.32,
-  clearcoat: 0.24,
+  clearcoat: marbleItemDefaults.clearcoat,
   clearcoatRoughness: 0.44,
-  envMapIntensity: 0.72,
+  envMapIntensity: marbleItemDefaults.envMapIntensity,
   opacity: 0.98,
   transparent: false,
-  normalScale: quietMarbleNormalScale,
+  normalScale: marbleNormalScale,
 };
 
 const familyMaterialSettings: Record<ItemFamily, FamilyMaterialSettings> = {
@@ -230,10 +230,15 @@ function createFamilyBodiesRef(): FamilyBodiesRef {
   return { current: null };
 }
 
-function configureMarbleTexture(texture: Texture, isColorTexture = false): void {
+function configureMarbleTexture(
+  texture: Texture,
+  repeat: number,
+  isColorTexture = false
+): void {
   const configuredTexture = texture;
   configuredTexture.wrapS = RepeatWrapping;
   configuredTexture.wrapT = RepeatWrapping;
+  marbleTextureRepeat.set(repeat, repeat);
   configuredTexture.repeat.copy(marbleTextureRepeat);
   configuredTexture.anisotropy = 4;
   configuredTexture.colorSpace = isColorTexture ? SRGBColorSpace : NoColorSpace;
@@ -279,22 +284,21 @@ function applyObjectSpaceMarbleUvs(geometry: BufferGeometry): void {
   geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
 }
 
-function applyReadableVertexColor(family: ItemFamily): void {
-  color.set('#ffffff');
-  readableVertexColorTarget.set(readableVertexColorTargets[family]);
-  color.lerp(readableVertexColorTarget, readableVertexColorMix[family]);
+function applyReadableVertexColor(sourceColor: string, colorLift: number): void {
+  color.set(sourceColor);
+  color.lerp(colorLiftTarget, colorLift);
 }
 
-function useMarbleTextures(): MarbleTextures {
+function useMarbleTextures(textureRepeat: number): MarbleTextures {
   const map = useTexture(marbleTexturePaths.map);
   const normalMap = useTexture(marbleTexturePaths.normalMap);
   const roughnessMap = useTexture(marbleTexturePaths.roughnessMap);
 
   useEffect(() => {
-    configureMarbleTexture(map, true);
-    configureMarbleTexture(normalMap);
-    configureMarbleTexture(roughnessMap);
-  }, [map, normalMap, roughnessMap]);
+    configureMarbleTexture(map, textureRepeat, true);
+    configureMarbleTexture(normalMap, textureRepeat);
+    configureMarbleTexture(roughnessMap, textureRepeat);
+  }, [map, normalMap, roughnessMap, textureRepeat]);
 
   return {
     map,
@@ -394,12 +398,15 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 
 function FamilyMaterial({
   family,
+  marbleSettings,
   marbleTextures,
 }: {
   family: ItemFamily;
+  marbleSettings: MarbleItemSettings;
   marbleTextures: MarbleTextures;
 }): JSX.Element {
   const settings = familyMaterialSettings[family];
+  marbleNormalScale.set(marbleSettings.normalStrength, marbleSettings.normalStrength);
 
   return (
     <meshPhysicalMaterial
@@ -410,15 +417,15 @@ function FamilyMaterial({
       color={settings.color}
       emissive={settings.emissive}
       emissiveIntensity={settings.emissiveIntensity}
-      roughness={settings.roughness}
+      roughness={marbleSettings.roughness}
       metalness={settings.metalness}
-      normalScale={settings.normalScale}
+      normalScale={marbleNormalScale}
       transmission={settings.transmission}
       thickness={settings.thickness}
       ior={settings.ior}
-      clearcoat={settings.clearcoat}
+      clearcoat={marbleSettings.clearcoat}
       clearcoatRoughness={settings.clearcoatRoughness}
-      envMapIntensity={settings.envMapIntensity}
+      envMapIntensity={marbleSettings.envMapIntensity}
       opacity={settings.opacity}
       transparent={settings.transparent}
     />
@@ -470,7 +477,49 @@ export function RapierItems(): JSX.Element {
   const presentedItemIndex = presentation.type === 'item' ? presentation.itemIndex : null;
   const isPresentingGroup = presentation.type === 'group';
   const canInteractWithItems = !isPresentingGroup;
-  const marbleTextures = useMarbleTextures();
+  const marbleSettings = useControls(
+    'Marble Items',
+    {
+      colorLift: {
+        value: marbleItemDefaults.colorLift,
+        min: 0,
+        max: 0.55,
+        step: 0.01,
+      },
+      textureRepeat: {
+        value: marbleItemDefaults.textureRepeat,
+        min: 0.2,
+        max: 2,
+        step: 0.05,
+      },
+      normalStrength: {
+        value: marbleItemDefaults.normalStrength,
+        min: 0,
+        max: 1,
+        step: 0.02,
+      },
+      roughness: {
+        value: marbleItemDefaults.roughness,
+        min: 0.12,
+        max: 0.8,
+        step: 0.02,
+      },
+      clearcoat: {
+        value: marbleItemDefaults.clearcoat,
+        min: 0,
+        max: 0.9,
+        step: 0.02,
+      },
+      envMapIntensity: {
+        value: marbleItemDefaults.envMapIntensity,
+        min: 0,
+        max: 1.8,
+        step: 0.05,
+      },
+    },
+    { collapsed: true, render: () => import.meta.env.DEV }
+  );
+  const marbleTextures = useMarbleTextures(marbleSettings.textureRepeat);
 
   useEffect(() => {
     if (isPresentingGroup) {
@@ -549,7 +598,8 @@ export function RapierItems(): JSX.Element {
       const familyColors = new Float32Array(indexes.length * 3);
 
       for (let localIndex = 0; localIndex < indexes.length; localIndex += 1) {
-        applyReadableVertexColor(family);
+        const itemIndex = indexes[localIndex];
+        applyReadableVertexColor(itemInstanceDescriptors[itemIndex].color, marbleSettings.colorLift);
         familyColors[localIndex * 3] = color.r;
         familyColors[localIndex * 3 + 1] = color.g;
         familyColors[localIndex * 3 + 2] = color.b;
@@ -565,7 +615,7 @@ export function RapierItems(): JSX.Element {
     });
 
     return batches.filter((batch) => batch.indexes.length > 0);
-  }, [markFirstPoolContact]);
+  }, [marbleSettings.colorLift, markFirstPoolContact]);
 
   const shadowDepthMaterial = useMemo(
     () =>
@@ -586,7 +636,10 @@ export function RapierItems(): JSX.Element {
         if (itemIndex === hovered || itemIndex === presentedItemIndex) {
           color.setRGB(1, 1, 1);
         } else {
-          applyReadableVertexColor(batch.family);
+          applyReadableVertexColor(
+            itemInstanceDescriptors[itemIndex].color,
+            marbleSettings.colorLift
+          );
         }
 
         batchColors[localIndex * 3] = color.r;
@@ -601,7 +654,7 @@ export function RapierItems(): JSX.Element {
         colorAttribute.needsUpdate = true;
       }
     });
-  }, [familyBatches, hovered, presentedItemIndex]);
+  }, [familyBatches, hovered, marbleSettings.colorLift, presentedItemIndex]);
 
   useFrame(() => {
     // Keep interaction bounds aligned with physics-driven instance transforms.
@@ -858,7 +911,11 @@ export function RapierItems(): JSX.Element {
             }}
           >
             <FamilyGeometry family={batch.family} colors={batch.colors} />
-            <FamilyMaterial family={batch.family} marbleTextures={marbleTextures} />
+            <FamilyMaterial
+              family={batch.family}
+              marbleSettings={marbleSettings}
+              marbleTextures={marbleTextures}
+            />
           </instancedMesh>
         </InstancedRigidBodies>
       ))}

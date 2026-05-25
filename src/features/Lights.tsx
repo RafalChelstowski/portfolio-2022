@@ -18,6 +18,17 @@ const contactShadowResolution = 512;
 const environmentResolution = 128;
 const contactShadowFrames = 1;
 
+export interface SceneToneSettings {
+  backgroundFog: string;
+  contactShadowOpacity: number;
+  coolFill: number;
+  environment: number;
+  exposure: number;
+  fogDensity: number;
+  hemisphere: number;
+  warmKey: number;
+}
+
 export const duskPalette = {
   backgroundFog: '#69798a',
   warmKeyLight: '#ffe2b2',
@@ -30,17 +41,18 @@ export const duskPalette = {
   poolPlaneTint: '#8f6166',
 };
 
-const lightLevels = {
-  environment: 2.18,
-  hemisphere: 1.32,
-  warmKey: 6.15,
-  coolFill: 3.85,
-  contactShadowOpacity: 0.19,
+export const sceneToneDefaults: SceneToneSettings = {
+  backgroundFog: duskPalette.backgroundFog,
+  contactShadowOpacity: 0.24,
+  coolFill: 2.7,
+  environment: 1.65,
+  exposure: 1.08,
+  fogDensity: 0.011,
+  hemisphere: 1,
+  warmKey: 4.6,
 };
 
-export const sceneToneMappingExposure = 1.34;
-
-export function Lights() {
+export function Lights({ tone }: { tone: SceneToneSettings }) {
   const scene = useThree((state) => state.scene);
 
   const targetObject = useMemo(() => new THREE.Object3D(), []);
@@ -59,7 +71,7 @@ export function Lights() {
       <Environment
         files="hdr.hdr"
         background={false}
-        environmentIntensity={lightLevels.environment}
+        environmentIntensity={tone.environment}
         environmentRotation={[0, Math.PI * 0.15, 0]}
         resolution={environmentResolution}
       />
@@ -67,7 +79,7 @@ export function Lights() {
         args={[
           duskPalette.coolSkyLight,
           duskPalette.warmGroundLight,
-          lightLevels.hemisphere,
+          tone.hemisphere,
         ]}
         position={[0, 8, 0]}
       />
@@ -75,7 +87,7 @@ export function Lights() {
         castShadow
         color={duskPalette.warmKeyLight}
         position={[9, 7, 4]}
-        intensity={lightLevels.warmKey}
+        intensity={tone.warmKey}
         target={targetObject}
         shadow-mapSize-width={directionalShadowMapSize}
         shadow-mapSize-height={directionalShadowMapSize}
@@ -92,13 +104,13 @@ export function Lights() {
       <pointLight
         color={duskPalette.coolFillLight}
         position={[-5, 3.5, 4]}
-        intensity={lightLevels.coolFill}
+        intensity={tone.coolFill}
         distance={18}
         decay={2}
       />
       <ContactShadows
         position={[0, -2.01, 0]}
-        opacity={lightLevels.contactShadowOpacity}
+        opacity={tone.contactShadowOpacity}
         scale={36}
         blur={2.8}
         far={24}
