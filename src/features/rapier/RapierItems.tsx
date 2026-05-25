@@ -8,6 +8,7 @@ import {
   type InstancedRigidBodyProps,
   type RapierRigidBody,
 } from '@react-three/rapier';
+import { useTexture } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import {
   useCallback,
@@ -26,7 +27,10 @@ import {
   MeshDepthMaterial,
   MeshDistanceMaterial,
   RGBADepthPacking,
+  RepeatWrapping,
+  Vector2,
   Vector3,
+  type Texture,
 } from 'three';
 
 import { getGroupItemIndexes, items } from '../../data/items';
@@ -104,6 +108,14 @@ interface FamilyMaterialSettings {
   envMapIntensity: number;
   opacity: number;
   transparent: boolean;
+  normalScale: Vector2;
+}
+
+interface MarbleTextures {
+  map: Texture;
+  normalMap: Texture;
+  roughnessMap: Texture;
+  metalnessMap: Texture;
 }
 
 const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
@@ -124,20 +136,32 @@ const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
   learning: { kind: 'ball', args: [0.72] },
 };
 
+const marbleTexturePaths = {
+  map: '/marble/Poliigon_StoneQuartzite_8060_BaseColor.jpg',
+  normalMap: '/marble/Poliigon_StoneQuartzite_8060_Normal.png',
+  roughnessMap: '/marble/Poliigon_StoneQuartzite_8060_Roughness.jpg',
+  metalnessMap: '/marble/Poliigon_StoneQuartzite_8060_Metallic.jpg',
+};
+const marbleTextureRepeat = new Vector2(1.65, 1.65);
+const heroMarbleNormalScale = new Vector2(0.54, 0.54);
+const secondaryMarbleNormalScale = new Vector2(0.38, 0.38);
+const quietMarbleNormalScale = new Vector2(0.24, 0.24);
+
 const heroMaterialSettings: FamilyMaterialSettings = {
   color: '#fff8ea',
   emissive: '#281207',
   emissiveIntensity: 0.08,
-  roughness: 0.16,
+  roughness: 0.22,
   metalness: 0,
-  transmission: 0.2,
-  thickness: 0.68,
+  transmission: 0.04,
+  thickness: 0.24,
   ior: 1.44,
   clearcoat: 1,
   clearcoatRoughness: 0.14,
-  envMapIntensity: 1.22,
-  opacity: 0.97,
-  transparent: true,
+  envMapIntensity: 1.34,
+  opacity: 1,
+  transparent: false,
+  normalScale: heroMarbleNormalScale,
 };
 
 const secondaryMaterialSettings: FamilyMaterialSettings = {
@@ -146,14 +170,15 @@ const secondaryMaterialSettings: FamilyMaterialSettings = {
   emissiveIntensity: 0.05,
   roughness: 0.28,
   metalness: 0,
-  transmission: 0.1,
-  thickness: 0.42,
+  transmission: 0.02,
+  thickness: 0.18,
   ior: 1.38,
   clearcoat: 0.68,
   clearcoatRoughness: 0.26,
   envMapIntensity: 0.96,
-  opacity: 0.94,
-  transparent: true,
+  opacity: 1,
+  transparent: false,
+  normalScale: secondaryMarbleNormalScale,
 };
 
 const quietMaterialSettings: FamilyMaterialSettings = {
@@ -162,14 +187,15 @@ const quietMaterialSettings: FamilyMaterialSettings = {
   emissiveIntensity: 0.04,
   roughness: 0.58,
   metalness: 0,
-  transmission: 0.02,
-  thickness: 0.18,
+  transmission: 0,
+  thickness: 0.08,
   ior: 1.32,
   clearcoat: 0.28,
   clearcoatRoughness: 0.5,
   envMapIntensity: 0.64,
-  opacity: 0.9,
-  transparent: true,
+  opacity: 0.98,
+  transparent: false,
+  normalScale: quietMarbleNormalScale,
 };
 
 const familyMaterialSettings: Record<ItemFamily, FamilyMaterialSettings> = {
@@ -183,6 +209,41 @@ const familyMaterialSettings: Record<ItemFamily, FamilyMaterialSettings> = {
 
 function createFamilyBodiesRef(): FamilyBodiesRef {
   return { current: null };
+}
+
+function configureMarbleTexture(texture: Texture, isColorTexture = false): void {
+  const configuredTexture = texture;
+  configuredTexture.wrapS = RepeatWrapping;
+  configuredTexture.wrapT = RepeatWrapping;
+  configuredTexture.repeat.copy(marbleTextureRepeat);
+  configuredTexture.anisotropy = 4;
+
+  if (isColorTexture) {
+    Reflect.set(configuredTexture, 'colorSpace', 'srgb');
+  }
+
+  configuredTexture.needsUpdate = true;
+}
+
+function useMarbleTextures(): MarbleTextures {
+  const map = useTexture(marbleTexturePaths.map);
+  const normalMap = useTexture(marbleTexturePaths.normalMap);
+  const roughnessMap = useTexture(marbleTexturePaths.roughnessMap);
+  const metalnessMap = useTexture(marbleTexturePaths.metalnessMap);
+
+  useEffect(() => {
+    configureMarbleTexture(map, true);
+    configureMarbleTexture(normalMap);
+    configureMarbleTexture(roughnessMap);
+    configureMarbleTexture(metalnessMap);
+  }, [map, metalnessMap, normalMap, roughnessMap]);
+
+  return {
+    map,
+    normalMap,
+    roughnessMap,
+    metalnessMap,
+  };
 }
 
 function createCenterAreaOffset(index: number): PhysicsVector3 {
@@ -274,17 +335,28 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
   );
 }
 
-function FamilyMaterial({ family }: { family: ItemFamily }): JSX.Element {
+function FamilyMaterial({
+  family,
+  marbleTextures,
+}: {
+  family: ItemFamily;
+  marbleTextures: MarbleTextures;
+}): JSX.Element {
   const settings = familyMaterialSettings[family];
 
   return (
     <meshPhysicalMaterial
       vertexColors
+      map={marbleTextures.map}
+      normalMap={marbleTextures.normalMap}
+      roughnessMap={marbleTextures.roughnessMap}
+      metalnessMap={marbleTextures.metalnessMap}
       color={settings.color}
       emissive={settings.emissive}
       emissiveIntensity={settings.emissiveIntensity}
       roughness={settings.roughness}
       metalness={settings.metalness}
+      normalScale={settings.normalScale}
       transmission={settings.transmission}
       thickness={settings.thickness}
       ior={settings.ior}
@@ -342,6 +414,7 @@ export function RapierItems(): JSX.Element {
   const presentedItemIndex = presentation.type === 'item' ? presentation.itemIndex : null;
   const isPresentingGroup = presentation.type === 'group';
   const canInteractWithItems = !isPresentingGroup;
+  const marbleTextures = useMarbleTextures();
 
   useEffect(() => {
     if (isPresentingGroup) {
@@ -731,7 +804,7 @@ export function RapierItems(): JSX.Element {
             }}
           >
             <FamilyGeometry family={batch.family} colors={batch.colors} />
-            <FamilyMaterial family={batch.family} />
+            <FamilyMaterial family={batch.family} marbleTextures={marbleTextures} />
           </instancedMesh>
         </InstancedRigidBodies>
       ))}
