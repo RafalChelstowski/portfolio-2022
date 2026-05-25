@@ -87,13 +87,22 @@ interface FamilyBatchRuntime {
 type FamilyBodiesRef = MutableRefObject<(RapierRigidBody | null)[] | null>;
 type FamilyVisualGeometry =
   | { kind: 'box'; args: [width: number, height: number, depth: number] }
-  | { kind: 'cone'; args: [radius: number, height: number, radialSegments: number] }
+  | {
+      kind: 'cone';
+      args: [radius: number, height: number, radialSegments: number, heightSegments: number];
+    }
   | { kind: 'icosahedron'; args: [radius: number, detail: number] }
   | { kind: 'octahedron'; args: [radius: number, detail: number] }
   | { kind: 'dodecahedron'; args: [radius: number, detail: number] }
   | {
       kind: 'cylinder';
-      args: [radiusTop: number, radiusBottom: number, height: number, radialSegments: number];
+      args: [
+        radiusTop: number,
+        radiusBottom: number,
+        height: number,
+        radialSegments: number,
+        heightSegments: number,
+      ];
     };
 type FamilyColliderDimensions =
   | { kind: 'cuboid'; args: [halfWidth: number, halfHeight: number, halfDepth: number] }
@@ -129,15 +138,16 @@ interface MarbleItemSettings {
   envMapIntensity: number;
   normalStrength: number;
   roughness: number;
+  shapeScale: number;
   textureRepeat: number;
 }
 
 const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
   project: { kind: 'box', args: [1, 1, 1] },
-  ai: { kind: 'cone', args: [0.72, 1.24, 3] },
+  ai: { kind: 'cone', args: [0.72, 1.24, 5, 4] },
   stack: { kind: 'icosahedron', args: [0.8, 0] },
   creative: { kind: 'dodecahedron', args: [0.64, 0] },
-  career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 5] },
+  career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 16, 4] },
   learning: { kind: 'octahedron', args: [0.74, 0] },
 };
 
@@ -163,6 +173,7 @@ const marbleItemDefaults: MarbleItemSettings = {
   envMapIntensity: 0.9,
   normalStrength: 0.45,
   roughness: 0.36,
+  shapeScale: 1.55,
   textureRepeat: 0.55,
 };
 
@@ -504,6 +515,12 @@ export function RapierItems(): JSX.Element {
         max: 0.8,
         step: 0.02,
       },
+      shapeScale: {
+        value: marbleItemDefaults.shapeScale,
+        min: 1,
+        max: 2.1,
+        step: 0.05,
+      },
       clearcoat: {
         value: marbleItemDefaults.clearcoat,
         min: 0,
@@ -588,7 +605,11 @@ export function RapierItems(): JSX.Element {
           key: localBodySlot,
           position: descriptor.spawnPosition,
           rotation: descriptor.initialRotationSeed,
-          scale: descriptor.scale,
+          scale: [
+            descriptor.scale[0] * marbleSettings.shapeScale,
+            descriptor.scale[1] * marbleSettings.shapeScale,
+            descriptor.scale[2] * marbleSettings.shapeScale,
+          ],
           mass: rapierPhysicsConstants.items.massBySize[descriptor.scaleSource],
           onCollisionEnter: (payload) => {
             markFirstPoolContact(itemIndex, payload);
@@ -615,7 +636,7 @@ export function RapierItems(): JSX.Element {
     });
 
     return batches.filter((batch) => batch.indexes.length > 0);
-  }, [marbleSettings.colorLift, markFirstPoolContact]);
+  }, [marbleSettings.colorLift, marbleSettings.shapeScale, markFirstPoolContact]);
 
   const shadowDepthMaterial = useMemo(
     () =>

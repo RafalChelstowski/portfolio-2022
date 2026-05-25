@@ -22,9 +22,12 @@
 - [x] Tone down current scene brightness slightly | AC: adjust the current light/environment/exposure/fog constants so the scene is a little less bright than the latest PR screenshot while remaining brighter than the original dark PR state; keep stable shadows and no new HDR asset.
 - [x] Stabilize RetroPass and marble visuals after direct review | AC: RetroPass uses CSS-pixel-stable `vUv` shader math with output color-space conversion and no diagonal grain drift, Canvas no longer emits the PCFSoftShadowMap warning, sortable marble textures read clearly after sort/fall interaction, and `npm run typecheck && npm run lint && npm run build` passes.
 - [x] Add focused Leva tuning for washed-out scene and colored marble | AC: dev Leva exposes scene tone controls and marble item controls, default scene brightness is less washed out than the previous pass, sortable shapes keep their unique colors while showing the uploaded marble maps, and `npm run typecheck && npm run lint && npm run build` passes.
+- [x] Improve low-poly shape texture readability and scale | AC: cylinder and cone-like sortable geometries have enough subdivisions for marble/normal detail to read better, Marble Items exposes a live `shapeScale` control with larger defaults, physics/hover/sort behavior remains intact, and `npm run typecheck && npm run lint && npm run build` passes.
 
 ## Findings
 
+- Cylinders and cone-like shapes were using only 5 and 3 radial segments respectively, which made marble/normal detail read worse than cubes and richer faceted shapes.
+- Shape scale 1.55 gives a larger default while keeping the pool readable; live Chrome testing showed 2.0 remains available through Leva and works, but is more crowded near edges.
 - The previous marble pass overcorrected by tinting all item vertex colors from white, which made shapes read as uniformly pale and hid the original custom colors.
 - The focused tuning pass restores original item custom colors with a small Leva-controlled lift, and exposes scene tone plus marble material controls without adding new assets or changing physics.
 - Live Chrome inspection on 2026-05-25 confirmed the app canvas was CSS `1044x828` with draw buffer `1566x1242` on browser DPR 2, so RetroPass `gl_FragCoord` math was tied to render DPR rather than CSS-pixel controls.
