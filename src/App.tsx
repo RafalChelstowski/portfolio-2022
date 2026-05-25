@@ -13,11 +13,15 @@ import { rapierPhysicsConstants } from './features/physics/constants';
 import { RapierBounds } from './features/rapier/RapierBounds';
 import { RapierItems } from './features/rapier/RapierItems';
 
+const canvasDprRange: [minimum: number, maximum: number] = [1, 1.5];
+const sceneFogDensity = 0.022;
+
 function SceneAtmosphere() {
   return (
     <>
       <color attach="background" args={[duskPalette.backgroundFog]} />
-      <fogExp2 attach="fog" args={[duskPalette.backgroundFog, 0.022]} />
+      {/* Keep fog density subtle so atmosphere adds depth without increasing draw cost. */}
+      <fogExp2 attach="fog" args={[duskPalette.backgroundFog, sceneFogDensity]} />
     </>
   );
 }
@@ -26,7 +30,7 @@ export function App() {
   return (
     <main className="relative w-screen h-screen overflow-hidden">
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={canvasDprRange}
         onCreated={({ gl }) => {
           if ('useLegacyLights' in gl) {
             Reflect.set(gl, 'useLegacyLights', false);
@@ -47,6 +51,7 @@ export function App() {
           <RapierItems />
           <RapierBounds />
         </Physics>
+        {/* DPR is intentionally capped and adaptive to keep the scene responsive on dense displays. */}
         <AdaptiveDpr pixelated />
         <Preload all />
       </Canvas>

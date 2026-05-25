@@ -11,8 +11,12 @@ const shadowBounds = {
   top: 18,
   bottom: -18,
 };
+
+// Keep static shadow buffers bounded; larger maps quickly raise GPU cost in this scene.
 const directionalShadowMapSize = 1024;
 const contactShadowResolution = 512;
+const environmentResolution = 128;
+const contactShadowFrames = 1;
 
 export const duskPalette = {
   backgroundFog: '#111822',
@@ -47,7 +51,7 @@ export function Lights() {
         background={false}
         environmentIntensity={0.65}
         environmentRotation={[0, Math.PI * 0.15, 0]}
-        resolution={128}
+        resolution={environmentResolution}
       />
       <hemisphereLight
         args={[duskPalette.coolSkyLight, duskPalette.warmGroundLight, 0.38]}
@@ -85,7 +89,7 @@ export function Lights() {
         blur={2.8}
         far={24}
         resolution={contactShadowResolution}
-        frames={1}
+        frames={contactShadowFrames}
       />
     </>
   );
