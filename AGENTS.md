@@ -38,5 +38,5 @@ IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <pro
 - Key scene files are src/features/Lights.tsx, src/features/Pool.tsx, src/features/rapier/RapierItems.tsx, and src/App.tsx.
 - Existing public assets include pool.gltf, pool PBR texture maps, hdr.hdr, and uploaded marble texture maps under public/marble; reuse these only.
 - Preserve the interactive Rapier item behavior and existing UI/card behavior.
-- Rafal feedback overrides the earlier restrained pass: make the scene much, much brighter, apply visible marble textures to sortable/falling shapes, and make retro grain clearly visible via a focused RetroPass-style shader/component while keeping performance-safe shadows.
+- Latest Rafal feedback: the RetroPass/grain is now too prominent and obstructs the view. Keep the scope focused on making the RetroPass adjustable through existing Leva/dev controls, lowering defaults, and preserving the scene visibility. Do not widen into unrelated lighting/material changes unless required by the RetroPass task.
 - Do not start a dev server unless Rafal explicitly asks.

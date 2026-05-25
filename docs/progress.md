@@ -14,7 +14,13 @@
 - [x] Make the scene substantially brighter using the current HDR and light hierarchy | AC: `src/features/Lights.tsx` and related scene constants raise environment/background/lighting exposure enough that the scene reads much, much brighter than the current PR while preserving stable bounded shadows and no new HDR asset.
 - [x] Replace barely visible/competing visual effects with a dedicated RetroPass grain shader | AC: any other custom postprocessing/filter effect in the scene is removed or disabled, and a focused RetroPass-style shader/component provides clearly visible retro grain/noise in production without new dependencies and without breaking UI overlay behavior.
 
+- [x] Parameterize RetroPass grain with Leva controls | AC: the RetroPass-style grain/filter exposes useful Leva controls in dev for intensity/scale or comparable grain parameters, defaults to a less obstructive setting than the current PR screenshot, and keeps production behavior safe without adding dependencies.
+- [/] Add a second tuning pass for RetroPass usability | AC: after the initial Leva wiring, review the RetroPass defaults/ranges and shader output so Rafal can comfortably tune the effect in dev without the filter obscuring the scene; `npm run typecheck && npm run lint && npm run build` passes.
+
 ## Findings
+
+- Rafal review feedback from screenshot/message on 2026-05-25 14:56 Europe/Berlin: RetroPass/grain is now too prominent and obstructs the view. Defaults must be toned down.
+- Rafal wants RetroPass parameters exposed through Leva so he can adjust them directly in the dev environment; prepare a couple of update passes focused only on that scope.
 
 - Rafal review feedback for PR #16: the HDR/background was intentionally changed to be lighter, but the PR made the scene dark again; next pass must be much, much brighter, not subtly brighter.
 - Rafal uploaded marble textures under `public/marble/`; sortable/falling Rapier shapes must visibly use those maps.

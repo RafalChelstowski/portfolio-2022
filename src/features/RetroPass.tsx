@@ -1,11 +1,12 @@
 import { useFrame, useThree } from '@react-three/fiber';
+import { useControls } from 'leva';
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 
-const retroPassSettings = {
-  grainOpacity: 0.3,
-  grainScale: 235,
-  scanlineIntensity: 0.1,
+const retroPassDefaults = {
+  grainOpacity: 0.12,
+  grainScale: 190,
+  scanlineIntensity: 0.035,
 };
 
 const vertexShader = `
@@ -44,13 +45,37 @@ const fragmentShader = `
 
 export function RetroPass() {
   const size = useThree((state) => state.size);
+  const { grainOpacity, grainScale, scanlineIntensity } = useControls(
+    'RetroPass',
+    {
+      grainOpacity: {
+        value: retroPassDefaults.grainOpacity,
+        min: 0,
+        max: 0.24,
+        step: 0.005,
+      },
+      grainScale: {
+        value: retroPassDefaults.grainScale,
+        min: 80,
+        max: 360,
+        step: 1,
+      },
+      scanlineIntensity: {
+        value: retroPassDefaults.scanlineIntensity,
+        min: 0,
+        max: 0.12,
+        step: 0.005,
+      },
+    },
+    { collapsed: true, render: () => import.meta.env.DEV }
+  );
 
   const pass = useMemo(() => {
     const uniforms = {
       uTime: { value: 0 },
-      uGrainOpacity: { value: retroPassSettings.grainOpacity },
-      uGrainScale: { value: retroPassSettings.grainScale },
-      uScanlineIntensity: { value: retroPassSettings.scanlineIntensity },
+      uGrainOpacity: { value: retroPassDefaults.grainOpacity },
+      uGrainScale: { value: retroPassDefaults.grainScale },
+      uScanlineIntensity: { value: retroPassDefaults.scanlineIntensity },
       uResolution: { value: new THREE.Vector2(1, 1) },
     };
     const scene = new THREE.Scene();
@@ -82,6 +107,19 @@ export function RetroPass() {
   useEffect(() => {
     pass.uniforms.uResolution.value.set(size.width, size.height);
   }, [pass.uniforms.uResolution.value, size.height, size.width]);
+
+  useEffect(() => {
+    pass.uniforms.uGrainOpacity.value = grainOpacity;
+    pass.uniforms.uGrainScale.value = grainScale;
+    pass.uniforms.uScanlineIntensity.value = scanlineIntensity;
+  }, [
+    grainOpacity,
+    grainScale,
+    pass.uniforms.uGrainOpacity,
+    pass.uniforms.uGrainScale,
+    pass.uniforms.uScanlineIntensity,
+    scanlineIntensity,
+  ]);
 
   useEffect(
     () => () => {
