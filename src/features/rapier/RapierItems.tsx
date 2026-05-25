@@ -92,6 +92,8 @@ type FamilyColliderDimensions =
   | { kind: 'cylinder'; args: [halfHeight: number, radius: number] };
 interface FamilyMaterialSettings {
   color: string;
+  emissive: string;
+  emissiveIntensity: number;
   roughness: number;
   metalness: number;
   transmission: number;
@@ -123,44 +125,50 @@ const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
 };
 
 const heroMaterialSettings: FamilyMaterialSettings = {
-  color: '#fff4df',
-  roughness: 0.18,
+  color: '#fff8ea',
+  emissive: '#281207',
+  emissiveIntensity: 0.08,
+  roughness: 0.16,
   metalness: 0,
-  transmission: 0.28,
-  thickness: 0.74,
+  transmission: 0.2,
+  thickness: 0.68,
   ior: 1.44,
-  clearcoat: 0.92,
-  clearcoatRoughness: 0.18,
-  envMapIntensity: 1.05,
-  opacity: 0.92,
+  clearcoat: 1,
+  clearcoatRoughness: 0.14,
+  envMapIntensity: 1.22,
+  opacity: 0.97,
   transparent: true,
 };
 
 const secondaryMaterialSettings: FamilyMaterialSettings = {
-  color: '#e8fbff',
-  roughness: 0.34,
+  color: '#d8f6ff',
+  emissive: '#061927',
+  emissiveIntensity: 0.05,
+  roughness: 0.28,
   metalness: 0,
-  transmission: 0.18,
-  thickness: 0.52,
+  transmission: 0.1,
+  thickness: 0.42,
   ior: 1.38,
-  clearcoat: 0.54,
-  clearcoatRoughness: 0.32,
-  envMapIntensity: 0.82,
-  opacity: 0.88,
+  clearcoat: 0.68,
+  clearcoatRoughness: 0.26,
+  envMapIntensity: 0.96,
+  opacity: 0.94,
   transparent: true,
 };
 
 const quietMaterialSettings: FamilyMaterialSettings = {
-  color: '#d7d9dc',
-  roughness: 0.64,
+  color: '#cbd3dc',
+  emissive: '#080b10',
+  emissiveIntensity: 0.04,
+  roughness: 0.58,
   metalness: 0,
-  transmission: 0.08,
-  thickness: 0.24,
+  transmission: 0.02,
+  thickness: 0.18,
   ior: 1.32,
-  clearcoat: 0.18,
-  clearcoatRoughness: 0.62,
-  envMapIntensity: 0.52,
-  opacity: 0.82,
+  clearcoat: 0.28,
+  clearcoatRoughness: 0.5,
+  envMapIntensity: 0.64,
+  opacity: 0.9,
   transparent: true,
 };
 
@@ -273,6 +281,8 @@ function FamilyMaterial({ family }: { family: ItemFamily }): JSX.Element {
     <meshPhysicalMaterial
       vertexColors
       color={settings.color}
+      emissive={settings.emissive}
+      emissiveIntensity={settings.emissiveIntensity}
       roughness={settings.roughness}
       metalness={settings.metalness}
       transmission={settings.transmission}
