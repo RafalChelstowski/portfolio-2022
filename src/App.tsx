@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 
 import { Camera } from './features/Camera';
 import { Controls } from './features/Controls';
-import { Lights, duskPalette } from './features/Lights';
+import { Lights, duskPalette, sceneToneMappingExposure } from './features/Lights';
 import Pool from './features/Pool';
 import { SelectedCardOverlay } from './features/SelectedCardOverlay';
 import { UI } from './features/UI';
@@ -14,7 +14,7 @@ import { RapierBounds } from './features/rapier/RapierBounds';
 import { RapierItems } from './features/rapier/RapierItems';
 
 const canvasDprRange: [minimum: number, maximum: number] = [1, 1.5];
-const sceneFogDensity = 0.022;
+const sceneFogDensity = 0.014;
 
 function SceneAtmosphere() {
   return (
@@ -37,6 +37,8 @@ export function App() {
           } else if ('physicallyCorrectLights' in gl) {
             Reflect.set(gl, 'physicallyCorrectLights', true);
           }
+
+          Reflect.set(gl, 'toneMappingExposure', sceneToneMappingExposure);
         }}
         shadows
       >

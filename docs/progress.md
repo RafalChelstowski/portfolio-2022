@@ -11,7 +11,7 @@
 - [x] Add conservative shadow and atmosphere guardrails | AC: the scene keeps bounded shadow/contact-shadow settings and adds inline code-level guardrails/comments or constants that make future changes to fog density, DPR, and shadow map sizes explicitly performance-safe, without changing runtime behavior outside the visual scene.
 - [x] Verify additional visual pass checks | AC: `npm run typecheck && npm run lint && npm run build` passes after the additional visual refinements.
 
-- [/] Make the scene substantially brighter using the current HDR and light hierarchy | AC: `src/features/Lights.tsx` and related scene constants raise environment/background/lighting exposure enough that the scene reads much, much brighter than the current PR while preserving stable bounded shadows and no new HDR asset.
+- [x] Make the scene substantially brighter using the current HDR and light hierarchy | AC: `src/features/Lights.tsx` and related scene constants raise environment/background/lighting exposure enough that the scene reads much, much brighter than the current PR while preserving stable bounded shadows and no new HDR asset.
 - [/] Replace barely visible/competing visual effects with a dedicated RetroPass grain shader | AC: any other custom postprocessing/filter effect in the scene is removed or disabled, and a focused RetroPass-style shader/component provides clearly visible retro grain/noise in production without new dependencies and without breaking UI overlay behavior.
 
 ## Findings
@@ -24,3 +24,4 @@
 - Canvas DPR is capped at 1.5 and static shadow/contact-shadow buffers are intentionally bounded for the visual pass.
 - The follow-up pass should keep all work inside the existing React Three Fiber scene files and must not add postprocessing, browser smoke tests, new assets, or new dependencies.
 - Falling items now share the uploaded marble base color, normal, roughness, and metallic maps; AO/displacement maps remain unused to avoid adding uv2 requirements or heavier geometry work to the instanced physics shapes.
+- The brighter pass is controlled by `duskPalette`, `lightLevels`, `sceneToneMappingExposure`, and the App fog density; bounded shadow/contact-shadow map sizes were left unchanged.
