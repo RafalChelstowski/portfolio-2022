@@ -7,6 +7,7 @@ import { Camera } from './features/Camera';
 import { Controls } from './features/Controls';
 import { Lights, duskPalette, sceneToneMappingExposure } from './features/Lights';
 import Pool from './features/Pool';
+import { RetroPass } from './features/RetroPass';
 import { SelectedCardOverlay } from './features/SelectedCardOverlay';
 import { UI } from './features/UI';
 import { rapierPhysicsConstants } from './features/physics/constants';
@@ -55,6 +56,7 @@ export function App() {
         </Physics>
         {/* DPR is intentionally capped and adaptive to keep the scene responsive on dense displays. */}
         <AdaptiveDpr pixelated />
+        <RetroPass />
         <Preload all />
       </Canvas>
       <SelectedCardOverlay />

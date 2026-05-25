@@ -12,7 +12,7 @@
 - [x] Verify additional visual pass checks | AC: `npm run typecheck && npm run lint && npm run build` passes after the additional visual refinements.
 
 - [x] Make the scene substantially brighter using the current HDR and light hierarchy | AC: `src/features/Lights.tsx` and related scene constants raise environment/background/lighting exposure enough that the scene reads much, much brighter than the current PR while preserving stable bounded shadows and no new HDR asset.
-- [/] Replace barely visible/competing visual effects with a dedicated RetroPass grain shader | AC: any other custom postprocessing/filter effect in the scene is removed or disabled, and a focused RetroPass-style shader/component provides clearly visible retro grain/noise in production without new dependencies and without breaking UI overlay behavior.
+- [x] Replace barely visible/competing visual effects with a dedicated RetroPass grain shader | AC: any other custom postprocessing/filter effect in the scene is removed or disabled, and a focused RetroPass-style shader/component provides clearly visible retro grain/noise in production without new dependencies and without breaking UI overlay behavior.
 
 ## Findings
 
