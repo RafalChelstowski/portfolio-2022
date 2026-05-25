@@ -4,9 +4,9 @@ import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 
 const retroPassDefaults = {
-  grainOpacity: 0.12,
-  grainScale: 190,
-  scanlineIntensity: 0.035,
+  grainOpacity: 0.055,
+  grainScale: 220,
+  scanlineIntensity: 0.012,
 };
 
 const vertexShader = `
@@ -35,8 +35,8 @@ const fragmentShader = `
     vec2 pixel = gl_FragCoord.xy / max(uResolution.xy, vec2(1.0));
     float grain = random(floor(pixel * uGrainScale) + floor(uTime * 24.0));
     float scanline = sin(pixel.y * uResolution.y * 3.14159265);
-    float grainAlpha = (0.45 + grain * 0.55) * uGrainOpacity;
-    float scanlineAlpha = smoothstep(0.15, 1.0, scanline) * uScanlineIntensity;
+    float grainAlpha = smoothstep(0.32, 1.0, grain) * uGrainOpacity;
+    float scanlineAlpha = smoothstep(0.72, 1.0, scanline) * uScanlineIntensity;
     vec3 retroInk = vec3(0.055, 0.065, 0.085);
 
     gl_FragColor = vec4(retroInk, grainAlpha + scanlineAlpha);
@@ -51,20 +51,20 @@ export function RetroPass() {
       grainOpacity: {
         value: retroPassDefaults.grainOpacity,
         min: 0,
-        max: 0.24,
+        max: 0.16,
         step: 0.005,
       },
       grainScale: {
         value: retroPassDefaults.grainScale,
-        min: 80,
-        max: 360,
+        min: 120,
+        max: 420,
         step: 1,
       },
       scanlineIntensity: {
         value: retroPassDefaults.scanlineIntensity,
         min: 0,
-        max: 0.12,
-        step: 0.005,
+        max: 0.06,
+        step: 0.002,
       },
     },
     { collapsed: true, render: () => import.meta.env.DEV }
