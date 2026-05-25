@@ -143,56 +143,73 @@ const marbleTexturePaths = {
   metalnessMap: '/marble/Poliigon_StoneQuartzite_8060_Metallic.jpg',
 };
 const marbleTextureRepeat = new Vector2(1.65, 1.65);
-const heroMarbleNormalScale = new Vector2(0.54, 0.54);
-const secondaryMarbleNormalScale = new Vector2(0.38, 0.38);
-const quietMarbleNormalScale = new Vector2(0.24, 0.24);
+const heroMarbleNormalScale = new Vector2(0.68, 0.68);
+const secondaryMarbleNormalScale = new Vector2(0.5, 0.5);
+const quietMarbleNormalScale = new Vector2(0.34, 0.34);
+const readableVertexColorTargets: Record<ItemFamily, string> = {
+  project: '#ffc7b5',
+  career: '#a7d9ef',
+  ai: '#cab2df',
+  stack: '#ffd2d7',
+  creative: '#c6e7f4',
+  learning: '#9fe7f1',
+};
+const readableVertexColorMix: Record<ItemFamily, number> = {
+  project: 0.42,
+  career: 0.48,
+  ai: 0.5,
+  stack: 0.36,
+  creative: 0.42,
+  learning: 0.34,
+};
+const readableVertexColorTarget = new Color();
 
 const heroMaterialSettings: FamilyMaterialSettings = {
-  color: '#fff8ea',
-  emissive: '#281207',
-  emissiveIntensity: 0.08,
-  roughness: 0.22,
-  metalness: 0,
-  transmission: 0.04,
-  thickness: 0.24,
+  color: '#fffaf0',
+  emissive: '#3a1907',
+  emissiveIntensity: 0.12,
+  roughness: 0.18,
+  metalness: 0.04,
+  transmission: 0.02,
+  thickness: 0.16,
   ior: 1.44,
   clearcoat: 1,
-  clearcoatRoughness: 0.14,
-  envMapIntensity: 1.34,
+  clearcoatRoughness: 0.1,
+  envMapIntensity: 1.62,
   opacity: 1,
   transparent: false,
   normalScale: heroMarbleNormalScale,
 };
 
 const secondaryMaterialSettings: FamilyMaterialSettings = {
-  color: '#d8f6ff',
-  emissive: '#061927',
-  emissiveIntensity: 0.05,
-  roughness: 0.28,
-  metalness: 0,
-  transmission: 0.02,
-  thickness: 0.18,
+  color: '#e4faff',
+  emissive: '#071f31',
+  emissiveIntensity: 0.08,
+  roughness: 0.24,
+  metalness: 0.025,
+  transmission: 0.01,
+  thickness: 0.12,
   ior: 1.38,
-  clearcoat: 0.68,
-  clearcoatRoughness: 0.26,
-  envMapIntensity: 0.96,
+  clearcoat: 0.78,
+  clearcoatRoughness: 0.2,
+  envMapIntensity: 1.22,
   opacity: 1,
   transparent: false,
   normalScale: secondaryMarbleNormalScale,
 };
 
 const quietMaterialSettings: FamilyMaterialSettings = {
-  color: '#cbd3dc',
-  emissive: '#080b10',
-  emissiveIntensity: 0.04,
-  roughness: 0.58,
+  color: '#d8e2ea',
+  emissive: '#071018',
+  emissiveIntensity: 0.06,
+  roughness: 0.46,
   metalness: 0,
   transmission: 0,
   thickness: 0.08,
   ior: 1.32,
-  clearcoat: 0.28,
-  clearcoatRoughness: 0.5,
-  envMapIntensity: 0.64,
+  clearcoat: 0.38,
+  clearcoatRoughness: 0.4,
+  envMapIntensity: 0.84,
   opacity: 0.98,
   transparent: false,
   normalScale: quietMarbleNormalScale,
@@ -223,6 +240,12 @@ function configureMarbleTexture(texture: Texture, isColorTexture = false): void 
   }
 
   configuredTexture.needsUpdate = true;
+}
+
+function applyReadableVertexColor(sourceColor: string, family: ItemFamily): void {
+  color.set(sourceColor);
+  readableVertexColorTarget.set(readableVertexColorTargets[family]);
+  color.lerp(readableVertexColorTarget, readableVertexColorMix[family]);
 }
 
 function useMarbleTextures(): MarbleTextures {
@@ -494,7 +517,7 @@ export function RapierItems(): JSX.Element {
 
       for (let localIndex = 0; localIndex < indexes.length; localIndex += 1) {
         const itemIndex = indexes[localIndex];
-        color.set(itemInstanceDescriptors[itemIndex].color);
+        applyReadableVertexColor(itemInstanceDescriptors[itemIndex].color, family);
         familyColors[localIndex * 3] = color.r;
         familyColors[localIndex * 3 + 1] = color.g;
         familyColors[localIndex * 3 + 2] = color.b;
@@ -532,7 +555,7 @@ export function RapierItems(): JSX.Element {
         if (itemIndex === hovered || itemIndex === presentedItemIndex) {
           color.setRGB(1, 1, 1);
         } else {
-          color.set(descriptor.color);
+          applyReadableVertexColor(descriptor.color, batch.family);
         }
 
         batchColors[localIndex * 3] = color.r;
