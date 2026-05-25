@@ -9,7 +9,7 @@ const presentationCameraPosition = [11, 18, -8] as const;
 const defaultCameraTarget = [0, 0, 0] as const;
 const presentationViewOffsetRatio = 0.22;
 const defaultCameraZoom = 1.2;
-const presentationCameraZoom = 1.35;
+const presentationCameraZoom = 1.65;
 
 export function Camera(): JSX.Element {
   const isPresenting = useStore((state) => state.presentation.type !== 'none');
