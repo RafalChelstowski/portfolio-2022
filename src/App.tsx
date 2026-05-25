@@ -41,7 +41,7 @@ export function App() {
 
           Reflect.set(gl, 'toneMappingExposure', sceneToneMappingExposure);
         }}
-        shadows
+        shadows="percentage"
       >
         <SceneAtmosphere />
         <Camera />

@@ -20,9 +20,13 @@
 - [x] Investigate and fix broken-looking marble textures on sortable shapes | AC: inspect the current marble texture loading/material setup in `src/features/rapier/RapierItems.tsx`, correct UV/repeat/color-space/wrapping or material choices so the uploaded marble texture reads clearly instead of broken/washed out, and preserve existing sortable physics/hover behavior without adding assets or dependencies.
 - [x] Apply Rafal-approved RetroPass defaults and scanline tuning | AC: RetroPass/Leva defaults use grain opacity `0.03`, grain scale `20`, scanline intensity `0.05` or a slightly more prominent scanline if visually appropriate, with ranges still useful for dev tuning and no obstructive overlay.
 - [x] Tone down current scene brightness slightly | AC: adjust the current light/environment/exposure/fog constants so the scene is a little less bright than the latest PR screenshot while remaining brighter than the original dark PR state; keep stable shadows and no new HDR asset.
+- [x] Stabilize RetroPass and marble visuals after direct review | AC: RetroPass uses CSS-pixel-stable `vUv` shader math with output color-space conversion and no diagonal grain drift, Canvas no longer emits the PCFSoftShadowMap warning, sortable marble textures read clearly after sort/fall interaction, and `npm run typecheck && npm run lint && npm run build` passes.
 
 ## Findings
 
+- Live Chrome inspection on 2026-05-25 confirmed the app canvas was CSS `1044x828` with draw buffer `1566x1242` on browser DPR 2, so RetroPass `gl_FragCoord` math was tied to render DPR rather than CSS-pixel controls.
+- The RetroPass shader must include Three's output color-space conversion because it writes its own `gl_FragColor` in a custom transparent overlay pass.
+- The direct visual follow-up moved RetroPass animation to in-place `vUv`/CSS-pixel math, switched Canvas shadows to explicit PCF mode, and made sortable marble more readable with object-space UV projection plus less glossy, less tinted material settings.
 - Rafal review feedback from screenshot/message on 2026-05-25 15:15 Europe/Berlin: marble textures on sortable shapes look broken and need investigation, not just another surface tweak.
 - The broken marble read was addressed in `RapierItems.tsx` by using explicit Three color-space constants, reducing repeat/normal strength, and assigning spherical UVs to faceted sortable shapes whose default UVs can fragment the bitmap.
 - Rafal requested RetroPass shader values: grain opacity 0.03, scale 20, scanline 0.05; scanline can be slightly more prominent if the implementation benefits from it.

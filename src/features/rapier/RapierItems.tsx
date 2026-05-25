@@ -119,7 +119,6 @@ interface MarbleTextures {
   map: Texture;
   normalMap: Texture;
   roughnessMap: Texture;
-  metalnessMap: Texture;
 }
 
 const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
@@ -144,76 +143,75 @@ const marbleTexturePaths = {
   map: '/marble/Poliigon_StoneQuartzite_8060_BaseColor.jpg',
   normalMap: '/marble/Poliigon_StoneQuartzite_8060_Normal.png',
   roughnessMap: '/marble/Poliigon_StoneQuartzite_8060_Roughness.jpg',
-  metalnessMap: '/marble/Poliigon_StoneQuartzite_8060_Metallic.jpg',
 };
-const marbleTextureRepeat = new Vector2(0.9, 0.9);
-const heroMarbleNormalScale = new Vector2(0.42, 0.42);
-const secondaryMarbleNormalScale = new Vector2(0.32, 0.32);
-const quietMarbleNormalScale = new Vector2(0.24, 0.24);
+const marbleTextureRepeat = new Vector2(0.58, 0.58);
+const heroMarbleNormalScale = new Vector2(0.5, 0.5);
+const secondaryMarbleNormalScale = new Vector2(0.4, 0.4);
+const quietMarbleNormalScale = new Vector2(0.3, 0.3);
 const readableVertexColorTargets: Record<ItemFamily, string> = {
-  project: '#ffc7b5',
-  career: '#a7d9ef',
-  ai: '#cab2df',
-  stack: '#ffd2d7',
-  creative: '#c6e7f4',
-  learning: '#9fe7f1',
+  project: '#ffe1d5',
+  career: '#d7eff8',
+  ai: '#e4d7f0',
+  stack: '#ffe1e6',
+  creative: '#ddf4fb',
+  learning: '#d5f7fb',
 };
 const readableVertexColorMix: Record<ItemFamily, number> = {
-  project: 0.42,
-  career: 0.48,
-  ai: 0.5,
-  stack: 0.36,
-  creative: 0.42,
-  learning: 0.34,
+  project: 0.2,
+  career: 0.22,
+  ai: 0.24,
+  stack: 0.18,
+  creative: 0.2,
+  learning: 0.16,
 };
 const readableVertexColorTarget = new Color();
 
 const heroMaterialSettings: FamilyMaterialSettings = {
-  color: '#fffaf0',
-  emissive: '#3a1907',
-  emissiveIntensity: 0.12,
-  roughness: 0.18,
-  metalness: 0.04,
+  color: '#ffffff',
+  emissive: '#160c08',
+  emissiveIntensity: 0.02,
+  roughness: 0.28,
+  metalness: 0,
   transmission: 0.02,
   thickness: 0.16,
   ior: 1.44,
-  clearcoat: 1,
-  clearcoatRoughness: 0.1,
-  envMapIntensity: 1.62,
+  clearcoat: 0.55,
+  clearcoatRoughness: 0.26,
+  envMapIntensity: 1.08,
   opacity: 1,
   transparent: false,
   normalScale: heroMarbleNormalScale,
 };
 
 const secondaryMaterialSettings: FamilyMaterialSettings = {
-  color: '#e4faff',
-  emissive: '#071f31',
-  emissiveIntensity: 0.08,
-  roughness: 0.24,
-  metalness: 0.025,
+  color: '#ffffff',
+  emissive: '#07141d',
+  emissiveIntensity: 0.02,
+  roughness: 0.34,
+  metalness: 0,
   transmission: 0.01,
   thickness: 0.12,
   ior: 1.38,
-  clearcoat: 0.78,
-  clearcoatRoughness: 0.2,
-  envMapIntensity: 1.22,
+  clearcoat: 0.42,
+  clearcoatRoughness: 0.3,
+  envMapIntensity: 0.92,
   opacity: 1,
   transparent: false,
   normalScale: secondaryMarbleNormalScale,
 };
 
 const quietMaterialSettings: FamilyMaterialSettings = {
-  color: '#d8e2ea',
+  color: '#ffffff',
   emissive: '#071018',
-  emissiveIntensity: 0.06,
-  roughness: 0.46,
+  emissiveIntensity: 0.015,
+  roughness: 0.52,
   metalness: 0,
   transmission: 0,
   thickness: 0.08,
   ior: 1.32,
-  clearcoat: 0.38,
-  clearcoatRoughness: 0.4,
-  envMapIntensity: 0.84,
+  clearcoat: 0.24,
+  clearcoatRoughness: 0.44,
+  envMapIntensity: 0.72,
   opacity: 0.98,
   transparent: false,
   normalScale: quietMarbleNormalScale,
@@ -243,30 +241,46 @@ function configureMarbleTexture(texture: Texture, isColorTexture = false): void 
   configuredTexture.needsUpdate = true;
 }
 
-function applySphericalMarbleUvs(geometry: BufferGeometry): void {
+function applyObjectSpaceMarbleUvs(geometry: BufferGeometry): void {
   const positionAttribute = geometry.getAttribute('position');
+  const normalAttribute = geometry.getAttribute('normal');
+  geometry.computeBoundingBox();
+  const bounds = geometry.boundingBox;
 
-  if (!positionAttribute) {
+  if (!positionAttribute || !normalAttribute || !bounds) {
     return;
   }
 
   const uvs = new Float32Array(positionAttribute.count * 2);
+  const sizeX = Math.max(0.0001, bounds.max.x - bounds.min.x);
+  const sizeY = Math.max(0.0001, bounds.max.y - bounds.min.y);
+  const sizeZ = Math.max(0.0001, bounds.max.z - bounds.min.z);
 
   for (let index = 0; index < positionAttribute.count; index += 1) {
     const x = positionAttribute.getX(index);
     const y = positionAttribute.getY(index);
     const z = positionAttribute.getZ(index);
-    const radius = Math.max(0.0001, Math.sqrt(x * x + y * y + z * z));
+    const normalX = Math.abs(normalAttribute.getX(index));
+    const normalY = Math.abs(normalAttribute.getY(index));
+    const normalZ = Math.abs(normalAttribute.getZ(index));
 
-    uvs[index * 2] = 0.5 + Math.atan2(z, x) / (Math.PI * 2);
-    uvs[index * 2 + 1] = 0.5 - Math.asin(y / radius) / Math.PI;
+    if (normalX >= normalY && normalX >= normalZ) {
+      uvs[index * 2] = (z - bounds.min.z) / sizeZ;
+      uvs[index * 2 + 1] = (y - bounds.min.y) / sizeY;
+    } else if (normalY >= normalX && normalY >= normalZ) {
+      uvs[index * 2] = (x - bounds.min.x) / sizeX;
+      uvs[index * 2 + 1] = (z - bounds.min.z) / sizeZ;
+    } else {
+      uvs[index * 2] = (x - bounds.min.x) / sizeX;
+      uvs[index * 2 + 1] = (y - bounds.min.y) / sizeY;
+    }
   }
 
   geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
 }
 
-function applyReadableVertexColor(sourceColor: string, family: ItemFamily): void {
-  color.set(sourceColor);
+function applyReadableVertexColor(family: ItemFamily): void {
+  color.set('#ffffff');
   readableVertexColorTarget.set(readableVertexColorTargets[family]);
   color.lerp(readableVertexColorTarget, readableVertexColorMix[family]);
 }
@@ -275,20 +289,17 @@ function useMarbleTextures(): MarbleTextures {
   const map = useTexture(marbleTexturePaths.map);
   const normalMap = useTexture(marbleTexturePaths.normalMap);
   const roughnessMap = useTexture(marbleTexturePaths.roughnessMap);
-  const metalnessMap = useTexture(marbleTexturePaths.metalnessMap);
 
   useEffect(() => {
     configureMarbleTexture(map, true);
     configureMarbleTexture(normalMap);
     configureMarbleTexture(roughnessMap);
-    configureMarbleTexture(metalnessMap);
-  }, [map, metalnessMap, normalMap, roughnessMap]);
+  }, [map, normalMap, roughnessMap]);
 
   return {
     map,
     normalMap,
     roughnessMap,
-    metalnessMap,
   };
 }
 
@@ -334,25 +345,25 @@ function isGatherInProgress(activeGather: ActiveGatherState | null, now: number)
 function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float32Array }): JSX.Element {
   const dimensions = familyVisualGeometryDimensions[family];
 
-  if (dimensions.kind === 'box') {
-    return (
-      <boxGeometry args={dimensions.args}>
-        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
-      </boxGeometry>
-    );
-  }
-
   if (dimensions.kind === 'cone') {
     return (
-      <coneGeometry args={dimensions.args}>
+      <coneGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </coneGeometry>
     );
   }
 
+  if (dimensions.kind === 'box') {
+    return (
+      <boxGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
+        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
+      </boxGeometry>
+    );
+  }
+
   if (dimensions.kind === 'icosahedron') {
     return (
-      <icosahedronGeometry args={dimensions.args} onUpdate={applySphericalMarbleUvs}>
+      <icosahedronGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </icosahedronGeometry>
     );
@@ -360,7 +371,7 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 
   if (dimensions.kind === 'octahedron') {
     return (
-      <octahedronGeometry args={dimensions.args} onUpdate={applySphericalMarbleUvs}>
+      <octahedronGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </octahedronGeometry>
     );
@@ -368,14 +379,14 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 
   if (dimensions.kind === 'dodecahedron') {
     return (
-      <dodecahedronGeometry args={dimensions.args} onUpdate={applySphericalMarbleUvs}>
+      <dodecahedronGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </dodecahedronGeometry>
     );
   }
 
   return (
-    <cylinderGeometry args={dimensions.args}>
+    <cylinderGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
       <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
     </cylinderGeometry>
   );
@@ -396,7 +407,6 @@ function FamilyMaterial({
       map={marbleTextures.map}
       normalMap={marbleTextures.normalMap}
       roughnessMap={marbleTextures.roughnessMap}
-      metalnessMap={marbleTextures.metalnessMap}
       color={settings.color}
       emissive={settings.emissive}
       emissiveIntensity={settings.emissiveIntensity}
@@ -539,8 +549,7 @@ export function RapierItems(): JSX.Element {
       const familyColors = new Float32Array(indexes.length * 3);
 
       for (let localIndex = 0; localIndex < indexes.length; localIndex += 1) {
-        const itemIndex = indexes[localIndex];
-        applyReadableVertexColor(itemInstanceDescriptors[itemIndex].color, family);
+        applyReadableVertexColor(family);
         familyColors[localIndex * 3] = color.r;
         familyColors[localIndex * 3 + 1] = color.g;
         familyColors[localIndex * 3 + 2] = color.b;
@@ -573,12 +582,11 @@ export function RapierItems(): JSX.Element {
 
       for (let localIndex = 0; localIndex < batch.indexes.length; localIndex += 1) {
         const itemIndex = batch.indexes[localIndex];
-        const descriptor = itemInstanceDescriptors[itemIndex];
 
         if (itemIndex === hovered || itemIndex === presentedItemIndex) {
           color.setRGB(1, 1, 1);
         } else {
-          applyReadableVertexColor(descriptor.color, batch.family);
+          applyReadableVertexColor(batch.family);
         }
 
         batchColors[localIndex * 3] = color.r;

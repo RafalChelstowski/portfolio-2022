@@ -23,7 +23,7 @@ const fragmentShader = `
   uniform float uGrainOpacity;
   uniform float uGrainScale;
   uniform float uScanlineIntensity;
-  uniform vec2 uResolution;
+  uniform vec2 uCssResolution;
 
   varying vec2 vUv;
 
@@ -32,15 +32,18 @@ const fragmentShader = `
   }
 
   void main() {
-    vec2 pixel = gl_FragCoord.xy / max(uResolution.xy, vec2(1.0));
+    vec2 pixel = vUv;
+    vec2 cssPixel = floor(pixel * max(uCssResolution.xy, vec2(1.0)));
     float grainFrequency = max(uGrainScale, 1.0) * 10.0;
-    float grain = random(floor(pixel * grainFrequency) + floor(uTime * 24.0));
-    float scanline = sin(pixel.y * uResolution.y * 3.14159265);
+    float grainFrame = floor(uTime * 24.0);
+    float grain = random(vec2(random(floor(pixel * grainFrequency)), grainFrame));
+    float scanline = sin(cssPixel.y * 3.14159265);
     float grainAlpha = smoothstep(0.32, 1.0, grain) * uGrainOpacity;
     float scanlineAlpha = smoothstep(0.78, 1.0, scanline) * uScanlineIntensity;
     vec3 retroInk = vec3(0.055, 0.065, 0.085);
 
     gl_FragColor = vec4(retroInk, grainAlpha + scanlineAlpha);
+    #include <colorspace_fragment>
   }
 `;
 
@@ -77,7 +80,7 @@ export function RetroPass() {
       uGrainOpacity: { value: retroPassDefaults.grainOpacity },
       uGrainScale: { value: retroPassDefaults.grainScale },
       uScanlineIntensity: { value: retroPassDefaults.scanlineIntensity },
-      uResolution: { value: new THREE.Vector2(1, 1) },
+      uCssResolution: { value: new THREE.Vector2(1, 1) },
     };
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -106,8 +109,8 @@ export function RetroPass() {
   }, []);
 
   useEffect(() => {
-    pass.uniforms.uResolution.value.set(size.width, size.height);
-  }, [pass.uniforms.uResolution.value, size.height, size.width]);
+    pass.uniforms.uCssResolution.value.set(size.width, size.height);
+  }, [pass.uniforms.uCssResolution.value, size.height, size.width]);
 
   useEffect(() => {
     pass.uniforms.uGrainOpacity.value = grainOpacity;
