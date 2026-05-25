@@ -1,14 +1,14 @@
 import {
   BallCollider,
-  ConeCollider,
   CuboidCollider,
-  CylinderCollider,
   InstancedRigidBodies,
   type CollisionEnterPayload,
   type InstancedRigidBodyProps,
   type RapierRigidBody,
 } from '@react-three/rapier';
+import { useTexture } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import { useControls } from 'leva';
 import {
   useCallback,
   useMemo,
@@ -20,13 +20,20 @@ import {
   type ReactNode,
 } from 'react';
 import {
+  type BufferGeometry,
   Color,
   type BufferAttribute,
+  Float32BufferAttribute,
   InstancedMesh,
   MeshDepthMaterial,
   MeshDistanceMaterial,
+  NoColorSpace,
   RGBADepthPacking,
+  RepeatWrapping,
+  SRGBColorSpace,
+  Vector2,
   Vector3,
+  type Texture,
 } from 'three';
 
 import { getGroupItemIndexes, items } from '../../data/items';
@@ -44,6 +51,7 @@ import {
 const instanceCount = itemInstanceDescriptors.length;
 const majorityInPoolCount = Math.floor(instanceCount / 2) + 1;
 const color = new Color();
+const colorLiftTarget = new Color('#ffffff');
 const directionVector = new Vector3();
 const currentPositionVector = new Vector3();
 const targetPositionVector = new Vector3();
@@ -77,40 +85,219 @@ interface FamilyBatchRuntime {
 type FamilyBodiesRef = MutableRefObject<(RapierRigidBody | null)[] | null>;
 type FamilyVisualGeometry =
   | { kind: 'box'; args: [width: number, height: number, depth: number] }
-  | { kind: 'cone'; args: [radius: number, height: number, radialSegments: number] }
   | { kind: 'icosahedron'; args: [radius: number, detail: number] }
   | { kind: 'octahedron'; args: [radius: number, detail: number] }
-  | { kind: 'dodecahedron'; args: [radius: number, detail: number] }
-  | {
-      kind: 'cylinder';
-      args: [radiusTop: number, radiusBottom: number, height: number, radialSegments: number];
-    };
+  | { kind: 'dodecahedron'; args: [radius: number, detail: number] };
 type FamilyColliderDimensions =
   | { kind: 'cuboid'; args: [halfWidth: number, halfHeight: number, halfDepth: number] }
-  | { kind: 'cone'; args: [halfHeight: number, radius: number] }
-  | { kind: 'ball'; args: [radius: number] }
-  | { kind: 'cylinder'; args: [halfHeight: number, radius: number] };
+  | { kind: 'ball'; args: [radius: number] };
+interface FamilyMaterialSettings {
+  color: string;
+  emissive: string;
+  emissiveIntensity: number;
+  roughness: number;
+  metalness: number;
+  transmission: number;
+  thickness: number;
+  ior: number;
+  clearcoat: number;
+  clearcoatRoughness: number;
+  envMapIntensity: number;
+  opacity: number;
+  transparent: boolean;
+  normalScale: Vector2;
+}
+
+interface MarbleTextures {
+  map: Texture;
+  normalMap: Texture;
+  roughnessMap: Texture;
+}
+
+interface MarbleItemSettings {
+  clearcoat: number;
+  colorLift: number;
+  envMapIntensity: number;
+  normalStrength: number;
+  roughness: number;
+  shapeScale: number;
+  textureRepeat: number;
+}
 
 const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
   project: { kind: 'box', args: [1, 1, 1] },
-  ai: { kind: 'cone', args: [0.72, 1.24, 3] },
+  ai: { kind: 'icosahedron', args: [0.78, 0] },
   stack: { kind: 'icosahedron', args: [0.8, 0] },
   creative: { kind: 'dodecahedron', args: [0.64, 0] },
-  career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 5] },
+  career: { kind: 'box', args: [1.08, 0.92, 1.08] },
   learning: { kind: 'octahedron', args: [0.74, 0] },
 };
 
 const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
   project: { kind: 'cuboid', args: [0.5, 0.5, 0.5] },
-  ai: { kind: 'cone', args: [0.62, 0.54] },
+  ai: { kind: 'ball', args: [0.72] },
   stack: { kind: 'ball', args: [0.78] },
   creative: { kind: 'ball', args: [0.64] },
-  career: { kind: 'cylinder', args: [0.59, 0.62] },
+  career: { kind: 'cuboid', args: [0.54, 0.46, 0.54] },
   learning: { kind: 'ball', args: [0.72] },
+};
+
+const marbleTexturePaths = {
+  map: '/marble/Poliigon_StoneQuartzite_8060_BaseColor.jpg',
+  normalMap: '/marble/Poliigon_StoneQuartzite_8060_Normal.png',
+  roughnessMap: '/marble/Poliigon_StoneQuartzite_8060_Roughness.jpg',
+};
+const marbleTextureRepeat = new Vector2(0.55, 0.55);
+const marbleNormalScale = new Vector2(0.45, 0.45);
+const marbleItemDefaults: MarbleItemSettings = {
+  clearcoat: 0.35,
+  colorLift: 0.18,
+  envMapIntensity: 0.9,
+  normalStrength: 0.45,
+  roughness: 0.36,
+  shapeScale: 1.3,
+  textureRepeat: 0.55,
+};
+
+const heroMaterialSettings: FamilyMaterialSettings = {
+  color: '#ffffff',
+  emissive: '#160c08',
+  emissiveIntensity: 0.02,
+  roughness: marbleItemDefaults.roughness,
+  metalness: 0,
+  transmission: 0.02,
+  thickness: 0.16,
+  ior: 1.44,
+  clearcoat: marbleItemDefaults.clearcoat,
+  clearcoatRoughness: 0.26,
+  envMapIntensity: marbleItemDefaults.envMapIntensity,
+  opacity: 1,
+  transparent: false,
+  normalScale: marbleNormalScale,
+};
+
+const secondaryMaterialSettings: FamilyMaterialSettings = {
+  color: '#ffffff',
+  emissive: '#07141d',
+  emissiveIntensity: 0.02,
+  roughness: marbleItemDefaults.roughness,
+  metalness: 0,
+  transmission: 0.01,
+  thickness: 0.12,
+  ior: 1.38,
+  clearcoat: marbleItemDefaults.clearcoat,
+  clearcoatRoughness: 0.3,
+  envMapIntensity: marbleItemDefaults.envMapIntensity,
+  opacity: 1,
+  transparent: false,
+  normalScale: marbleNormalScale,
+};
+
+const quietMaterialSettings: FamilyMaterialSettings = {
+  color: '#ffffff',
+  emissive: '#071018',
+  emissiveIntensity: 0.015,
+  roughness: marbleItemDefaults.roughness,
+  metalness: 0,
+  transmission: 0,
+  thickness: 0.08,
+  ior: 1.32,
+  clearcoat: marbleItemDefaults.clearcoat,
+  clearcoatRoughness: 0.44,
+  envMapIntensity: marbleItemDefaults.envMapIntensity,
+  opacity: 0.98,
+  transparent: false,
+  normalScale: marbleNormalScale,
+};
+
+const familyMaterialSettings: Record<ItemFamily, FamilyMaterialSettings> = {
+  project: heroMaterialSettings,
+  career: heroMaterialSettings,
+  ai: secondaryMaterialSettings,
+  creative: secondaryMaterialSettings,
+  stack: secondaryMaterialSettings,
+  learning: quietMaterialSettings,
 };
 
 function createFamilyBodiesRef(): FamilyBodiesRef {
   return { current: null };
+}
+
+function configureMarbleTexture(
+  texture: Texture,
+  repeat: number,
+  isColorTexture = false
+): void {
+  const configuredTexture = texture;
+  configuredTexture.wrapS = RepeatWrapping;
+  configuredTexture.wrapT = RepeatWrapping;
+  marbleTextureRepeat.set(repeat, repeat);
+  configuredTexture.repeat.copy(marbleTextureRepeat);
+  configuredTexture.anisotropy = 4;
+  configuredTexture.colorSpace = isColorTexture ? SRGBColorSpace : NoColorSpace;
+
+  configuredTexture.needsUpdate = true;
+}
+
+function applyObjectSpaceMarbleUvs(geometry: BufferGeometry): void {
+  const positionAttribute = geometry.getAttribute('position');
+  const normalAttribute = geometry.getAttribute('normal');
+  geometry.computeBoundingBox();
+  const bounds = geometry.boundingBox;
+
+  if (!positionAttribute || !normalAttribute || !bounds) {
+    return;
+  }
+
+  const uvs = new Float32Array(positionAttribute.count * 2);
+  const sizeX = Math.max(0.0001, bounds.max.x - bounds.min.x);
+  const sizeY = Math.max(0.0001, bounds.max.y - bounds.min.y);
+  const sizeZ = Math.max(0.0001, bounds.max.z - bounds.min.z);
+
+  for (let index = 0; index < positionAttribute.count; index += 1) {
+    const x = positionAttribute.getX(index);
+    const y = positionAttribute.getY(index);
+    const z = positionAttribute.getZ(index);
+    const normalX = Math.abs(normalAttribute.getX(index));
+    const normalY = Math.abs(normalAttribute.getY(index));
+    const normalZ = Math.abs(normalAttribute.getZ(index));
+
+    if (normalX >= normalY && normalX >= normalZ) {
+      uvs[index * 2] = (z - bounds.min.z) / sizeZ;
+      uvs[index * 2 + 1] = (y - bounds.min.y) / sizeY;
+    } else if (normalY >= normalX && normalY >= normalZ) {
+      uvs[index * 2] = (x - bounds.min.x) / sizeX;
+      uvs[index * 2 + 1] = (z - bounds.min.z) / sizeZ;
+    } else {
+      uvs[index * 2] = (x - bounds.min.x) / sizeX;
+      uvs[index * 2 + 1] = (y - bounds.min.y) / sizeY;
+    }
+  }
+
+  geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
+}
+
+function applyReadableVertexColor(sourceColor: string, colorLift: number): void {
+  color.set(sourceColor);
+  color.lerp(colorLiftTarget, colorLift);
+}
+
+function useMarbleTextures(textureRepeat: number): MarbleTextures {
+  const map = useTexture(marbleTexturePaths.map);
+  const normalMap = useTexture(marbleTexturePaths.normalMap);
+  const roughnessMap = useTexture(marbleTexturePaths.roughnessMap);
+
+  useEffect(() => {
+    configureMarbleTexture(map, textureRepeat, true);
+    configureMarbleTexture(normalMap, textureRepeat);
+    configureMarbleTexture(roughnessMap, textureRepeat);
+  }, [map, normalMap, roughnessMap, textureRepeat]);
+
+  return {
+    map,
+    normalMap,
+    roughnessMap,
+  };
 }
 
 function createCenterAreaOffset(index: number): PhysicsVector3 {
@@ -157,23 +344,15 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 
   if (dimensions.kind === 'box') {
     return (
-      <boxGeometry args={dimensions.args}>
+      <boxGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </boxGeometry>
     );
   }
 
-  if (dimensions.kind === 'cone') {
-    return (
-      <coneGeometry args={dimensions.args}>
-        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
-      </coneGeometry>
-    );
-  }
-
   if (dimensions.kind === 'icosahedron') {
     return (
-      <icosahedronGeometry args={dimensions.args}>
+      <icosahedronGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </icosahedronGeometry>
     );
@@ -181,7 +360,7 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 
   if (dimensions.kind === 'octahedron') {
     return (
-      <octahedronGeometry args={dimensions.args}>
+      <octahedronGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </octahedronGeometry>
     );
@@ -189,16 +368,49 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 
   if (dimensions.kind === 'dodecahedron') {
     return (
-      <dodecahedronGeometry args={dimensions.args}>
+      <dodecahedronGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </dodecahedronGeometry>
     );
   }
 
+  const exhaustiveCheck: never = dimensions;
+  return exhaustiveCheck;
+}
+
+function FamilyMaterial({
+  family,
+  marbleSettings,
+  marbleTextures,
+}: {
+  family: ItemFamily;
+  marbleSettings: MarbleItemSettings;
+  marbleTextures: MarbleTextures;
+}): JSX.Element {
+  const settings = familyMaterialSettings[family];
+  marbleNormalScale.set(marbleSettings.normalStrength, marbleSettings.normalStrength);
+
   return (
-    <cylinderGeometry args={dimensions.args}>
-      <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
-    </cylinderGeometry>
+    <meshPhysicalMaterial
+      vertexColors
+      map={marbleTextures.map}
+      normalMap={marbleTextures.normalMap}
+      roughnessMap={marbleTextures.roughnessMap}
+      color={settings.color}
+      emissive={settings.emissive}
+      emissiveIntensity={settings.emissiveIntensity}
+      roughness={marbleSettings.roughness}
+      metalness={settings.metalness}
+      normalScale={marbleNormalScale}
+      transmission={settings.transmission}
+      thickness={settings.thickness}
+      ior={settings.ior}
+      clearcoat={marbleSettings.clearcoat}
+      clearcoatRoughness={settings.clearcoatRoughness}
+      envMapIntensity={marbleSettings.envMapIntensity}
+      opacity={settings.opacity}
+      transparent={settings.transparent}
+    />
   );
 }
 
@@ -209,15 +421,7 @@ function getFamilyColliderNodes(family: ItemFamily): ReactNode[] {
     return [<CuboidCollider key={`${family}-collider`} args={dimensions.args} />];
   }
 
-  if (dimensions.kind === 'cone') {
-    return [<ConeCollider key={`${family}-collider`} args={dimensions.args} />];
-  }
-
-  if (dimensions.kind === 'ball') {
-    return [<BallCollider key={`${family}-collider`} args={dimensions.args} />];
-  }
-
-  return [<CylinderCollider key={`${family}-collider`} args={dimensions.args} />];
+  return [<BallCollider key={`${family}-collider`} args={dimensions.args} />];
 }
 
 export function RapierItems(): JSX.Element {
@@ -247,6 +451,61 @@ export function RapierItems(): JSX.Element {
   const presentedItemIndex = presentation.type === 'item' ? presentation.itemIndex : null;
   const isPresentingGroup = presentation.type === 'group';
   const canInteractWithItems = !isPresentingGroup;
+  const marbleSettings = useControls(
+    'Marble Items',
+    {
+      colorLift: {
+        value: marbleItemDefaults.colorLift,
+        min: 0,
+        max: 0.55,
+        step: 0.01,
+      },
+      textureRepeat: {
+        value: marbleItemDefaults.textureRepeat,
+        min: 0.2,
+        max: 2,
+        step: 0.05,
+      },
+      normalStrength: {
+        value: marbleItemDefaults.normalStrength,
+        min: 0,
+        max: 1,
+        step: 0.02,
+      },
+      roughness: {
+        value: marbleItemDefaults.roughness,
+        min: 0.12,
+        max: 0.8,
+        step: 0.02,
+      },
+      shapeScale: {
+        value: marbleItemDefaults.shapeScale,
+        min: 1,
+        max: 2.1,
+        step: 0.05,
+      },
+      clearcoat: {
+        value: marbleItemDefaults.clearcoat,
+        min: 0,
+        max: 0.9,
+        step: 0.02,
+      },
+      envMapIntensity: {
+        value: marbleItemDefaults.envMapIntensity,
+        min: 0,
+        max: 1.8,
+        step: 0.05,
+      },
+    },
+    { collapsed: true, render: () => import.meta.env.DEV }
+  );
+  const marbleTextures = useMarbleTextures(marbleSettings.textureRepeat);
+
+  useEffect(() => {
+    setHovered(undefined);
+    bodyByItemIndexRef.current.fill(null);
+    firstPoolContactByIndexRef.current.fill(false);
+  }, [marbleSettings.shapeScale]);
 
   useEffect(() => {
     if (isPresentingGroup) {
@@ -315,7 +574,11 @@ export function RapierItems(): JSX.Element {
           key: localBodySlot,
           position: descriptor.spawnPosition,
           rotation: descriptor.initialRotationSeed,
-          scale: descriptor.scale,
+          scale: [
+            descriptor.scale[0] * marbleSettings.shapeScale,
+            descriptor.scale[1] * marbleSettings.shapeScale,
+            descriptor.scale[2] * marbleSettings.shapeScale,
+          ],
           mass: rapierPhysicsConstants.items.massBySize[descriptor.scaleSource],
           onCollisionEnter: (payload) => {
             markFirstPoolContact(itemIndex, payload);
@@ -326,7 +589,7 @@ export function RapierItems(): JSX.Element {
 
       for (let localIndex = 0; localIndex < indexes.length; localIndex += 1) {
         const itemIndex = indexes[localIndex];
-        color.set(itemInstanceDescriptors[itemIndex].color);
+        applyReadableVertexColor(itemInstanceDescriptors[itemIndex].color, marbleSettings.colorLift);
         familyColors[localIndex * 3] = color.r;
         familyColors[localIndex * 3 + 1] = color.g;
         familyColors[localIndex * 3 + 2] = color.b;
@@ -342,7 +605,7 @@ export function RapierItems(): JSX.Element {
     });
 
     return batches.filter((batch) => batch.indexes.length > 0);
-  }, [markFirstPoolContact]);
+  }, [marbleSettings.colorLift, marbleSettings.shapeScale, markFirstPoolContact]);
 
   const shadowDepthMaterial = useMemo(
     () =>
@@ -359,12 +622,14 @@ export function RapierItems(): JSX.Element {
 
       for (let localIndex = 0; localIndex < batch.indexes.length; localIndex += 1) {
         const itemIndex = batch.indexes[localIndex];
-        const descriptor = itemInstanceDescriptors[itemIndex];
 
         if (itemIndex === hovered || itemIndex === presentedItemIndex) {
           color.setRGB(1, 1, 1);
         } else {
-          color.set(descriptor.color);
+          applyReadableVertexColor(
+            itemInstanceDescriptors[itemIndex].color,
+            marbleSettings.colorLift
+          );
         }
 
         batchColors[localIndex * 3] = color.r;
@@ -379,7 +644,7 @@ export function RapierItems(): JSX.Element {
         colorAttribute.needsUpdate = true;
       }
     });
-  }, [familyBatches, hovered, presentedItemIndex]);
+  }, [familyBatches, hovered, marbleSettings.colorLift, presentedItemIndex]);
 
   useFrame(() => {
     // Keep interaction bounds aligned with physics-driven instance transforms.
@@ -585,7 +850,7 @@ export function RapierItems(): JSX.Element {
     <>
       {familyBatches.map((batch) => (
         <InstancedRigidBodies
-          key={batch.family}
+          key={`${batch.family}-${marbleSettings.shapeScale}`}
           ref={familyBodiesRef.current[batch.family]}
           colliders={false}
           colliderNodes={getFamilyColliderNodes(batch.family)}
@@ -636,7 +901,11 @@ export function RapierItems(): JSX.Element {
             }}
           >
             <FamilyGeometry family={batch.family} colors={batch.colors} />
-            <meshPhysicalMaterial vertexColors roughness={0.1} metalness={0} transmission={0.6} />
+            <FamilyMaterial
+              family={batch.family}
+              marbleSettings={marbleSettings}
+              marbleTextures={marbleTextures}
+            />
           </instancedMesh>
         </InstancedRigidBodies>
       ))}
