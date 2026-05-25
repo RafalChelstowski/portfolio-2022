@@ -19,7 +19,7 @@ const environmentResolution = 128;
 const contactShadowFrames = 1;
 
 export const duskPalette = {
-  backgroundFog: '#728293',
+  backgroundFog: '#69798a',
   warmKeyLight: '#ffe2b2',
   coolFillLight: '#dbeeff',
   coolSkyLight: '#edf6ff',
@@ -31,14 +31,14 @@ export const duskPalette = {
 };
 
 const lightLevels = {
-  environment: 2.35,
-  hemisphere: 1.45,
-  warmKey: 6.8,
-  coolFill: 4.25,
+  environment: 2.18,
+  hemisphere: 1.32,
+  warmKey: 6.15,
+  coolFill: 3.85,
   contactShadowOpacity: 0.19,
 };
 
-export const sceneToneMappingExposure = 1.42;
+export const sceneToneMappingExposure = 1.34;
 
 export function Lights() {
   const scene = useThree((state) => state.scene);

@@ -15,7 +15,7 @@ import { RapierBounds } from './features/rapier/RapierBounds';
 import { RapierItems } from './features/rapier/RapierItems';
 
 const canvasDprRange: [minimum: number, maximum: number] = [1, 1.5];
-const sceneFogDensity = 0.014;
+const sceneFogDensity = 0.013;
 
 function SceneAtmosphere() {
   return (
