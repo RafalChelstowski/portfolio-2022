@@ -21,13 +21,17 @@ import {
   type ReactNode,
 } from 'react';
 import {
+  type BufferGeometry,
   Color,
   type BufferAttribute,
+  Float32BufferAttribute,
   InstancedMesh,
   MeshDepthMaterial,
   MeshDistanceMaterial,
+  NoColorSpace,
   RGBADepthPacking,
   RepeatWrapping,
+  SRGBColorSpace,
   Vector2,
   Vector3,
   type Texture,
@@ -142,10 +146,10 @@ const marbleTexturePaths = {
   roughnessMap: '/marble/Poliigon_StoneQuartzite_8060_Roughness.jpg',
   metalnessMap: '/marble/Poliigon_StoneQuartzite_8060_Metallic.jpg',
 };
-const marbleTextureRepeat = new Vector2(1.65, 1.65);
-const heroMarbleNormalScale = new Vector2(0.68, 0.68);
-const secondaryMarbleNormalScale = new Vector2(0.5, 0.5);
-const quietMarbleNormalScale = new Vector2(0.34, 0.34);
+const marbleTextureRepeat = new Vector2(0.9, 0.9);
+const heroMarbleNormalScale = new Vector2(0.42, 0.42);
+const secondaryMarbleNormalScale = new Vector2(0.32, 0.32);
+const quietMarbleNormalScale = new Vector2(0.24, 0.24);
 const readableVertexColorTargets: Record<ItemFamily, string> = {
   project: '#ffc7b5',
   career: '#a7d9ef',
@@ -234,12 +238,31 @@ function configureMarbleTexture(texture: Texture, isColorTexture = false): void 
   configuredTexture.wrapT = RepeatWrapping;
   configuredTexture.repeat.copy(marbleTextureRepeat);
   configuredTexture.anisotropy = 4;
-
-  if (isColorTexture) {
-    Reflect.set(configuredTexture, 'colorSpace', 'srgb');
-  }
+  configuredTexture.colorSpace = isColorTexture ? SRGBColorSpace : NoColorSpace;
 
   configuredTexture.needsUpdate = true;
+}
+
+function applySphericalMarbleUvs(geometry: BufferGeometry): void {
+  const positionAttribute = geometry.getAttribute('position');
+
+  if (!positionAttribute) {
+    return;
+  }
+
+  const uvs = new Float32Array(positionAttribute.count * 2);
+
+  for (let index = 0; index < positionAttribute.count; index += 1) {
+    const x = positionAttribute.getX(index);
+    const y = positionAttribute.getY(index);
+    const z = positionAttribute.getZ(index);
+    const radius = Math.max(0.0001, Math.sqrt(x * x + y * y + z * z));
+
+    uvs[index * 2] = 0.5 + Math.atan2(z, x) / (Math.PI * 2);
+    uvs[index * 2 + 1] = 0.5 - Math.asin(y / radius) / Math.PI;
+  }
+
+  geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
 }
 
 function applyReadableVertexColor(sourceColor: string, family: ItemFamily): void {
@@ -329,7 +352,7 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 
   if (dimensions.kind === 'icosahedron') {
     return (
-      <icosahedronGeometry args={dimensions.args}>
+      <icosahedronGeometry args={dimensions.args} onUpdate={applySphericalMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </icosahedronGeometry>
     );
@@ -337,7 +360,7 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 
   if (dimensions.kind === 'octahedron') {
     return (
-      <octahedronGeometry args={dimensions.args}>
+      <octahedronGeometry args={dimensions.args} onUpdate={applySphericalMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </octahedronGeometry>
     );
@@ -345,7 +368,7 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
 
   if (dimensions.kind === 'dodecahedron') {
     return (
-      <dodecahedronGeometry args={dimensions.args}>
+      <dodecahedronGeometry args={dimensions.args} onUpdate={applySphericalMarbleUvs}>
         <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
       </dodecahedronGeometry>
     );
