@@ -1,8 +1,6 @@
 import {
   BallCollider,
-  ConeCollider,
   CuboidCollider,
-  CylinderCollider,
   InstancedRigidBodies,
   type CollisionEnterPayload,
   type InstancedRigidBodyProps,
@@ -87,28 +85,12 @@ interface FamilyBatchRuntime {
 type FamilyBodiesRef = MutableRefObject<(RapierRigidBody | null)[] | null>;
 type FamilyVisualGeometry =
   | { kind: 'box'; args: [width: number, height: number, depth: number] }
-  | {
-      kind: 'cone';
-      args: [radius: number, height: number, radialSegments: number, heightSegments: number];
-    }
   | { kind: 'icosahedron'; args: [radius: number, detail: number] }
   | { kind: 'octahedron'; args: [radius: number, detail: number] }
-  | { kind: 'dodecahedron'; args: [radius: number, detail: number] }
-  | {
-      kind: 'cylinder';
-      args: [
-        radiusTop: number,
-        radiusBottom: number,
-        height: number,
-        radialSegments: number,
-        heightSegments: number,
-      ];
-    };
+  | { kind: 'dodecahedron'; args: [radius: number, detail: number] };
 type FamilyColliderDimensions =
   | { kind: 'cuboid'; args: [halfWidth: number, halfHeight: number, halfDepth: number] }
-  | { kind: 'cone'; args: [halfHeight: number, radius: number] }
-  | { kind: 'ball'; args: [radius: number] }
-  | { kind: 'cylinder'; args: [halfHeight: number, radius: number] };
+  | { kind: 'ball'; args: [radius: number] };
 interface FamilyMaterialSettings {
   color: string;
   emissive: string;
@@ -144,19 +126,19 @@ interface MarbleItemSettings {
 
 const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
   project: { kind: 'box', args: [1, 1, 1] },
-  ai: { kind: 'cone', args: [0.72, 1.24, 5, 4] },
+  ai: { kind: 'icosahedron', args: [0.78, 0] },
   stack: { kind: 'icosahedron', args: [0.8, 0] },
   creative: { kind: 'dodecahedron', args: [0.64, 0] },
-  career: { kind: 'cylinder', args: [0.65, 0.65, 1.18, 16, 4] },
+  career: { kind: 'box', args: [1.08, 0.92, 1.08] },
   learning: { kind: 'octahedron', args: [0.74, 0] },
 };
 
 const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
   project: { kind: 'cuboid', args: [0.5, 0.5, 0.5] },
-  ai: { kind: 'cone', args: [0.62, 0.54] },
+  ai: { kind: 'ball', args: [0.72] },
   stack: { kind: 'ball', args: [0.78] },
   creative: { kind: 'ball', args: [0.64] },
-  career: { kind: 'cylinder', args: [0.59, 0.62] },
+  career: { kind: 'cuboid', args: [0.54, 0.46, 0.54] },
   learning: { kind: 'ball', args: [0.72] },
 };
 
@@ -173,7 +155,7 @@ const marbleItemDefaults: MarbleItemSettings = {
   envMapIntensity: 0.9,
   normalStrength: 0.45,
   roughness: 0.36,
-  shapeScale: 1.55,
+  shapeScale: 1.3,
   textureRepeat: 0.55,
 };
 
@@ -360,14 +342,6 @@ function isGatherInProgress(activeGather: ActiveGatherState | null, now: number)
 function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float32Array }): JSX.Element {
   const dimensions = familyVisualGeometryDimensions[family];
 
-  if (dimensions.kind === 'cone') {
-    return (
-      <coneGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
-        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
-      </coneGeometry>
-    );
-  }
-
   if (dimensions.kind === 'box') {
     return (
       <boxGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
@@ -400,11 +374,8 @@ function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float3
     );
   }
 
-  return (
-    <cylinderGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
-      <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
-    </cylinderGeometry>
-  );
+  const exhaustiveCheck: never = dimensions;
+  return exhaustiveCheck;
 }
 
 function FamilyMaterial({
@@ -450,15 +421,7 @@ function getFamilyColliderNodes(family: ItemFamily): ReactNode[] {
     return [<CuboidCollider key={`${family}-collider`} args={dimensions.args} />];
   }
 
-  if (dimensions.kind === 'cone') {
-    return [<ConeCollider key={`${family}-collider`} args={dimensions.args} />];
-  }
-
-  if (dimensions.kind === 'ball') {
-    return [<BallCollider key={`${family}-collider`} args={dimensions.args} />];
-  }
-
-  return [<CylinderCollider key={`${family}-collider`} args={dimensions.args} />];
+  return [<BallCollider key={`${family}-collider`} args={dimensions.args} />];
 }
 
 export function RapierItems(): JSX.Element {

@@ -23,9 +23,12 @@
 - [x] Stabilize RetroPass and marble visuals after direct review | AC: RetroPass uses CSS-pixel-stable `vUv` shader math with output color-space conversion and no diagonal grain drift, Canvas no longer emits the PCFSoftShadowMap warning, sortable marble textures read clearly after sort/fall interaction, and `npm run typecheck && npm run lint && npm run build` passes.
 - [x] Add focused Leva tuning for washed-out scene and colored marble | AC: dev Leva exposes scene tone controls and marble item controls, default scene brightness is less washed out than the previous pass, sortable shapes keep their unique colors while showing the uploaded marble maps, and `npm run typecheck && npm run lint && npm run build` passes.
 - [x] Improve low-poly shape texture readability and scale | AC: cylinder and cone-like sortable geometries have enough subdivisions for marble/normal detail to read better, Marble Items exposes a live `shapeScale` control with larger defaults, physics/hover/sort behavior remains intact, and `npm run typecheck && npm run lint && npm run build` passes.
+- [x] Replace weak marble shapes and lower default scale | AC: cone/cylinder-like sortable visuals are replaced with marble-friendly existing geometries, colliders still match the replacement silhouettes, Marble Items defaults to `shapeScale` 1.3 while preserving the live range, and `npm run typecheck && npm run lint && npm run build` passes.
 
 ## Findings
 
+- Cylinders and cones still did not suit the marble material well after subdivision, so the next safer option is to replace only those weak family shapes instead of changing every family.
+- Sphere-like replacements also read out of place against the rectangular pool, so the weaker families now favor a cuboid and a low-detail faceted solid instead.
 - Cylinders and cone-like shapes were using only 5 and 3 radial segments respectively, which made marble/normal detail read worse than cubes and richer faceted shapes.
 - Shape scale 1.55 gives a larger default while keeping the pool readable; live Chrome testing showed 2.0 remains available through Leva and works, but is more crowded near edges.
 - The previous marble pass overcorrected by tinting all item vertex colors from white, which made shapes read as uniformly pale and hid the original custom colors.
