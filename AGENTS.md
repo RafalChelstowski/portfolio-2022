@@ -34,9 +34,9 @@ IMPORTANT: If all items in docs/progress.md are marked [x], you MUST output <pro
 ## Project Context
 
 - Vite React portfolio scene using React Three Fiber, three.js, drei, and Rapier physics.
-- Work only with existing assets and installed dependencies: no new textures, HDRIs, GLTF/object assets, packages, or test infrastructure.
+- Work only with existing installed dependencies and public assets. Uploaded marble texture maps under public/marble are in scope; do not add new HDRIs, GLTF/object assets, packages, or test infrastructure.
 - Key scene files are src/features/Lights.tsx, src/features/Pool.tsx, src/features/rapier/RapierItems.tsx, and src/App.tsx.
-- Existing public assets include pool.gltf, pool PBR texture maps, and hdr.hdr; reuse these only.
+- Existing public assets include pool.gltf, pool PBR texture maps, hdr.hdr, and uploaded marble texture maps under public/marble; reuse these only.
 - Preserve the interactive Rapier item behavior and existing UI/card behavior.
-- Prefer restrained visual tuning: dusk-like warm/cool light hierarchy, subtle atmosphere, material hierarchy, and performance-safe shadows.
+- Rafal feedback overrides the earlier restrained pass: make the scene much, much brighter, apply visible marble textures to sortable/falling shapes, and make retro grain clearly visible via a focused RetroPass-style shader/component while keeping performance-safe shadows.
 - Do not start a dev server unless Rafal explicitly asks.
