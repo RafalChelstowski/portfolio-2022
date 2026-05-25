@@ -9,7 +9,7 @@
 - [x] Refine dusk palette consistency across scene primitives | AC: `src/features/Lights.tsx`, `src/features/Pool.tsx`, and `src/App.tsx` use shared, named color constants for the dusk background/fog, warm key light, cool fill, and pool material tints so the visual direction is coherent without introducing new files, assets, or dependencies.
 - [x] Improve falling-item readability in the new lighting pass | AC: `src/features/rapier/RapierItems.tsx` keeps existing geometry, physics, vertex colors, hover/presentation behavior, and no texture dependencies, but adjusts physical material settings so hero, secondary, and quiet families remain visibly distinct against the darker atmospheric background.
 - [x] Add conservative shadow and atmosphere guardrails | AC: the scene keeps bounded shadow/contact-shadow settings and adds inline code-level guardrails/comments or constants that make future changes to fog density, DPR, and shadow map sizes explicitly performance-safe, without changing runtime behavior outside the visual scene.
-- [ ] Verify additional visual pass checks | AC: `npm run typecheck && npm run lint && npm run build` passes after the additional visual refinements.
+- [x] Verify additional visual pass checks | AC: `npm run typecheck && npm run lint && npm run build` passes after the additional visual refinements.
 
 ## Findings
 
