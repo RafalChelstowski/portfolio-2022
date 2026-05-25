@@ -1,6 +1,7 @@
 import { useEffect, useRef, type JSX } from 'react';
 import { PerspectiveCamera } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
+import { useControls } from 'leva';
 import type { PerspectiveCamera as PerspectiveCameraImpl } from 'three';
 import { useStore } from '../store/store';
 
@@ -9,7 +10,7 @@ const presentationCameraPosition = [11, 18, -8] as const;
 const defaultCameraTarget = [0, 0, 0] as const;
 const presentationViewOffsetRatio = 0.22;
 const defaultCameraZoom = 1.2;
-const presentationCameraZoom = 1.65;
+const presentationCameraZoom = 2.1;
 
 export function Camera(): JSX.Element {
   const isPresenting = useStore((state) => state.presentation.type !== 'none');
@@ -18,6 +19,18 @@ export function Camera(): JSX.Element {
   );
   const { size } = useThree();
   const ref = useRef<PerspectiveCameraImpl>(null);
+  const { focusedCardZoom } = useControls(
+    'Camera',
+    {
+      focusedCardZoom: {
+        value: presentationCameraZoom,
+        min: 1.2,
+        max: 3,
+        step: 0.05,
+      },
+    },
+    { collapsed: true, render: () => import.meta.env.DEV }
+  );
 
   useEffect(() => {
     const camera = ref.current;
@@ -34,7 +47,7 @@ export function Camera(): JSX.Element {
 
     camera.position.set(targetX + offsetX, targetY + offsetY, targetZ + offsetZ);
     camera.lookAt(targetX, targetY, targetZ);
-    camera.zoom = isPresenting ? presentationCameraZoom : defaultCameraZoom;
+    camera.zoom = isPresenting ? focusedCardZoom : defaultCameraZoom;
 
     if (isPresenting) {
       camera.setViewOffset(
@@ -50,7 +63,7 @@ export function Camera(): JSX.Element {
     }
 
     camera.updateProjectionMatrix();
-  }, [isPresenting, itemPresentationTarget, size.height, size.width]);
+  }, [focusedCardZoom, isPresenting, itemPresentationTarget, size.height, size.width]);
 
   return (
     <PerspectiveCamera

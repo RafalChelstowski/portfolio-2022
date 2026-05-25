@@ -25,9 +25,11 @@
 - [x] Improve low-poly shape texture readability and scale | AC: cylinder and cone-like sortable geometries have enough subdivisions for marble/normal detail to read better, Marble Items exposes a live `shapeScale` control with larger defaults, physics/hover/sort behavior remains intact, and `npm run typecheck && npm run lint && npm run build` passes.
 - [x] Replace weak marble shapes and lower default scale | AC: cone/cylinder-like sortable visuals are replaced with marble-friendly existing geometries, colliders still match the replacement silhouettes, Marble Items defaults to `shapeScale` 1.3 while preserving the live range, and `npm run typecheck && npm run lint && npm run build` passes.
 - [x] Increase focused-card camera zoom | AC: item/card presentation mode brings the focused marble shape closer so its texture is more visible, default scene framing is unchanged, and `npm run typecheck && npm run lint && npm run build` passes.
+- [x] Expose focused-card zoom tuning | AC: focused-card presentation zoom defaults to 2.1, Leva exposes a focused zoom control in dev, default scene framing is unchanged, and `npm run typecheck && npm run lint && npm run build` passes.
 
 ## Findings
 
+- Focused-card zoom is now useful as a direct Leva control because texture visibility is a taste-based presentation setting, while the default camera zoom should stay fixed.
 - Focused-card presentation has its own camera zoom constant in `Camera.tsx`, so texture visibility can be improved without changing default scene framing or item materials.
 - Cylinders and cones still did not suit the marble material well after subdivision, so the next safer option is to replace only those weak family shapes instead of changing every family.
 - Sphere-like replacements also read out of place against the rectangular pool, so the weaker families now favor a cuboid and a low-detail faceted solid instead.
