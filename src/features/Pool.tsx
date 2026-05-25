@@ -1,11 +1,12 @@
 import { useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import type { GLTFResult } from '../types';
+import { duskPalette } from './Lights';
 
-const poolColor = new THREE.Color('#f0a1a7');
-const rimColor = new THREE.Color('#ffe0d2');
-const insideColor = new THREE.Color('#7faebd');
-const planeColor = new THREE.Color('#8f6166');
+const poolColor = new THREE.Color(duskPalette.poolShellTint);
+const rimColor = new THREE.Color(duskPalette.poolRimTint);
+const insideColor = new THREE.Color(duskPalette.poolInteriorTint);
+const planeColor = new THREE.Color(duskPalette.poolPlaneTint);
 const poolNormalScale = new THREE.Vector2(0.72, 0.72);
 const rimNormalScale = new THREE.Vector2(0.48, 0.48);
 const insideNormalScale = new THREE.Vector2(0.34, 0.34);

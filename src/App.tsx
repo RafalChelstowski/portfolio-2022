@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 
 import { Camera } from './features/Camera';
 import { Controls } from './features/Controls';
-import { Lights } from './features/Lights';
+import { Lights, duskPalette } from './features/Lights';
 import Pool from './features/Pool';
 import { SelectedCardOverlay } from './features/SelectedCardOverlay';
 import { UI } from './features/UI';
@@ -16,8 +16,8 @@ import { RapierItems } from './features/rapier/RapierItems';
 function SceneAtmosphere() {
   return (
     <>
-      <color attach="background" args={['#111822']} />
-      <fogExp2 attach="fog" args={['#111822', 0.022]} />
+      <color attach="background" args={[duskPalette.backgroundFog]} />
+      <fogExp2 attach="fog" args={[duskPalette.backgroundFog, 0.022]} />
     </>
   );
 }

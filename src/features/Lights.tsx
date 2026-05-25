@@ -14,6 +14,18 @@ const shadowBounds = {
 const directionalShadowMapSize = 1024;
 const contactShadowResolution = 512;
 
+export const duskPalette = {
+  backgroundFog: '#111822',
+  warmKeyLight: '#ffb169',
+  coolFillLight: '#9bc7ff',
+  coolSkyLight: '#8eb3d8',
+  warmGroundLight: '#231a18',
+  poolShellTint: '#f0a1a7',
+  poolRimTint: '#ffe0d2',
+  poolInteriorTint: '#7faebd',
+  poolPlaneTint: '#8f6166',
+};
+
 export function Lights() {
   const scene = useThree((state) => state.scene);
 
@@ -38,12 +50,12 @@ export function Lights() {
         resolution={128}
       />
       <hemisphereLight
-        args={['#8eb3d8', '#231a18', 0.38]}
+        args={[duskPalette.coolSkyLight, duskPalette.warmGroundLight, 0.38]}
         position={[0, 8, 0]}
       />
       <directionalLight
         castShadow
-        color="#ffb169"
+        color={duskPalette.warmKeyLight}
         position={[9, 7, 4]}
         intensity={2.2}
         target={targetObject}
@@ -60,7 +72,7 @@ export function Lights() {
         shadow-radius={3}
       />
       <pointLight
-        color="#9bc7ff"
+        color={duskPalette.coolFillLight}
         position={[-5, 3.5, 4]}
         intensity={1.2}
         distance={18}
