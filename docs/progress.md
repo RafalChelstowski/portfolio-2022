@@ -18,7 +18,7 @@
 - [x] Add a second tuning pass for RetroPass usability | AC: after the initial Leva wiring, review the RetroPass defaults/ranges and shader output so Rafal can comfortably tune the effect in dev without the filter obscuring the scene; `npm run typecheck && npm run lint && npm run build` passes.
 
 - [x] Investigate and fix broken-looking marble textures on sortable shapes | AC: inspect the current marble texture loading/material setup in `src/features/rapier/RapierItems.tsx`, correct UV/repeat/color-space/wrapping or material choices so the uploaded marble texture reads clearly instead of broken/washed out, and preserve existing sortable physics/hover behavior without adding assets or dependencies.
-- [/] Apply Rafal-approved RetroPass defaults and scanline tuning | AC: RetroPass/Leva defaults use grain opacity `0.03`, grain scale `20`, scanline intensity `0.05` or a slightly more prominent scanline if visually appropriate, with ranges still useful for dev tuning and no obstructive overlay.
+- [x] Apply Rafal-approved RetroPass defaults and scanline tuning | AC: RetroPass/Leva defaults use grain opacity `0.03`, grain scale `20`, scanline intensity `0.05` or a slightly more prominent scanline if visually appropriate, with ranges still useful for dev tuning and no obstructive overlay.
 - [/] Tone down current scene brightness slightly | AC: adjust the current light/environment/exposure/fog constants so the scene is a little less bright than the latest PR screenshot while remaining brighter than the original dark PR state; keep stable shadows and no new HDR asset.
 
 ## Findings
@@ -26,6 +26,7 @@
 - Rafal review feedback from screenshot/message on 2026-05-25 15:15 Europe/Berlin: marble textures on sortable shapes look broken and need investigation, not just another surface tweak.
 - The broken marble read was addressed in `RapierItems.tsx` by using explicit Three color-space constants, reducing repeat/normal strength, and assigning spherical UVs to faceted sortable shapes whose default UVs can fragment the bitmap.
 - Rafal requested RetroPass shader values: grain opacity 0.03, scale 20, scanline 0.05; scanline can be slightly more prominent if the implementation benefits from it.
+- RetroPass now keeps Rafal's requested scale default at 20 in Leva, with a small internal frequency multiplier so the grain stays fine enough at that default instead of becoming large block noise.
 - Latest scene is now too bright; tone it down slightly while preserving the earlier requirement that it must not return to the dark PR state.
 
 - Rafal review feedback from screenshot/message on 2026-05-25 14:56 Europe/Berlin: RetroPass/grain is now too prominent and obstructs the view. Defaults must be toned down.
