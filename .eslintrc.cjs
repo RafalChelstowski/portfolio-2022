@@ -54,6 +54,7 @@ module.exports = {
         'postcss.config.js',
         'tailwind.config.js',
         'vite.config.ts',
+        'vitest.config.ts',
         'scripts/**/*.mjs',
       ],
       rules: {
@@ -69,6 +70,30 @@ module.exports = {
       ],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+    {
+      files: ['**/*.{test,spec}.{ts,tsx}', '**/test/**/*.{ts,tsx}'],
+      globals: {
+        afterAll: 'readonly',
+        afterEach: 'readonly',
+        assert: 'readonly',
+        assertType: 'readonly',
+        beforeAll: 'readonly',
+        beforeEach: 'readonly',
+        describe: 'readonly',
+        expect: 'readonly',
+        expectTypeOf: 'readonly',
+        it: 'readonly',
+        onTestFailed: 'readonly',
+        onTestFinished: 'readonly',
+        suite: 'readonly',
+        test: 'readonly',
+        vi: 'readonly',
+        vitest: 'readonly',
+      },
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
       },
     },
     {

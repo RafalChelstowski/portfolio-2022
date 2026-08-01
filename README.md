@@ -54,7 +54,7 @@ npm run build
 
 - `npm run dev` starts the local Vite dev server
 - `npm start` aliases the dev server command
-- `npm run test` runs the current Node test command
+- `npm run test` runs Vitest in non-watch mode
 - `npm run typecheck` runs TypeScript without emitting files
 - `npm run lint` runs the repo ESLint check
 - `npm run build` creates a production build in `dist/`
