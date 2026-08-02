@@ -55,7 +55,8 @@ const useStore = create<Store>()((set) => ({
   closePresentation: () => {
     set((state) => ({
       presentation: { type: 'none' },
-      selectedGroup: state.presentation.type === 'group' ? null : state.selectedGroup,
+      selectedGroup:
+        state.presentation.type === 'group' ? null : state.selectedGroup,
     }));
   },
 }));

@@ -17,7 +17,11 @@ export function RapierLeftWallCollider({
   restitution,
 }: RapierLeftWallColliderProps): JSX.Element {
   return (
-    <RigidBody colliders={false} position={poolPhysicsBounds.leftWall.position} type="fixed">
+    <RigidBody
+      colliders={false}
+      position={poolPhysicsBounds.leftWall.position}
+      type="fixed"
+    >
       <CuboidCollider
         args={leftWallHalfExtents}
         restitution={restitution}

@@ -16,7 +16,10 @@ interface RapierFloorColliderProps {
   restitution: number;
 }
 
-export function RapierFloorCollider({ friction, restitution }: RapierFloorColliderProps): JSX.Element {
+export function RapierFloorCollider({
+  friction,
+  restitution,
+}: RapierFloorColliderProps): JSX.Element {
   return (
     <RigidBody
       colliders={false}

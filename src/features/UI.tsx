@@ -11,7 +11,10 @@ const filterControls: FilterControl[] = [
   { type: 'divider', key: 'categories-divider' },
   ...mainCategoryOrder.map((value) => ({ type: 'button' as const, value })),
   { type: 'divider', key: 'projects-divider' },
-  ...projectConstellationOrder.map((value) => ({ type: 'button' as const, value })),
+  ...projectConstellationOrder.map((value) => ({
+    type: 'button' as const,
+    value,
+  })),
   { type: 'divider', key: 'sort-divider' },
   { type: 'button', value: 'sort' },
 ];
@@ -20,8 +23,9 @@ export function UI() {
   const displayUi = useStore((state) => state.displayUi);
   const isPresenting = useStore((state) => state.presentation.type !== 'none');
   const chromeInteractivityClass = isPresenting ? 'pointer-events-none' : '';
-  const isSelectedGroupOption = (sortOption: SortOption): sortOption is SelectedGroupOption =>
-    sortOption !== 'sort';
+  const isSelectedGroupOption = (
+    sortOption: SortOption
+  ): sortOption is SelectedGroupOption => sortOption !== 'sort';
   const startGather = (sortOption: SortOption): void => {
     const selectedGroup = isSelectedGroupOption(sortOption) ? sortOption : null;
 
@@ -42,7 +46,9 @@ export function UI() {
   };
 
   return (
-    <div className={`absolute inset-x-0 top-0 z-10 ${chromeInteractivityClass}`}>
+    <div
+      className={`absolute inset-x-0 top-0 z-10 ${chromeInteractivityClass}`}
+    >
       <header className="m-4 max-w-[calc(100vw-2rem)] sm:max-w-md">
         <h1 className="mb-1 text-base sm:text-lg">Rafal Chelstowski</h1>
         <h2 className="mb-1 whitespace-nowrap text-xs sm:text-base">
@@ -52,12 +58,17 @@ export function UI() {
         <h3 className="text-sm sm:text-base">
           <a
             href="https://www.linkedin.com/in/chelstowskirafal/?locale=en_US"
-            target="blank"
+            target="_blank"
+            rel="noreferrer"
           >
             LinkedIn
           </a>
           <span className="mx-4">|</span>
-          <a href="https://github.com/RafalChelstowski" target="blank">
+          <a
+            href="https://github.com/RafalChelstowski"
+            target="_blank"
+            rel="noreferrer"
+          >
             GitHub
           </a>
         </h3>

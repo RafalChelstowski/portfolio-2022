@@ -13,15 +13,12 @@ Use Node `24` and npm `11+`; run `nvm use` before installing or verifying.
 - `npm run typecheck` runs TypeScript with `--noEmit`.
 - `npm run lint` runs the custom ESLint wrapper in `scripts/lint.mjs`.
 - `npm run build` creates the production `dist/` build.
+- `npm test` runs the Vitest test suite.
 - `npm run format:check` checks Prettier formatting; `npm run format` rewrites supported files.
 
 ## Coding Style & Naming Conventions
 
 Write TypeScript with strict compiler settings and React JSX runtime. Follow the existing component style: PascalCase components and files for React features, camelCase helpers and data exports, named exports unless an existing module uses default export. Keep Tailwind classes inline for local layout and visual styling. Let ESLint and Prettier settle formatting; avoid broad unrelated rewrites.
-
-## Testing Guidelines
-
-There are no committed test files yet, never add new tests unless user asks for it.
 
 ## Commit & Pull Request Guidelines
 

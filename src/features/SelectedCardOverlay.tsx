@@ -1,5 +1,9 @@
 import type { JSX } from 'react';
-import { getGroupDisplayItemSections, getGroupDisplayLabel, items } from '../data/items';
+import {
+  getGroupDisplayItemSections,
+  getGroupDisplayLabel,
+  items,
+} from '../data/items';
 import { useStore } from '../store/store';
 import type { CardFieldValue, Item3d } from '../types';
 
@@ -30,10 +34,8 @@ const overlayPlacementClasses =
   'ml-auto flex h-full w-full items-end justify-center px-0 pb-3 pt-0 sm:pb-4 md:w-1/2 md:items-center md:justify-end md:px-6 md:py-12 lg:py-16';
 const cardShellClasses =
   'pointer-events-auto flex h-[30vh] max-h-[30vh] min-w-0 w-full max-w-none flex-col overflow-hidden rounded-t-lg border bg-white/95 text-black break-words [overflow-wrap:anywhere] md:h-auto md:max-h-[calc(100vh-6rem)] md:max-w-96 md:rounded-lg lg:max-h-[calc(100vh-8rem)]';
-const cardBodyClasses =
-  'min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6';
-const groupCardBodyClasses =
-  `${cardBodyClasses} selected-card__scrollable pr-3 sm:pr-5`;
+const cardBodyClasses = 'min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6';
+const groupCardBodyClasses = `${cardBodyClasses} selected-card__scrollable pr-3 sm:pr-5`;
 
 function renderCardFieldValue(value: CardFieldValue): string {
   return Array.isArray(value) ? value.join(', ') : value;
@@ -42,7 +44,7 @@ function renderCardFieldValue(value: CardFieldValue): string {
 function formatDisplayDate(value: string): string {
   return value.replace(
     /\b(january|jan|february|feb|march|mar|april|apr|may|june|jun|july|jul|august|aug|september|sep|sept|october|oct|november|nov|december|dec)\b/gi,
-    (match) => match.toUpperCase(),
+    (match) => match.toUpperCase()
   );
 }
 
@@ -51,12 +53,16 @@ function getDisplayDate(item: Item3d): string | null {
     return null;
   }
 
-  const dateRange = item.current === true ? `${item.date} -> current` : item.date;
+  const dateRange =
+    item.current === true ? `${item.date} -> current` : item.date;
 
   return formatDisplayDate(dateRange);
 }
 
-function getGroupSectionLabel(family: Item3d['family'], itemCount: number): string {
+function getGroupSectionLabel(
+  family: Item3d['family'],
+  itemCount: number
+): string {
   if (family === 'project' && itemCount > 1) {
     return 'projects';
   }
@@ -69,7 +75,10 @@ interface ItemCardContentProps {
   hideFamilyLabel: boolean;
 }
 
-export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps): JSX.Element {
+export function ItemCardContent({
+  item,
+  hideFamilyLabel,
+}: ItemCardContentProps): JSX.Element {
   const familyLabel = item.family;
   const cardFields = item.cardFields ? Object.entries(item.cardFields) : [];
   const learningCourses = item.learningCourses ?? [];
@@ -79,13 +88,17 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
   const itemLinks = [
     item.link ? { label: 'Link', url: item.link } : null,
     item.githubUrl ? { label: 'Github', url: item.githubUrl } : null,
-  ].filter((itemLink): itemLink is { label: string; url: string } => itemLink !== null);
+  ].filter(
+    (itemLink): itemLink is { label: string; url: string } => itemLink !== null
+  );
 
   return (
     <>
       {!hideFamilyLabel && (
         <div className="mb-2">
-          <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>{familyLabel}</p>
+          <p className={`uppercase ${cardTypographyClasses.familyLabel}`}>
+            {familyLabel}
+          </p>
         </div>
       )}
       {displayDate && (
@@ -94,14 +107,22 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
         </p>
       )}
       <div className="mb-2 flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
-        <p className={`min-w-0 flex-1 text-xl uppercase ${familyTitleClass} ${cardTypographyClasses.title}`}>
+        <p
+          className={`min-w-0 flex-1 text-xl uppercase ${familyTitleClass} ${cardTypographyClasses.title}`}
+        >
           {item.title}
         </p>
       </div>
       {item.location && (
-        <p className={`mb-2 ${cardTypographyClasses.metadata}`}>{item.location}</p>
+        <p className={`mb-2 ${cardTypographyClasses.metadata}`}>
+          {item.location}
+        </p>
       )}
-      {item.subtitle && <p className={`mb-2 ${cardTypographyClasses.subtitle}`}>{item.subtitle}</p>}
+      {item.subtitle && (
+        <p className={`mb-2 ${cardTypographyClasses.subtitle}`}>
+          {item.subtitle}
+        </p>
+      )}
       {item.description && <p className="mb-2">{item.description}</p>}
       {item.outcome && <p className="mb-2">{item.outcome}</p>}
       {listItems.length > 0 && (
@@ -117,7 +138,9 @@ export function ItemCardContent({ item, hideFamilyLabel }: ItemCardContentProps)
         <p key={key} className="mb-2">
           <span className={cardTypographyClasses.fieldKey}>{key}</span>
           {': '}
-          <span className={cardTypographyClasses.fieldValue}>{renderCardFieldValue(value)}</span>
+          <span className={cardTypographyClasses.fieldValue}>
+            {renderCardFieldValue(value)}
+          </span>
         </p>
       ))}
       {learningCourses.length > 0 && (
@@ -181,7 +204,9 @@ export function SelectedCardOverlay(): JSX.Element | null {
 
   if (presentation.type === 'group') {
     const groupLabel = getGroupDisplayLabel(presentation.sortOption) ?? 'Group';
-    const groupItemSections = getGroupDisplayItemSections(presentation.sortOption);
+    const groupItemSections = getGroupDisplayItemSections(
+      presentation.sortOption
+    );
 
     return (
       <div className={overlayContainerClasses}>
@@ -196,9 +221,14 @@ export function SelectedCardOverlay(): JSX.Element | null {
               {groupItemSections.length > 0 ? (
                 <div className="space-y-5">
                   {groupItemSections.map(({ family, itemIndexes }) => (
-                    <section key={family} className="border-t border-black/15 pt-4 first:border-t-0 first:pt-0">
+                    <section
+                      key={family}
+                      className="border-t border-black/15 pt-4 first:border-t-0 first:pt-0"
+                    >
                       <div className="mb-2">
-                        <p className={`uppercase ${cardTypographyClasses.sectionLabel}`}>
+                        <p
+                          className={`uppercase ${cardTypographyClasses.sectionLabel}`}
+                        >
                           {getGroupSectionLabel(family, itemIndexes.length)}
                         </p>
                       </div>
@@ -208,7 +238,10 @@ export function SelectedCardOverlay(): JSX.Element | null {
                             key={items[itemIndex].id}
                             className="border-t border-black/10 pt-4 first:border-t-0 first:pt-0"
                           >
-                            <ItemCardContent item={items[itemIndex]} hideFamilyLabel />
+                            <ItemCardContent
+                              item={items[itemIndex]}
+                              hideFamilyLabel
+                            />
                           </article>
                         ))}
                       </div>
@@ -231,7 +264,10 @@ export function SelectedCardOverlay(): JSX.Element | null {
       <div className={overlayPlacementClasses}>
         <div className={cardShellClasses}>
           <div className={cardBodyClasses}>
-            <ItemCardContent item={items[presentation.itemIndex]} hideFamilyLabel={false} />
+            <ItemCardContent
+              item={items[presentation.itemIndex]}
+              hideFamilyLabel={false}
+            />
           </div>
           <StickyCloseControl onClose={closePresentation} />
         </div>

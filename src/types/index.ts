@@ -6,7 +6,13 @@ export type GLTFResult = GLTF & {
   materials: Record<string, Material>;
 };
 
-export type ItemFamily = 'project' | 'ai' | 'stack' | 'creative' | 'career' | 'learning';
+export type ItemFamily =
+  | 'project'
+  | 'ai'
+  | 'stack'
+  | 'creative'
+  | 'career'
+  | 'learning';
 export type ItemSize = 's' | 'm' | 'l';
 export type MainCategory = 'dev' | 'creative' | 'ai' | 'career' | 'learning';
 export type ProjectConstellation = 'kitchen' | 'portfolio' | 'tpp';

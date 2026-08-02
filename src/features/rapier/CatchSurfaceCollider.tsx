@@ -7,9 +7,10 @@ import {
   type PhysicsVector3,
 } from '../physics/constants';
 
-const catchSurfaceHalfExtents: PhysicsVector3 = poolPhysicsBounds.catchSurface.size.map(
-  (value) => value / 2
-) as PhysicsVector3;
+const catchSurfaceHalfExtents: PhysicsVector3 =
+  poolPhysicsBounds.catchSurface.size.map(
+    (value) => value / 2
+  ) as PhysicsVector3;
 
 interface RapierCatchSurfaceColliderProps {
   friction: number;
