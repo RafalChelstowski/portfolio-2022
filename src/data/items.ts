@@ -25,7 +25,13 @@ export const items: Item3d[] = sourceItems.map((item, index) => ({
   id: `${item.family}-${index}`,
 }));
 
-export const mainCategoryOrder: MainCategory[] = ['dev', 'creative', 'ai', 'career', 'learning'];
+export const mainCategoryOrder: MainCategory[] = [
+  'dev',
+  'creative',
+  'ai',
+  'career',
+  'learning',
+];
 export const projectConstellationOrder: ProjectConstellation[] = [
   'tpp',
   'kitchen',
@@ -56,8 +62,13 @@ function createMainCategoryGroups(): Record<MainCategory, number[]> {
 
 export const mainCategoryGroups = createMainCategoryGroups();
 
-function createProjectConstellationGroups(): Record<ProjectConstellation, number[]> {
-  return projectConstellationOrder.reduce<Record<ProjectConstellation, number[]>>(
+function createProjectConstellationGroups(): Record<
+  ProjectConstellation,
+  number[]
+> {
+  return projectConstellationOrder.reduce<
+    Record<ProjectConstellation, number[]>
+  >(
     (groups, constellation) => ({
       ...groups,
       [constellation]: items.reduce<number[]>((matches, item, index) => {
@@ -104,7 +115,9 @@ export const groupDisplayLabels: Record<SelectedGroupOption, string> = {
   focus: 'Current focus',
 };
 
-const customGroupDisplayTitleOrder: Partial<Record<SelectedGroupOption, string[]>> = {
+const customGroupDisplayTitleOrder: Partial<
+  Record<SelectedGroupOption, string[]>
+> = {
   focus: [
     'Professional profile',
     'Align Technology, Senior Software Engineer',
@@ -114,7 +127,14 @@ const customGroupDisplayTitleOrder: Partial<Record<SelectedGroupOption, string[]
   ],
 };
 
-const groupCardFamilyOrder: ItemFamily[] = ['career', 'project', 'ai', 'stack', 'creative', 'learning'];
+const groupCardFamilyOrder: ItemFamily[] = [
+  'career',
+  'project',
+  'ai',
+  'stack',
+  'creative',
+  'learning',
+];
 const professionalProfileTitle = 'Professional profile';
 
 function hasOwnKey<ObjectShape extends object>(
@@ -156,7 +176,10 @@ export function getGroupDisplayLabel(sortOption: unknown): string | null {
 export function getGroupDisplayItemIndexes(sortOption: unknown): number[] {
   const groupIndexes = getGroupItemIndexes(sortOption);
 
-  if (typeof sortOption !== 'string' || !hasOwnKey(customGroupDisplayTitleOrder, sortOption)) {
+  if (
+    typeof sortOption !== 'string' ||
+    !hasOwnKey(customGroupDisplayTitleOrder, sortOption)
+  ) {
     return groupIndexes;
   }
 
@@ -183,7 +206,9 @@ export function getGroupDisplayItemIndexes(sortOption: unknown): number[] {
   return [...orderedIndexes, ...itemIndexByTitle.values()];
 }
 
-export function getGroupDisplayItemSections(sortOption: unknown): GroupDisplayItemSection[] {
+export function getGroupDisplayItemSections(
+  sortOption: unknown
+): GroupDisplayItemSection[] {
   const groupedIndexes = getGroupDisplayItemIndexes(sortOption);
   const indexesByFamily = new Map<ItemFamily, number[]>();
 
@@ -195,32 +220,37 @@ export function getGroupDisplayItemSections(sortOption: unknown): GroupDisplayIt
     indexesByFamily.set(family, familyIndexes);
   });
 
-  return groupCardFamilyOrder.reduce<GroupDisplayItemSection[]>((sections, family) => {
-    const familyIndexes = indexesByFamily.get(family);
+  return groupCardFamilyOrder.reduce<GroupDisplayItemSection[]>(
+    (sections, family) => {
+      const familyIndexes = indexesByFamily.get(family);
 
-    if (!familyIndexes || familyIndexes.length === 0) {
+      if (!familyIndexes || familyIndexes.length === 0) {
+        return sections;
+      }
+
+      const orderedFamilyIndexes =
+        family === 'career'
+          ? [...familyIndexes].sort((leftIndex, rightIndex) => {
+              const leftIsProfile =
+                items[leftIndex].title === professionalProfileTitle;
+              const rightIsProfile =
+                items[rightIndex].title === professionalProfileTitle;
+
+              if (leftIsProfile === rightIsProfile) {
+                return 0;
+              }
+
+              return leftIsProfile ? -1 : 1;
+            })
+          : familyIndexes;
+
+      sections.push({
+        family,
+        itemIndexes: orderedFamilyIndexes,
+      });
+
       return sections;
-    }
-
-    const orderedFamilyIndexes =
-      family === 'career'
-        ? [...familyIndexes].sort((leftIndex, rightIndex) => {
-            const leftIsProfile = items[leftIndex].title === professionalProfileTitle;
-            const rightIsProfile = items[rightIndex].title === professionalProfileTitle;
-
-            if (leftIsProfile === rightIsProfile) {
-              return 0;
-            }
-
-            return leftIsProfile ? -1 : 1;
-          })
-        : familyIndexes;
-
-    sections.push({
-      family,
-      itemIndexes: orderedFamilyIndexes,
-    });
-
-    return sections;
-  }, []);
+    },
+    []
+  );
 }

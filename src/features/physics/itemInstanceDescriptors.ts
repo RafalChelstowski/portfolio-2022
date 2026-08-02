@@ -44,7 +44,8 @@ function createSpawnPosition(index: number): PhysicsVector3 {
   const dropLayer = Math.floor(index / SPAWN_GROUP_CENTERS.length);
   const [groupX, groupZ] = SPAWN_GROUP_CENTERS[groupIndex];
   const angle = seededUnit(index, dropLayer + 1) * Math.PI * 2;
-  const radius = 0.35 + seededUnit(index, dropLayer + 7) * 2.3 + (dropLayer % 3) * 0.16;
+  const radius =
+    0.35 + seededUnit(index, dropLayer + 7) * 2.3 + (dropLayer % 3) * 0.16;
   const axisJitterX = (seededUnit(index, dropLayer + 19) - 0.5) * 1.4;
   const axisJitterZ = (seededUnit(index, dropLayer + 31) - 0.5) * 1.4;
   const offsetX = Math.cos(angle) * radius;

@@ -6,7 +6,11 @@ import { Suspense, useEffect } from 'react';
 
 import { Camera } from './features/Camera';
 import { Controls } from './features/Controls';
-import { Lights, sceneToneDefaults, type SceneToneSettings } from './features/Lights';
+import {
+  Lights,
+  sceneToneDefaults,
+  type SceneToneSettings,
+} from './features/Lights';
 import Pool from './features/Pool';
 import { RetroPass } from './features/RetroPass';
 import { SelectedCardOverlay } from './features/SelectedCardOverlay';

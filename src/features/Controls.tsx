@@ -16,9 +16,13 @@ const presentationControlsMode = {
 export function Controls() {
   const isPresenting = useStore((state) => state.presentation.type !== 'none');
   const itemPresentationTarget = useStore((state) =>
-    state.presentation.type === 'item' ? state.presentation.targetPosition : null
+    state.presentation.type === 'item'
+      ? state.presentation.targetPosition
+      : null
   );
-  const controlsMode = isPresenting ? presentationControlsMode : defaultControlsMode;
+  const controlsMode = isPresenting
+    ? presentationControlsMode
+    : defaultControlsMode;
   const controlsTarget = itemPresentationTarget ?? defaultControlsTarget;
 
   return (

@@ -57,17 +57,32 @@ const currentPositionVector = new Vector3();
 const targetPositionVector = new Vector3();
 const centerTargetVector = new Vector3(...itemPhysicsConstants.centerTarget);
 const poolInnerMinX =
-  poolPhysicsBounds.leftWall.position[0] + poolPhysicsBounds.leftWall.size[0] / 2;
+  poolPhysicsBounds.leftWall.position[0] +
+  poolPhysicsBounds.leftWall.size[0] / 2;
 const poolInnerMaxX =
-  poolPhysicsBounds.rightWall.position[0] - poolPhysicsBounds.rightWall.size[0] / 2;
+  poolPhysicsBounds.rightWall.position[0] -
+  poolPhysicsBounds.rightWall.size[0] / 2;
 const poolInnerMinZ =
-  poolPhysicsBounds.backWall.position[2] + poolPhysicsBounds.backWall.size[2] / 2;
+  poolPhysicsBounds.backWall.position[2] +
+  poolPhysicsBounds.backWall.size[2] / 2;
 const poolInnerMaxZ =
-  poolPhysicsBounds.frontWall.position[2] - poolPhysicsBounds.frontWall.size[2] / 2;
-const poolFloorY = poolPhysicsBounds.floor.position[1] + poolPhysicsBounds.floor.size[1] / 2;
-const poolTopY = poolPhysicsBounds.leftWall.position[1] + poolPhysicsBounds.leftWall.size[1] / 2;
-const centerAreaRadiusSquared = rapierPhysicsConstants.steering.centerAreaRadius ** 2;
-const familyOrder: ItemFamily[] = ['project', 'ai', 'stack', 'creative', 'career', 'learning'];
+  poolPhysicsBounds.frontWall.position[2] -
+  poolPhysicsBounds.frontWall.size[2] / 2;
+const poolFloorY =
+  poolPhysicsBounds.floor.position[1] + poolPhysicsBounds.floor.size[1] / 2;
+const poolTopY =
+  poolPhysicsBounds.leftWall.position[1] +
+  poolPhysicsBounds.leftWall.size[1] / 2;
+const centerAreaRadiusSquared =
+  rapierPhysicsConstants.steering.centerAreaRadius ** 2;
+const familyOrder: ItemFamily[] = [
+  'project',
+  'ai',
+  'stack',
+  'creative',
+  'career',
+  'learning',
+];
 
 interface FamilyBatch {
   family: ItemFamily;
@@ -89,7 +104,10 @@ type FamilyVisualGeometry =
   | { kind: 'octahedron'; args: [radius: number, detail: number] }
   | { kind: 'dodecahedron'; args: [radius: number, detail: number] };
 type FamilyColliderDimensions =
-  | { kind: 'cuboid'; args: [halfWidth: number, halfHeight: number, halfDepth: number] }
+  | {
+      kind: 'cuboid';
+      args: [halfWidth: number, halfHeight: number, halfDepth: number];
+    }
   | { kind: 'ball'; args: [radius: number] };
 interface FamilyMaterialSettings {
   color: string;
@@ -124,14 +142,15 @@ interface MarbleItemSettings {
   textureRepeat: number;
 }
 
-const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> = {
-  project: { kind: 'box', args: [1, 1, 1] },
-  ai: { kind: 'icosahedron', args: [0.78, 0] },
-  stack: { kind: 'icosahedron', args: [0.8, 0] },
-  creative: { kind: 'dodecahedron', args: [0.64, 0] },
-  career: { kind: 'box', args: [1.08, 0.92, 1.08] },
-  learning: { kind: 'octahedron', args: [0.74, 0] },
-};
+const familyVisualGeometryDimensions: Record<ItemFamily, FamilyVisualGeometry> =
+  {
+    project: { kind: 'box', args: [1, 1, 1] },
+    ai: { kind: 'icosahedron', args: [0.78, 0] },
+    stack: { kind: 'icosahedron', args: [0.8, 0] },
+    creative: { kind: 'dodecahedron', args: [0.64, 0] },
+    career: { kind: 'box', args: [1.08, 0.92, 1.08] },
+    learning: { kind: 'octahedron', args: [0.74, 0] },
+  };
 
 const familyColliderDimensions: Record<ItemFamily, FamilyColliderDimensions> = {
   project: { kind: 'cuboid', args: [0.5, 0.5, 0.5] },
@@ -277,7 +296,10 @@ function applyObjectSpaceMarbleUvs(geometry: BufferGeometry): void {
   geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
 }
 
-function applyReadableVertexColor(sourceColor: string, colorLift: number): void {
+function applyReadableVertexColor(
+  sourceColor: string,
+  colorLift: number
+): void {
   color.set(sourceColor);
   color.lerp(colorLiftTarget, colorLift);
 }
@@ -303,13 +325,15 @@ function useMarbleTextures(textureRepeat: number): MarbleTextures {
 function createCenterAreaOffset(index: number): PhysicsVector3 {
   const seed = index + 1;
   const angle = seed * 2.399963229728653;
-  const radius = Math.sqrt((seed % 17) / 16) * rapierPhysicsConstants.steering.centerAreaRadius;
+  const radius =
+    Math.sqrt((seed % 17) / 16) *
+    rapierPhysicsConstants.steering.centerAreaRadius;
 
   return [Math.cos(angle) * radius, 0, Math.sin(angle) * radius];
 }
 
-const centerAreaOffsets: PhysicsVector3[] = itemInstanceDescriptors.map((descriptor) =>
-  createCenterAreaOffset(descriptor.index)
+const centerAreaOffsets: PhysicsVector3[] = itemInstanceDescriptors.map(
+  (descriptor) => createCenterAreaOffset(descriptor.index)
 );
 
 function blendVelocity(
@@ -322,7 +346,11 @@ function blendVelocity(
   const currentVelocity = rigidBody.linvel();
   targetPositionVector.set(targetX, targetY, targetZ);
   targetPositionVector.lerp(
-    currentPositionVector.set(currentVelocity.x, currentVelocity.y, currentVelocity.z),
+    currentPositionVector.set(
+      currentVelocity.x,
+      currentVelocity.y,
+      currentVelocity.z
+    ),
     1 - blendFactor
   );
   rigidBody.setLinvel(targetPositionVector, true);
@@ -335,41 +363,74 @@ function getGatherDecayFactor(startedAt: number, now: number): number {
   return Math.max(0, Math.min(1, 1 - progress));
 }
 
-function isGatherInProgress(activeGather: ActiveGatherState | null, now: number): boolean {
-  return activeGather !== null && getGatherDecayFactor(activeGather.startedAt, now) > 0;
+function isGatherInProgress(
+  activeGather: ActiveGatherState | null,
+  now: number
+): boolean {
+  return (
+    activeGather !== null &&
+    getGatherDecayFactor(activeGather.startedAt, now) > 0
+  );
 }
 
-function FamilyGeometry({ family, colors }: { family: ItemFamily; colors: Float32Array }): JSX.Element {
+function FamilyGeometry({
+  family,
+  colors,
+}: {
+  family: ItemFamily;
+  colors: Float32Array;
+}): JSX.Element {
   const dimensions = familyVisualGeometryDimensions[family];
 
   if (dimensions.kind === 'box') {
     return (
       <boxGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
-        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
+        <instancedBufferAttribute
+          attach="attributes-color"
+          args={[colors, 3]}
+        />
       </boxGeometry>
     );
   }
 
   if (dimensions.kind === 'icosahedron') {
     return (
-      <icosahedronGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
-        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
+      <icosahedronGeometry
+        args={dimensions.args}
+        onUpdate={applyObjectSpaceMarbleUvs}
+      >
+        <instancedBufferAttribute
+          attach="attributes-color"
+          args={[colors, 3]}
+        />
       </icosahedronGeometry>
     );
   }
 
   if (dimensions.kind === 'octahedron') {
     return (
-      <octahedronGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
-        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
+      <octahedronGeometry
+        args={dimensions.args}
+        onUpdate={applyObjectSpaceMarbleUvs}
+      >
+        <instancedBufferAttribute
+          attach="attributes-color"
+          args={[colors, 3]}
+        />
       </octahedronGeometry>
     );
   }
 
   if (dimensions.kind === 'dodecahedron') {
     return (
-      <dodecahedronGeometry args={dimensions.args} onUpdate={applyObjectSpaceMarbleUvs}>
-        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
+      <dodecahedronGeometry
+        args={dimensions.args}
+        onUpdate={applyObjectSpaceMarbleUvs}
+      >
+        <instancedBufferAttribute
+          attach="attributes-color"
+          args={[colors, 3]}
+        />
       </dodecahedronGeometry>
     );
   }
@@ -388,7 +449,10 @@ function FamilyMaterial({
   marbleTextures: MarbleTextures;
 }): JSX.Element {
   const settings = familyMaterialSettings[family];
-  marbleNormalScale.set(marbleSettings.normalStrength, marbleSettings.normalStrength);
+  marbleNormalScale.set(
+    marbleSettings.normalStrength,
+    marbleSettings.normalStrength
+  );
 
   return (
     <meshPhysicalMaterial
@@ -418,7 +482,9 @@ function getFamilyColliderNodes(family: ItemFamily): ReactNode[] {
   const dimensions = familyColliderDimensions[family];
 
   if (dimensions.kind === 'cuboid') {
-    return [<CuboidCollider key={`${family}-collider`} args={dimensions.args} />];
+    return [
+      <CuboidCollider key={`${family}-collider`} args={dimensions.args} />,
+    ];
   }
 
   return [<BallCollider key={`${family}-collider`} args={dimensions.args} />];
@@ -441,14 +507,19 @@ export function RapierItems(): JSX.Element {
     career: { bodies: null, mesh: null },
     learning: { bodies: null, mesh: null },
   });
-  const bodyByItemIndexRef = useRef<(RapierRigidBody | null)[]>(Array(instanceCount).fill(null));
-  const firstPoolContactByIndexRef = useRef<boolean[]>(Array(instanceCount).fill(false));
+  const bodyByItemIndexRef = useRef<(RapierRigidBody | null)[]>(
+    Array(instanceCount).fill(null)
+  );
+  const firstPoolContactByIndexRef = useRef<boolean[]>(
+    Array(instanceCount).fill(false)
+  );
   const hasRevealedUiRef = useRef<boolean>(false);
   const presentation = useStore((state) => state.presentation);
   const presentItem = useStore((state) => state.presentItem);
   const presentGroup = useStore((state) => state.presentGroup);
   const [hovered, setHovered] = useState<number | undefined>(undefined);
-  const presentedItemIndex = presentation.type === 'item' ? presentation.itemIndex : null;
+  const presentedItemIndex =
+    presentation.type === 'item' ? presentation.itemIndex : null;
   const isPresentingGroup = presentation.type === 'group';
   const canInteractWithItems = !isPresentingGroup;
   const marbleSettings = useControls(
@@ -513,17 +584,25 @@ export function RapierItems(): JSX.Element {
     }
   }, [isPresentingGroup]);
 
-  const markFirstPoolContact = useCallback((index: number, payload: CollisionEnterPayload): void => {
-    if (firstPoolContactByIndexRef.current[index]) {
-      return;
-    }
+  const markFirstPoolContact = useCallback(
+    (index: number, payload: CollisionEnterPayload): void => {
+      if (firstPoolContactByIndexRef.current[index]) {
+        return;
+      }
 
-    const otherName = payload.other.rigidBodyObject?.name ?? payload.other.colliderObject?.name;
+      const otherName =
+        payload.other.rigidBodyObject?.name ??
+        payload.other.colliderObject?.name;
 
-    if (otherName === rapierColliderNames.floor || otherName === rapierColliderNames.catchSurface) {
-      firstPoolContactByIndexRef.current[index] = true;
-    }
-  }, []);
+      if (
+        otherName === rapierColliderNames.floor ||
+        otherName === rapierColliderNames.catchSurface
+      ) {
+        firstPoolContactByIndexRef.current[index] = true;
+      }
+    },
+    []
+  );
 
   const presentClickedItem = useCallback(
     (itemIndex: number): void => {
@@ -532,7 +611,8 @@ export function RapierItems(): JSX.Element {
         presentation: currentPresentation,
         selectedGroup,
       } = useStore.getState();
-      const itemBodyPosition = bodyByItemIndexRef.current[itemIndex]?.translation();
+      const itemBodyPosition =
+        bodyByItemIndexRef.current[itemIndex]?.translation();
       const targetPosition: [number, number, number] = itemBodyPosition
         ? [itemBodyPosition.x, itemBodyPosition.y, itemBodyPosition.z]
         : itemInstanceDescriptors[itemIndex].spawnPosition;
@@ -566,30 +646,37 @@ export function RapierItems(): JSX.Element {
         .map((descriptor) => descriptor.index);
       const bodySlotToItemIndex = new Map<number, number>();
 
-      const familyInstances = indexes.map<InstancedRigidBodyProps>((itemIndex, localBodySlot) => {
-        const descriptor = itemInstanceDescriptors[itemIndex];
-        bodySlotToItemIndex.set(localBodySlot, itemIndex);
+      const familyInstances = indexes.map<InstancedRigidBodyProps>(
+        (itemIndex, localBodySlot) => {
+          const descriptor = itemInstanceDescriptors[itemIndex];
+          bodySlotToItemIndex.set(localBodySlot, itemIndex);
 
-        return {
-          key: localBodySlot,
-          position: descriptor.spawnPosition,
-          rotation: descriptor.initialRotationSeed,
-          scale: [
-            descriptor.scale[0] * marbleSettings.shapeScale,
-            descriptor.scale[1] * marbleSettings.shapeScale,
-            descriptor.scale[2] * marbleSettings.shapeScale,
-          ],
-          mass: rapierPhysicsConstants.items.massBySize[descriptor.scaleSource],
-          onCollisionEnter: (payload) => {
-            markFirstPoolContact(itemIndex, payload);
-          },
-        };
-      });
+          return {
+            key: localBodySlot,
+            position: descriptor.spawnPosition,
+            rotation: descriptor.initialRotationSeed,
+            scale: [
+              descriptor.scale[0] * marbleSettings.shapeScale,
+              descriptor.scale[1] * marbleSettings.shapeScale,
+              descriptor.scale[2] * marbleSettings.shapeScale,
+            ],
+            mass: rapierPhysicsConstants.items.massBySize[
+              descriptor.scaleSource
+            ],
+            onCollisionEnter: (payload) => {
+              markFirstPoolContact(itemIndex, payload);
+            },
+          };
+        }
+      );
       const familyColors = new Float32Array(indexes.length * 3);
 
       for (let localIndex = 0; localIndex < indexes.length; localIndex += 1) {
         const itemIndex = indexes[localIndex];
-        applyReadableVertexColor(itemInstanceDescriptors[itemIndex].color, marbleSettings.colorLift);
+        applyReadableVertexColor(
+          itemInstanceDescriptors[itemIndex].color,
+          marbleSettings.colorLift
+        );
         familyColors[localIndex * 3] = color.r;
         familyColors[localIndex * 3 + 1] = color.g;
         familyColors[localIndex * 3 + 2] = color.b;
@@ -605,7 +692,11 @@ export function RapierItems(): JSX.Element {
     });
 
     return batches.filter((batch) => batch.indexes.length > 0);
-  }, [marbleSettings.colorLift, marbleSettings.shapeScale, markFirstPoolContact]);
+  }, [
+    marbleSettings.colorLift,
+    marbleSettings.shapeScale,
+    markFirstPoolContact,
+  ]);
 
   const shadowDepthMaterial = useMemo(
     () =>
@@ -620,7 +711,11 @@ export function RapierItems(): JSX.Element {
     familyBatches.forEach((batch) => {
       const { colors: batchColors } = batch;
 
-      for (let localIndex = 0; localIndex < batch.indexes.length; localIndex += 1) {
+      for (
+        let localIndex = 0;
+        localIndex < batch.indexes.length;
+        localIndex += 1
+      ) {
         const itemIndex = batch.indexes[localIndex];
 
         if (itemIndex === hovered || itemIndex === presentedItemIndex) {
@@ -638,7 +733,9 @@ export function RapierItems(): JSX.Element {
       }
 
       const { mesh } = familyRuntimeRef.current[batch.family];
-      const colorAttribute = mesh?.geometry.getAttribute('color') as BufferAttribute | undefined;
+      const colorAttribute = mesh?.geometry.getAttribute('color') as
+        | BufferAttribute
+        | undefined;
 
       if (colorAttribute) {
         colorAttribute.needsUpdate = true;
@@ -656,7 +753,9 @@ export function RapierItems(): JSX.Element {
     const { activeGather } = storeState;
     const now = Date.now();
     const gatherDecayFactor =
-      activeGather === null ? 0 : getGatherDecayFactor(activeGather.startedAt, now);
+      activeGather === null
+        ? 0
+        : getGatherDecayFactor(activeGather.startedAt, now);
     const hasExpiredGather = activeGather !== null && gatherDecayFactor <= 0;
 
     if (hasExpiredGather) {
@@ -667,7 +766,8 @@ export function RapierItems(): JSX.Element {
     }
 
     const sortOption = hasExpiredGather ? null : activeGather?.option ?? null;
-    const gatherSteeringFactor = hasExpiredGather || activeGather === null ? 1 : gatherDecayFactor;
+    const gatherSteeringFactor =
+      hasExpiredGather || activeGather === null ? 1 : gatherDecayFactor;
 
     const rigidBodies = bodyByItemIndexRef.current;
     let hasAnyBody = false;
@@ -716,7 +816,10 @@ export function RapierItems(): JSX.Element {
               y >= poolFloorY &&
               y <= poolTopY;
 
-            if (isInsidePoolVolume && firstPoolContactByIndexRef.current[index]) {
+            if (
+              isInsidePoolVolume &&
+              firstPoolContactByIndexRef.current[index]
+            ) {
               inPoolCount += 1;
             }
           }
@@ -748,10 +851,11 @@ export function RapierItems(): JSX.Element {
           const distance = directionVector.length();
 
           if (distance > 0) {
-            const targetSpeed = Math.min(
-              rapierPhysicsConstants.steering.maxSortSpeed,
-              distance * rapierPhysicsConstants.steering.sortPull
-            ) * gatherSteeringFactor;
+            const targetSpeed =
+              Math.min(
+                rapierPhysicsConstants.steering.maxSortSpeed,
+                distance * rapierPhysicsConstants.steering.sortPull
+              ) * gatherSteeringFactor;
 
             directionVector.normalize().multiplyScalar(targetSpeed);
           } else {
@@ -791,14 +895,16 @@ export function RapierItems(): JSX.Element {
         const distanceToTarget = directionVector.length();
         const centerDeltaX = x - centerTargetVector.x;
         const centerDeltaZ = z - centerTargetVector.z;
-        const distanceToCenterSquared = centerDeltaX * centerDeltaX + centerDeltaZ * centerDeltaZ;
+        const distanceToCenterSquared =
+          centerDeltaX * centerDeltaX + centerDeltaZ * centerDeltaZ;
 
         if (isMatched) {
           if (distanceToTarget > 0) {
-            const targetSpeed = Math.min(
-              rapierPhysicsConstants.steering.maxSetMatchSpeed,
-              distanceToTarget * rapierPhysicsConstants.steering.setMatchSeek
-            ) * gatherSteeringFactor;
+            const targetSpeed =
+              Math.min(
+                rapierPhysicsConstants.steering.maxSetMatchSpeed,
+                distanceToTarget * rapierPhysicsConstants.steering.setMatchSeek
+              ) * gatherSteeringFactor;
             directionVector.normalize().multiplyScalar(targetSpeed);
           } else {
             directionVector.set(0, 0, 0);
@@ -815,14 +921,20 @@ export function RapierItems(): JSX.Element {
           const distanceToCenter = Math.sqrt(distanceToCenterSquared);
           const [fallbackX, , fallbackZ] = centerAreaOffsets[index];
           const repelDirectionX =
-            distanceToCenter > 0.001 ? centerDeltaX / distanceToCenter : fallbackX;
+            distanceToCenter > 0.001
+              ? centerDeltaX / distanceToCenter
+              : fallbackX;
           const repelDirectionZ =
-            distanceToCenter > 0.001 ? centerDeltaZ / distanceToCenter : fallbackZ;
-          const nearCenterBoost = distanceToCenterSquared <= centerAreaRadiusSquared ? 1.6 : 1;
-          const targetMissSpeed = Math.min(
-            rapierPhysicsConstants.steering.maxSetMissSpeed,
-            rapierPhysicsConstants.steering.setMissRepel * nearCenterBoost
-          ) * gatherSteeringFactor;
+            distanceToCenter > 0.001
+              ? centerDeltaZ / distanceToCenter
+              : fallbackZ;
+          const nearCenterBoost =
+            distanceToCenterSquared <= centerAreaRadiusSquared ? 1.6 : 1;
+          const targetMissSpeed =
+            Math.min(
+              rapierPhysicsConstants.steering.maxSetMissSpeed,
+              rapierPhysicsConstants.steering.setMissRepel * nearCenterBoost
+            ) * gatherSteeringFactor;
 
           directionVector.set(
             repelDirectionX * targetMissSpeed,

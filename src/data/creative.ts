@@ -21,7 +21,8 @@ export const creative: SourceItem[] = [
   },
   {
     title: '3D asset workflow',
-    subtitle: 'Modeling, texturing, and asset preparation for interactive 3D web work.',
+    subtitle:
+      'Modeling, texturing, and asset preparation for interactive 3D web work.',
     listItems: ['Blender', 'Substance Painter', 'Nomad Sculpt'],
     size: 'm',
     categories: ['creative'],

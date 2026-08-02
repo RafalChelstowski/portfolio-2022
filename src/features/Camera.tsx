@@ -15,7 +15,9 @@ const presentationCameraZoom = 2.1;
 export function Camera(): JSX.Element {
   const isPresenting = useStore((state) => state.presentation.type !== 'none');
   const itemPresentationTarget = useStore((state) =>
-    state.presentation.type === 'item' ? state.presentation.targetPosition : null
+    state.presentation.type === 'item'
+      ? state.presentation.targetPosition
+      : null
   );
   const { size } = useThree();
   const ref = useRef<PerspectiveCameraImpl>(null);
@@ -45,7 +47,11 @@ export function Camera(): JSX.Element {
       : defaultCameraPosition;
     const [targetX, targetY, targetZ] = cameraTarget;
 
-    camera.position.set(targetX + offsetX, targetY + offsetY, targetZ + offsetZ);
+    camera.position.set(
+      targetX + offsetX,
+      targetY + offsetY,
+      targetZ + offsetZ
+    );
     camera.lookAt(targetX, targetY, targetZ);
     camera.zoom = isPresenting ? focusedCardZoom : defaultCameraZoom;
 
@@ -63,7 +69,13 @@ export function Camera(): JSX.Element {
     }
 
     camera.updateProjectionMatrix();
-  }, [focusedCardZoom, isPresenting, itemPresentationTarget, size.height, size.width]);
+  }, [
+    focusedCardZoom,
+    isPresenting,
+    itemPresentationTarget,
+    size.height,
+    size.width,
+  ]);
 
   return (
     <PerspectiveCamera
