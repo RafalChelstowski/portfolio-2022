@@ -14,7 +14,7 @@ import {
 import { experience } from './experience';
 import { projects } from './projects';
 import { technologies } from './technologies';
-import type { SelectedGroupOption } from '../types';
+import type { ItemFamily, SelectedGroupOption } from '../types';
 
 const sourceItems = [
   ...ai,
@@ -27,6 +27,14 @@ const groupOptions: SelectedGroupOption[] = [
   ...mainCategoryOrder,
   ...projectConstellationOrder,
   'focus',
+];
+const presentationFamilyOrder: ItemFamily[] = [
+  'career',
+  'project',
+  'ai',
+  'stack',
+  'creative',
+  'learning',
 ];
 
 const unsupportedValues: unknown[] = [
@@ -112,6 +120,32 @@ describe('group lookup and display helpers', () => {
       expect(getGroupDisplayItemSections(value)).toEqual([]);
     });
   });
+
+  it.each(groupOptions)(
+    'generates lossless non-empty sections in presentation order for %s',
+    (option) => {
+      const displayedIndexes = getGroupDisplayItemIndexes(option);
+      const sections = getGroupDisplayItemSections(option);
+      const sectionIndexes = sections.flatMap((section) => section.itemIndexes);
+      const sectionFamilies = sections.map((section) => section.family);
+      const expectedFamilies = presentationFamilyOrder.filter((family) =>
+        displayedIndexes.some((index) => items[index].family === family)
+      );
+
+      expect(sectionIndexes).toHaveLength(displayedIndexes.length);
+      expect(new Set(sectionIndexes).size).toBe(sectionIndexes.length);
+      expect(new Set(sectionIndexes)).toEqual(new Set(displayedIndexes));
+      expect(sectionFamilies).toEqual(expectedFamilies);
+
+      sections.forEach((section) => {
+        expect(section.itemIndexes.length).toBeGreaterThan(0);
+
+        section.itemIndexes.forEach((index) => {
+          expect(items[index].family).toBe(section.family);
+        });
+      });
+    }
+  );
 
   it('keeps the intentional focus item order', () => {
     const focusTitles = getGroupDisplayItemIndexes('focus').map(
