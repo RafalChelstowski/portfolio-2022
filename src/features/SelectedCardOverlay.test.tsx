@@ -35,6 +35,17 @@ const cardFixture: Item3d = {
   ],
 };
 
+const minimalCardFixture: Item3d = {
+  id: 'minimal-project',
+  title: 'Minimal project',
+  family: 'project',
+  size: 's',
+  categories: ['dev'],
+  projects: ['portfolio'],
+  sortingVelocity: [0, 0, 0],
+  customColor: '#ffffff',
+};
+
 function resetStore(): void {
   useStore.setState({
     displayUi: false,
@@ -86,6 +97,44 @@ describe('ItemCardContent', () => {
     expect(githubLink).toHaveAttribute('target', '_blank');
     expect(githubLink).toHaveAttribute('rel', 'noreferrer');
   });
+
+  it.each([
+    { hideFamilyLabel: false, expectedText: 'projectMinimal project' },
+    { hideFamilyLabel: true, expectedText: 'Minimal project' },
+  ])(
+    'renders a sparse card without inventing optional content (hideFamilyLabel: $hideFamilyLabel)',
+    ({ hideFamilyLabel, expectedText }) => {
+      const { container } = render(
+        <ItemCardContent
+          item={minimalCardFixture}
+          hideFamilyLabel={hideFamilyLabel}
+        />
+      );
+
+      expect(screen.getByText(minimalCardFixture.title)).toBeInTheDocument();
+      expect(container.textContent).toBe(expectedText);
+      expect(
+        container.querySelector('.selected-card__metadata')
+      ).not.toBeInTheDocument();
+      expect(
+        container.querySelector('.selected-card__subtitle')
+      ).not.toBeInTheDocument();
+      expect(container.querySelector('ul')).not.toBeInTheDocument();
+      expect(
+        container.querySelector('.selected-card__field-key')
+      ).not.toBeInTheDocument();
+      expect(screen.queryByText('Learning courses')).not.toBeInTheDocument();
+      expect(screen.queryAllByRole('link')).toHaveLength(0);
+
+      if (hideFamilyLabel) {
+        expect(
+          screen.queryByText(minimalCardFixture.family)
+        ).not.toBeInTheDocument();
+      } else {
+        expect(screen.getByText(minimalCardFixture.family)).toBeInTheDocument();
+      }
+    }
+  );
 });
 
 describe('SelectedCardOverlay', () => {
