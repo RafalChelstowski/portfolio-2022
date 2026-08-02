@@ -8,8 +8,8 @@ vi.mock('@react-three/drei', () => {
     return <group userData={props} />;
   }
 
-  function MockContactShadows() {
-    return null;
+  function MockContactShadows(props: Record<string, unknown>) {
+    return <group userData={props} />;
   }
 
   return {
@@ -22,6 +22,7 @@ type TestRenderer = Awaited<ReturnType<typeof create>>;
 
 const testTone: SceneToneSettings = {
   ...sceneToneDefaults,
+  contactShadowOpacity: 0.36,
   coolFill: 1.25,
   hemisphere: 0.7,
   warmKey: 3.4,
@@ -61,7 +62,7 @@ describe('Lights scene', () => {
 
   it('configures the HDR environment with bounded rendering', async () => {
     renderer = await create(<Lights tone={testTone} />);
-    const environment = renderer.scene.findByType('Group')
+    const environment = renderer.scene.findAllByType('Group')[0]
       .instance as THREE.Group;
 
     expect(environment.userData).toMatchObject({
@@ -70,6 +71,22 @@ describe('Lights scene', () => {
       environmentIntensity: testTone.environment,
       environmentRotation: [0, Math.PI * 0.15, 0],
       resolution: 128,
+    });
+  });
+
+  it('configures contact shadows with bounded static rendering', async () => {
+    renderer = await create(<Lights tone={testTone} />);
+    const contactShadows = renderer.scene.findAllByType('Group')[1]
+      .instance as THREE.Group;
+
+    expect(contactShadows.userData).toMatchObject({
+      position: [0, -2.01, 0],
+      opacity: testTone.contactShadowOpacity,
+      scale: 36,
+      blur: 2.8,
+      far: 24,
+      resolution: 512,
+      frames: 1,
     });
   });
 
