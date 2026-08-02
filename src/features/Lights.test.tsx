@@ -4,8 +4,8 @@ import { Lights, sceneToneDefaults, type SceneToneSettings } from './Lights';
 
 // Keep native lights under test while avoiding HDR and shadow asset setup.
 vi.mock('@react-three/drei', () => {
-  function MockEnvironment() {
-    return null;
+  function MockEnvironment(props: Record<string, unknown>) {
+    return <group userData={props} />;
   }
 
   function MockContactShadows() {
@@ -57,6 +57,20 @@ describe('Lights scene', () => {
     expect(directionalLight.intensity).toBe(testTone.warmKey);
     expect(pointLight.color.getHexString()).toBe('dbeeff');
     expect(pointLight.intensity).toBe(testTone.coolFill);
+  });
+
+  it('configures the HDR environment with bounded rendering', async () => {
+    renderer = await create(<Lights tone={testTone} />);
+    const environment = renderer.scene.findByType('Group')
+      .instance as THREE.Group;
+
+    expect(environment.userData).toMatchObject({
+      files: 'hdr.hdr',
+      background: false,
+      environmentIntensity: testTone.environment,
+      environmentRotation: [0, Math.PI * 0.15, 0],
+      resolution: 128,
+    });
   });
 
   it('attaches the directional target to the scene and removes it on unmount', async () => {
