@@ -63,14 +63,21 @@ describe('portfolio filter UI', () => {
     ).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 3 })).toBeInTheDocument();
 
-    expect(screen.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute(
+    const linkedInLink = screen.getByRole('link', { name: 'LinkedIn' });
+    const githubLink = screen.getByRole('link', { name: 'GitHub' });
+
+    expect(linkedInLink).toHaveAttribute(
       'href',
       'https://www.linkedin.com/in/chelstowskirafal/?locale=en_US'
     );
-    expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
+    expect(linkedInLink).toHaveAttribute('target', '_blank');
+    expect(linkedInLink).toHaveAttribute('rel', 'noreferrer');
+    expect(githubLink).toHaveAttribute(
       'href',
       'https://github.com/RafalChelstowski'
     );
+    expect(githubLink).toHaveAttribute('target', '_blank');
+    expect(githubLink).toHaveAttribute('rel', 'noreferrer');
     expect(screen.queryAllByRole('button')).toHaveLength(0);
   });
 
