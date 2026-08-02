@@ -9,6 +9,12 @@ vi.mock('@react-three/drei', () => {
     target,
     autoRotate,
     autoRotateSpeed,
+    enablePan,
+    enableDamping,
+    enableZoom,
+    enableRotate,
+    maxPolarAngle,
+    minPolarAngle,
   }: Record<string, unknown>) {
     return (
       <group
@@ -16,6 +22,12 @@ vi.mock('@react-three/drei', () => {
           target,
           autoRotate,
           autoRotateSpeed,
+          enablePan,
+          enableDamping,
+          enableZoom,
+          enableRotate,
+          maxPolarAngle,
+          minPolarAngle,
         }}
       />
     );
@@ -59,6 +71,20 @@ describe('Controls scene presentation modes', () => {
       target: [0, 0, 0],
       autoRotate: true,
       autoRotateSpeed: 0.5,
+    });
+  });
+
+  it('locks camera interaction controls to the fixed polar angle', async () => {
+    renderer = await create(<Controls />);
+    const controls = renderer.scene.findByType('Group').instance as THREE.Group;
+
+    expect(controls.userData).toMatchObject({
+      enablePan: false,
+      enableZoom: false,
+      enableRotate: false,
+      enableDamping: false,
+      minPolarAngle: Math.PI / 3.5,
+      maxPolarAngle: Math.PI / 3.5,
     });
   });
 
