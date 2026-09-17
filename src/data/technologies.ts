@@ -11,9 +11,9 @@ const dataSetup: Pick<
 
 export const technologies: SourceItem[] = [
   {
-    title: 'React ecosystem',
+    title: 'Frontend systems',
     cardFields: {
-      Tools: 'React, TypeScript, Zustand, React Query',
+      Tools: 'React, TypeScript, Zustand, TanStack Query',
     },
     size: 'l',
     categories: ['dev'],
@@ -21,9 +21,9 @@ export const technologies: SourceItem[] = [
     ...dataSetup,
   },
   {
-    title: '3D web ecosystem',
+    title: '3D & interactive web',
     cardFields: {
-      Tools: 'Three.js, React Three Fiber, Rapier, basic shaders',
+      Tools: 'Three.js, React Three Fiber, Rapier, GLSL',
     },
     size: 'l',
     categories: ['dev', 'creative'],
@@ -31,9 +31,19 @@ export const technologies: SourceItem[] = [
     ...dataSetup,
   },
   {
-    title: 'Terminal-first workflow',
+    title: 'Testing & delivery',
     cardFields: {
-      Tools: 'Neovim, tmux, Ghostty',
+      Tools: 'Storybook, Playwright, Vitest, Testing Library',
+    },
+    size: 'm',
+    categories: ['dev'],
+    projects: [],
+    ...dataSetup,
+  },
+  {
+    title: 'Developer tooling',
+    cardFields: {
+      Tools: 'Node.js, Bun, Docker, MCP',
     },
     size: 'm',
     categories: ['dev'],
