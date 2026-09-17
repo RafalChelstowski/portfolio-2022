@@ -155,7 +155,7 @@ describe('group lookup and display helpers', () => {
     expect(focusTitles).toEqual([
       'Professional profile',
       'Align Technology, Senior Software Engineer',
-      'AI-assisted development',
+      'Agent orchestration',
       'AI knowledge sharing',
       'Industry-leading orthodontic software',
     ]);
@@ -176,7 +176,7 @@ describe('group lookup and display helpers', () => {
     ).toEqual([
       ['Professional profile', 'Align Technology, Senior Software Engineer'],
       ['Industry-leading orthodontic software'],
-      ['AI-assisted development', 'AI knowledge sharing'],
+      ['Agent orchestration', 'AI knowledge sharing'],
     ]);
 
     const displayedIndexes = getGroupDisplayItemIndexes('focus');

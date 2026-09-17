@@ -121,7 +121,7 @@ const customGroupDisplayTitleOrder: Partial<
   focus: [
     'Professional profile',
     'Align Technology, Senior Software Engineer',
-    'AI-assisted development',
+    'Agent orchestration',
     'AI knowledge sharing',
     'Industry-leading orthodontic software',
   ],
