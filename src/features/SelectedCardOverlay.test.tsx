@@ -83,7 +83,10 @@ describe('ItemCardContent', () => {
     expect(screen.getByText('React')).toBeInTheDocument();
     expect(screen.getByText('Tags')).toBeInTheDocument();
     expect(screen.getByText('Three.js, Zustand')).toBeInTheDocument();
-    expect(screen.getByText('Learning courses')).toBeInTheDocument();
+    const learningHeading = screen.getByText('Learning courses:');
+
+    expect(learningHeading).toBeInTheDocument();
+    expect(learningHeading).toHaveClass('font-semibold');
     expect(screen.getByText('Frontend Masters')).toBeInTheDocument();
     expect(screen.getByText(/Testing React/)).toBeInTheDocument();
 
@@ -123,7 +126,7 @@ describe('ItemCardContent', () => {
       expect(
         container.querySelector('.selected-card__field-key')
       ).not.toBeInTheDocument();
-      expect(screen.queryByText('Learning courses')).not.toBeInTheDocument();
+      expect(screen.queryByText('Learning courses:')).not.toBeInTheDocument();
       expect(screen.queryAllByRole('link')).toHaveLength(0);
 
       if (hideFamilyLabel) {

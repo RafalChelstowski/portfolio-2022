@@ -135,6 +135,11 @@ const groupCardFamilyOrder: ItemFamily[] = [
   'creative',
   'learning',
 ];
+const groupCardFamilyOrderOverrides: Partial<
+  Record<SelectedGroupOption, ItemFamily[]>
+> = {
+  kitchen: ['project', 'career'],
+};
 const professionalProfileTitle = 'Professional profile';
 
 function hasOwnKey<ObjectShape extends object>(
@@ -142,6 +147,24 @@ function hasOwnKey<ObjectShape extends object>(
   key: PropertyKey
 ): key is keyof ObjectShape {
   return Object.prototype.hasOwnProperty.call(object, key);
+}
+
+function getGroupCardFamilyOrder(sortOption: unknown): ItemFamily[] {
+  if (
+    typeof sortOption === 'string' &&
+    hasOwnKey(groupCardFamilyOrderOverrides, sortOption)
+  ) {
+    const override = groupCardFamilyOrderOverrides[sortOption];
+
+    if (override) {
+      return [
+        ...override,
+        ...groupCardFamilyOrder.filter((family) => !override.includes(family)),
+      ];
+    }
+  }
+
+  return groupCardFamilyOrder;
 }
 
 export interface GroupDisplayItemSection {
@@ -220,7 +243,7 @@ export function getGroupDisplayItemSections(
     indexesByFamily.set(family, familyIndexes);
   });
 
-  return groupCardFamilyOrder.reduce<GroupDisplayItemSection[]>(
+  return getGroupCardFamilyOrder(sortOption).reduce<GroupDisplayItemSection[]>(
     (sections, family) => {
       const familyIndexes = indexesByFamily.get(family);
 
