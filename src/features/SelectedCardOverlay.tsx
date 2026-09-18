@@ -145,7 +145,7 @@ export function ItemCardContent({
       ))}
       {learningCourses.length > 0 && (
         <div className="mb-2">
-          <p className="font-semibold">Learning courses</p>
+          <p className="font-semibold">Learning courses:</p>
           <div className="mt-2">
             {learningCourses.map(({ provider, course }) => (
               <p key={`${provider}-${course}`} className="mb-1">

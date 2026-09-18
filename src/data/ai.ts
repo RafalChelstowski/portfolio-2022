@@ -11,15 +11,15 @@ const dataSetup: Pick<
 
 export const ai: SourceItem[] = [
   {
-    title: 'AI-assisted development',
+    title: 'Agent orchestration',
     subtitle:
-      'Agent-assisted engineering with Codex, OpenCode, Claude Code, using GPT, Claude, and local models.',
+      'Custom infrastructure for moving scoped requirements through implementation, verification, and review with coding agents.',
     focus: true,
     size: 'l',
     listItems: [
-      'Custom skills for steering agents through implementation and code review.',
-      'Long running agents: requirements translated into ralph-loops and goals.',
-      'Advanced context management: using qmd, rtk, and context-mode.',
+      'A project dashboard launches and manages concurrent agent sessions in isolated containerized workspaces.',
+      'Bounded long-running workflows turn requirements into implementation, focused checks, and independent review.',
+      'Durable project context and evaluated reusable skills keep agents grounded and workflows consistent.',
     ],
     categories: ['ai'],
     projects: ['portfolio', 'kitchen'],
@@ -33,19 +33,11 @@ export const ai: SourceItem[] = [
     listItems: [
       "Agents code while you're away: intro to Ralph loops.",
       'Context management for AI coding agents.',
+      'AI fundamentals workshops covering core terminology, model capabilities, and practical prompting techniques.',
     ],
     size: 'm',
     categories: ['ai'],
     projects: [],
-    ...dataSetup,
-  },
-  {
-    title: 'Personal agent workflows',
-    subtitle:
-      'Specialized openclaw agents for daily planning, personal projects, and long-running coding loops.',
-    size: 's',
-    categories: ['ai'],
-    projects: ['portfolio', 'kitchen'],
     ...dataSetup,
   },
   {

@@ -128,7 +128,16 @@ describe('group lookup and display helpers', () => {
       const sections = getGroupDisplayItemSections(option);
       const sectionIndexes = sections.flatMap((section) => section.itemIndexes);
       const sectionFamilies = sections.map((section) => section.family);
-      const expectedFamilies = presentationFamilyOrder.filter((family) =>
+      const expectedFamilyOrder: ItemFamily[] =
+        option === 'kitchen'
+          ? [
+              'project',
+              ...presentationFamilyOrder.filter(
+                (family) => family !== 'project'
+              ),
+            ]
+          : presentationFamilyOrder;
+      const expectedFamilies = expectedFamilyOrder.filter((family) =>
         displayedIndexes.some((index) => items[index].family === family)
       );
 
@@ -147,6 +156,22 @@ describe('group lookup and display helpers', () => {
     }
   );
 
+  it('prioritizes Kitchen project cards while keeping focus career-first', () => {
+    const kitchenFamilies = getGroupDisplayItemSections('kitchen').map(
+      (section) => section.family
+    );
+
+    expect(kitchenFamilies.slice(0, 2)).toEqual(['project', 'career']);
+
+    const focusFamilies = getGroupDisplayItemSections('focus').map(
+      (section) => section.family
+    );
+
+    expect(focusFamilies.indexOf('career')).toBeLessThan(
+      focusFamilies.indexOf('project')
+    );
+  });
+
   it('keeps the intentional focus item order', () => {
     const focusTitles = getGroupDisplayItemIndexes('focus').map(
       (index) => items[index].title
@@ -155,7 +180,7 @@ describe('group lookup and display helpers', () => {
     expect(focusTitles).toEqual([
       'Professional profile',
       'Align Technology, Senior Software Engineer',
-      'AI-assisted development',
+      'Agent orchestration',
       'AI knowledge sharing',
       'Industry-leading orthodontic software',
     ]);
@@ -176,7 +201,7 @@ describe('group lookup and display helpers', () => {
     ).toEqual([
       ['Professional profile', 'Align Technology, Senior Software Engineer'],
       ['Industry-leading orthodontic software'],
-      ['AI-assisted development', 'AI knowledge sharing'],
+      ['Agent orchestration', 'AI knowledge sharing'],
     ]);
 
     const displayedIndexes = getGroupDisplayItemIndexes('focus');
