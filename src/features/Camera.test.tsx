@@ -21,6 +21,7 @@ function resetStore(): void {
     sortOption: null,
     selectedGroup: null,
     activeGather: null,
+    pendingSelection: null,
   });
 }
 

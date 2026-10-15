@@ -1,4 +1,4 @@
-import type { JSX } from 'react';
+import { useEffect, useRef, type JSX } from 'react';
 import {
   getGroupDisplayItemSections,
   getGroupDisplayLabel,
@@ -197,6 +197,25 @@ function StickyCloseControl({ onClose }: StickyCloseControlProps): JSX.Element {
 export function SelectedCardOverlay(): JSX.Element | null {
   const presentation = useStore((state) => state.presentation);
   const closePresentation = useStore((state) => state.closePresentation);
+  const searchSelectionRef = useRef(false);
+  const selectedItemCardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (
+      presentation.type === 'item' &&
+      presentation.selectionSource === 'search'
+    ) {
+      searchSelectionRef.current = true;
+      selectedItemCardRef.current?.focus();
+    } else if (presentation.type === 'none' && searchSelectionRef.current) {
+      searchSelectionRef.current = false;
+      document
+        .querySelector<HTMLButtonElement>('[data-search-trigger]')
+        ?.focus();
+    } else if (presentation.type === 'group') {
+      searchSelectionRef.current = false;
+    }
+  }, [presentation]);
 
   if (presentation.type === 'none') {
     return null;
@@ -262,7 +281,13 @@ export function SelectedCardOverlay(): JSX.Element | null {
   return (
     <div className={overlayContainerClasses}>
       <div className={overlayPlacementClasses}>
-        <div className={cardShellClasses}>
+        <div
+          ref={selectedItemCardRef}
+          aria-label={`${items[presentation.itemIndex].title} details`}
+          className={cardShellClasses}
+          role="region"
+          tabIndex={-1}
+        >
           <div className={cardBodyClasses}>
             <ItemCardContent
               item={items[presentation.itemIndex]}
