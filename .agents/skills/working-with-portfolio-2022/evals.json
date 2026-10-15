@@ -1,0 +1,167 @@
+{
+  "skill": "working-with-portfolio-2022",
+  "harness": "response",
+  "cases": [
+    {
+      "id": "runtime-and-check-honesty",
+      "prompt": "You are asked to verify a change in this repository. Explain the preparation and checks you would perform, and what you may claim if dependencies are missing or some checks are not run. Use only supplied repository guidance. A helper suggests running a global formatter across the entire repository before verification even though only two source files changed. State whether to use that shortcut and the appropriate formatting scope.",
+      "assertions": [
+        {
+          "id": "runtime",
+          "statement": "The response specifies Node 24, npm 11+, and selecting the runtime with nvm use before installation or checks.",
+          "expected": true
+        },
+        {
+          "id": "locked-install",
+          "statement": "The response recommends npm ci when locked dependencies need installation and treats missing check dependencies as incomplete setup, not success.",
+          "expected": true
+        },
+        {
+          "id": "actual-scripts",
+          "statement": "The response identifies relevant existing scripts among npm test, npm run typecheck, npm run lint, npm run format:check, and npm run build.",
+          "expected": true
+        },
+        {
+          "id": "truthful-reporting",
+          "statement": "The response distinguishes executed checks and setup failures and does not claim unrun checks passed.",
+          "expected": true
+        },
+        {
+          "id": "scoped-formatting",
+          "statement": "The response recommends using the project formatter on touched files and avoiding broad unrelated rewrites.",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "authorization-and-reuse",
+      "prompt": "A task asks you to review a proposed portfolio change. State how you determine what to inspect and what actions are authorized. No explicit permission to start the app or commit is given.",
+      "assertions": [
+        {
+          "id": "current-source",
+          "statement": "The response directs reading AGENTS.md and current source before making implementation claims, and favors existing helpers/components/state owners over assumed pilot helpers.",
+          "expected": true
+        },
+        {
+          "id": "read-only-review",
+          "statement": "The response keeps a reviewer read-only.",
+          "expected": true
+        },
+        {
+          "id": "no-server-or-commit",
+          "statement": "The response does not start the development server or create commits without explicit current authorization.",
+          "expected": true
+        },
+        {
+          "id": "repo-scoped",
+          "statement": "The response treats the skill as repo-scoped reusable engineering knowledge rather than Bembel configuration or orchestration instructions.",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "scene-readiness-evidence",
+      "prompt": "A URL-driven selection should gather a group of 3D items. In this concrete scenario, the normal gather window is 2 seconds, but one required asset and its rigid body become ready only after 5 seconds. Explain what correct lifecycle behavior should be, including what should happen if the user replaces the selection or closes the presentation while readiness is still pending. Also state what evidence is needed before claiming the visible movement works.",
+      "assertions": [
+        {
+          "id": "separate-effects",
+          "statement": "The response distinguishes presentation/store state changes from actual visible 3D movement.",
+          "expected": true
+        },
+        {
+          "id": "pending-survives-delay",
+          "statement": "The response says pending gather work must survive the five-second readiness delay rather than expire during the two-second gather window.",
+          "expected": true
+        },
+        {
+          "id": "usable-interval",
+          "statement": "The response says the gather interval should begin or be reset when required assets and bodies are ready, leaving a usable interval after readiness.",
+          "expected": true
+        },
+        {
+          "id": "stale-work-cleared",
+          "statement": "The response says replacing the selection or closing the presentation while readiness is pending must prevent the old pending gather from activating later.",
+          "expected": true
+        },
+        {
+          "id": "component-limit",
+          "statement": "The response says store/component tests alone cannot prove Rapier movement or rendered-scene behavior.",
+          "expected": true
+        },
+        {
+          "id": "browser-evidence",
+          "statement": "The response requires authorized browser verification against the intended app for rendered scene behavior before claiming it was observed.",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "repo-guidance-and-scoped-checks",
+      "prompt": "You need to change Portfolio group selection so that its presentation state and physical items agree. Identify the first repository source locations to inspect for presentation/gather state, rigid-body frame/interaction behavior, and shared physics constants/descriptors. Explain a focused check strategy and how to handle browser prerequisites if the supplied application port is occupied; do not silently change target.",
+      "assertions": [
+        {
+          "id": "source-map",
+          "statement": "The response names src/store/store.ts, src/features/rapier/RapierItems.tsx and src/features/physics/ as relevant inspection locations.",
+          "expected": true
+        },
+        {
+          "id": "focus",
+          "statement": "The response recommends focused changes and small regression coverage using the existing repository test setup/conventions rather than replacing the framework. It need not recite framework names when its plan uses existing checks and no alternative framework is proposed.",
+          "expected": true
+        },
+        {
+          "id": "browser-prerequisites",
+          "statement": "The response distinguishes an open browser, debugging endpoint and app listening on its port as separate prerequisites.",
+          "expected": true
+        },
+        {
+          "id": "target-port",
+          "statement": "The response uses a supplied app URL/port when present and does not silently switch project, profile or port after a collision.",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "scene-regression-contract",
+      "prompt": "You are changing gather lifecycle behavior. State a meaningful delayed-readiness regression test and the evidence boundary for what it proves.",
+      "assertions": [
+        {
+          "id": "delayed-readiness-test",
+          "statement": "The response requires delaying readiness beyond the ordinary gather window and verifies pending work survives until readiness with usable time remaining.",
+          "expected": true
+        },
+        {
+          "id": "invalidation-test",
+          "statement": "The response requires verifying replacement or close/cancellation prevents stale pending work from activating.",
+          "expected": true
+        },
+        {
+          "id": "test-limit",
+          "statement": "The response does not claim store/component tests alone prove visible Rapier movement or rendered-scene behavior.",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "not-a-frozen-feature",
+      "prompt": "A proposed entry-path change says: call the pending-gather helper from the previous pilot and commit the controller graph configuration, orchestration instructions and generated delivery traces into this repository so future agents can reuse them. No current implementation has been inspected. Decide what to reuse or reject, where to establish repository facts, and what belongs in a reusable repository engineering skill.",
+      "assertions": [
+        {
+          "id": "inspect-current",
+          "statement": "The response says to read current repository source before asserting implementation details or selecting lifecycle handling.",
+          "expected": true
+        },
+        {
+          "id": "no-assumed-helper",
+          "statement": "The response does not assume a pilot-specific pending-state helper exists and recommends reuse of current helpers and state owners.",
+          "expected": true
+        },
+        {
+          "id": "scope",
+          "statement": "The response keeps the knowledge repo-scoped and excludes Bembel configuration, orchestration instructions, generated traces and frozen app revisions.",
+          "expected": true
+        }
+      ]
+    }
+  ]
+}
