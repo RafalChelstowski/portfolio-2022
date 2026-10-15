@@ -40,6 +40,7 @@ import { getGroupItemIndexes, items } from '../../data/items';
 import type { ItemFamily } from '../../types';
 import { type ActiveGatherState, useStore } from '../../store/store';
 import { itemInstanceDescriptors } from '../physics/itemInstanceDescriptors';
+import { resolvePendingSelection } from './pendingSelection';
 import {
   itemPhysicsConstants,
   poolPhysicsBounds,
@@ -792,6 +793,20 @@ export function RapierItems(): JSX.Element {
         }
       }
     });
+
+    const pendingSelection = resolvePendingSelection(
+      useStore.getState().pendingSelection,
+      rigidBodies
+    );
+
+    if (pendingSelection) {
+      useStore
+        .getState()
+        .presentPendingSelection(
+          pendingSelection.itemIndex,
+          pendingSelection.targetPosition
+        );
+    }
 
     if (!hasAnyBody) {
       return;

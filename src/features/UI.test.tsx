@@ -6,6 +6,7 @@ import { UI } from './UI';
 
 const gatherTimestamp = 1_739_000_000_000;
 const filterOptions = [
+  'Search portfolio',
   'focus',
   'dev',
   'creative',
@@ -25,6 +26,7 @@ function resetStore(): void {
     sortOption: null,
     selectedGroup: null,
     activeGather: null,
+    pendingSelection: null,
   });
 }
 
